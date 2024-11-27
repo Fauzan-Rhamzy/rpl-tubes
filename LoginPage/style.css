@@ -1,0 +1,525 @@
+.login,
+.login * {
+  box-sizing: border-box;
+}
+.login {
+  background: #ffffff;
+  height: 1024px;
+  position: relative;
+  overflow: hidden;
+}
+.frame-5 {
+  width: 710px;
+  height: 1024px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  overflow: hidden;
+}
+.rectangle-4969 {
+  background: #869ca3;
+  width: 710px;
+  height: 1024px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+.frame-68 {
+  display: flex;
+  flex-direction: row;
+  gap: 12.1px;
+  align-items: center;
+  justify-content: flex-start;
+  position: absolute;
+  left: calc(50% - 167px);
+  top: 113px;
+}
+.streamline-health-care-2-solid {
+  flex-shrink: 0;
+  width: 66.05px;
+  height: 66.05px;
+  position: relative;
+  overflow: visible;
+}
+.healthi {
+  color: #ffffff;
+  text-align: center;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 72.60212707519531px;
+  font-weight: 500;
+  position: relative;
+}
+.group-1000003046 {
+  position: absolute;
+  inset: 0;
+}
+.ellipse-199 {
+  background: #b0b9bc;
+  border-radius: 50%;
+  width: 1013.28px;
+  height: 951.02px;
+  position: absolute;
+  left: -156.63px;
+  top: 328.99px;
+}
+.ellipse-200 {
+  border-radius: 50%;
+  border-style: solid;
+  border-color: #b0b9bc;
+  border-width: 29.3px;
+  width: 1161px;
+  height: 1161px;
+  position: absolute;
+  left: -225px;
+  top: 224px;
+}
+.frame-1000001068 {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  align-items: center;
+  justify-content: flex-start;
+  position: absolute;
+  left: calc(50% - -110px);
+  top: calc(50% - 274px);
+}
+.frame-1000001058 {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  position: relative;
+}
+.welcome-back {
+  color: #000000;
+  text-align: left;
+  font-family: "Inter-Bold", sans-serif;
+  font-size: 48px;
+  letter-spacing: -1px;
+  font-weight: 700;
+  position: relative;
+}
+.new-to-musaki-sign-up {
+  text-align: left;
+  font-family: "-", sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  position: relative;
+}
+.new-to-musaki-sign-up-span {
+  color: #878787;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+}
+.new-to-musaki-sign-up-span2 {
+  color: var(--primary, #3b9ab8);
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  text-decoration: underline;
+}
+.frame-1000001056 {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  position: relative;
+}
+.email-address {
+  color: #000000;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  position: relative;
+}
+.frame-1000001055 {
+  border-radius: 10px;
+  border-style: solid;
+  border-color: #b6b6b8;
+  border-width: 1px;
+  padding: 14px 115px 14px 16px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  width: 490px;
+  position: relative;
+}
+.email-address2 {
+  color: #000000;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 400;
+  position: relative;
+}
+.frame-1000001057 {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  position: relative;
+}
+.your-password {
+  color: #000000;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  position: relative;
+}
+.frame-10000010552 {
+  border-radius: 10px;
+  border-style: solid;
+  border-color: #b6b6b8;
+  border-width: 1px;
+  padding: 14px 16px 14px 16px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  width: 490px;
+  position: relative;
+}
+.div {
+  color: #000000;
+  text-align: left;
+  font-family: "Inter-Bold", sans-serif;
+  font-size: 16px;
+  line-height: 22px;
+  letter-spacing: 6px;
+  font-weight: 700;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.eye {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  position: relative;
+  overflow: visible;
+}
+.frame-1000001066 {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 489px;
+  position: relative;
+}
+.frame-1000001059 {
+  background: var(--primary, #3b9ab8);
+  border-radius: 10px;
+  padding: 13px 10px 13px 10px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 491px;
+  position: relative;
+}
+.log-in {
+  color: #ffffff;
+  text-align: left;
+  font-family: "Inter-Bold", sans-serif;
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 700;
+  position: relative;
+}
+.frame-1000001065 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  width: 490px;
+  position: relative;
+}
+.frame-1000001064 {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  position: relative;
+}
+.rectangle-29 {
+  border-radius: 4px;
+  border-style: solid;
+  border-color: #e5e5e5;
+  border-width: 1px;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  position: relative;
+}
+.remember-me {
+  color: #000000;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  position: relative;
+}
+.forgot-password {
+  color: var(--primary, #3b9ab8);
+  text-align: left;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  position: relative;
+}
+.frame-1000001067 {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  align-self: stretch;
+  flex-shrink: 0;
+  position: relative;
+}
+.or-log-in-with {
+  color: #000000;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  position: relative;
+}
+.frame-1000001063 {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  align-self: stretch;
+  flex-shrink: 0;
+  position: relative;
+}
+.frame-1000001060 {
+  border-radius: 4px;
+  border-style: solid;
+  border-color: #e5e5e5;
+  border-width: 1px;
+  padding: 8px 10px 8px 10px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 155px;
+  position: relative;
+}
+.image-2 {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  position: relative;
+  object-fit: cover;
+}
+.frame-1000001061 {
+  border-radius: 4px;
+  border-style: solid;
+  border-color: #e5e5e5;
+  border-width: 1px;
+  padding: 8px 10px 8px 10px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 155px;
+  position: relative;
+}
+.image-3 {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  position: relative;
+  object-fit: cover;
+}
+.frame-1000001062 {
+  border-radius: 4px;
+  border-style: solid;
+  border-color: #e5e5e5;
+  border-width: 1px;
+  padding: 8px 10px 8px 10px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 155px;
+  position: relative;
+}
+.image-4 {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  position: relative;
+  object-fit: cover;
+}
+.x {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  left: 1392px;
+  top: 34px;
+  overflow: visible;
+}
+.freepik-export-202406130959061-b-q-8-1 {
+  width: 64.79%;
+  height: 70.31%;
+  position: absolute;
+  right: 41.11%;
+  left: -5.9%;
+  bottom: 0%;
+  top: 29.69%;
+  object-fit: cover;
+}
+.frame-1000001072 {
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 14.86px;
+  padding: 17.83px;
+  display: flex;
+  flex-direction: column;
+  gap: 14.86px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 425.03px;
+  position: absolute;
+  left: 262.97px;
+  top: 817px;
+  box-shadow: 0px 5.94px 11.89px 0px rgba(84, 185, 237, 0.1);
+  backdrop-filter: blur(10.4px);
+}
+.frame-1000001071 {
+  display: flex;
+  flex-direction: row;
+  gap: 11.89px;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+}
+.notepad {
+  flex-shrink: 0;
+  width: 62.42px;
+  height: 62.42px;
+  position: relative;
+  overflow: visible;
+}
+.frame-1000001070 {
+  display: flex;
+  flex-direction: column;
+  gap: 2.97px;
+  align-items: flex-start;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+}
+.book-an-appointment {
+  color: #ffffff;
+  text-align: center;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 26.749998092651367px;
+  font-weight: 500;
+  position: relative;
+}
+.call-text-video-inperson {
+  color: rgba(255, 255, 255, 0.6);
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 23.77777671813965px;
+  line-height: 150%;
+  font-weight: 400;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.frame-1000001073 {
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 12.41px;
+  padding: 14.9px;
+  display: flex;
+  flex-direction: column;
+  gap: 12.41px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 355px;
+  position: absolute;
+  left: 18px;
+  top: 325px;
+  box-shadow: 0px 4.97px 9.93px 0px rgba(84, 185, 237, 0.1);
+  backdrop-filter: blur(8.69px);
+}
+.frame-10000010712 {
+  display: flex;
+  flex-direction: row;
+  gap: 9.93px;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+}
+.magnifying-glass {
+  flex-shrink: 0;
+  width: 52.13px;
+  height: 52.13px;
+  position: relative;
+  overflow: visible;
+}
+.frame-10000010702 {
+  display: flex;
+  flex-direction: column;
+  gap: 2.48px;
+  align-items: flex-start;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+}
+.well-qualified-doctors {
+  color: #ffffff;
+  text-align: center;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 22.3426570892334px;
+  font-weight: 500;
+  position: relative;
+}
+.treat-with-atmost-care {
+  color: rgba(255, 255, 255, 0.6);
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 19.860139846801758px;
+  line-height: 150%;
+  font-weight: 400;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
