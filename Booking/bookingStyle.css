@@ -1,0 +1,183 @@
+/* Reset CSS */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  background-color: #f4f4f4;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.container {
+  display: flex;
+  flex: 1;
+  width: 100%;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 250px;
+  background-color: white;
+  color: #3b9ab8;
+  padding: 20px;
+  height: 100vh;
+  position: fixed;
+}
+
+.sidebar .logo h1 {
+  font-size: 1.8rem;
+  margin-bottom: 30px;
+}
+
+nav ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+nav ul li {
+  margin: 15px 0;
+  padding: 5px 10px;
+  border-radius: 5px;
+  display: flex;
+  column-gap: 10px;
+  align-items: center;
+}
+
+nav ul li a {
+  color: #7e7e7e;
+  text-decoration: none;
+  font-size: 1.2rem;
+}
+
+nav ul li a:hover {
+  text-decoration: underline;
+}
+
+nav ul img {
+  width: 24px;
+  height: 24px;
+}
+
+nav ul li:hover {
+  background-color: #3b9bb839;
+}
+
+#nav-booking {
+  background-color: #3b9ab8;
+}
+
+#link-homepage {
+  color: #7e7e7e;
+}
+
+#nav-booking a {
+  color: white;
+}
+
+/* Header */
+header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+header h1 {
+  font-size: 2rem;
+  color: #3b9ab8;
+}
+
+/* Main Content */
+.main-content {
+  margin-left: 250px;
+  padding: 20px;
+  flex: 1;
+  max-width: calc(100% - 250px);
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+}
+
+/* Dropdown untuk memilih spesialisasi */
+select {
+  padding: 10px;
+  font-size: 1.2rem;
+  border-radius: 5px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+#specialization-selection {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.doctor-card button {
+  background-color: #3b9ab8;
+  color: white;
+  padding: 10px 20px;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+}
+
+.doctor-card button:hover {
+  background-color: #2a7c8b;
+}
+
+#doctor-list {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+.doctor-card {
+  background-color: #ffffff;
+  padding: 20px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+}
+
+.doctor-card:hover {
+  transform: translateY(-5px);
+}
+
+.doctor-card h3 {
+  font-size: 1.6rem;
+  margin-bottom: 10px;
+}
+
+.doctor-card p {
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+}
+
+.doctor-card .schedule {
+  font-size: 0.95rem;
+  color: #666;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  background-color: #3b9ab8;
+  color: white;
+  padding: 10px;
+  margin-top: 20px;
+  position: relative;
+}

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="bookingStyle.css" />
+    <script src="booking.js"></script>
+    <title>Booking Dokter</title>
+  </head>
+  <body>
+    <div class="container">
+      <aside class="sidebar">
+        <div class="logo">
+          <h1>Klinik SehatBro.</h1>
+        </div>
+        <nav>
+          <ul>
+            <li id="nav-homepage">
+              <img src="assets/home-gray.png" />
+              <a href="../HomepagePasien/index.html" id="link-homepage"
+                >Homepage</a
+              >
+            </li>
+            <li id="nav-booking">
+              <img src="assets/calendar-add-white.png" />
+              <a href="index.html">Booking</a>
+            </li>
+            <li id="nav-jadwal">
+              <img src="assets/calendar-tick-gray.png" />
+              <a href="../JadwalTemu/index.html">Jadwal Temu</a>
+            </li>
+            <li id="nav-tagihan">
+              <img src="assets/receipt-text.png" />
+              <a href="#bill">Tagihan</a>
+            </li>
+            <li id="nav-profile">
+              <img src="assets/profile-circle.png" />
+              <a href="#profile">Profile</a>
+            </li>
+            <li id="nav-logout">
+              <img src="assets/logout.png" />
+              <a href="#logout">Logout</a>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+      <main class="main-content">
+        <header>
+          <h1>Booking Dokter</h1>
+        </header>
+        <section id="specialization-selection">
+          <h2>Pilih Spesialisasi Dokter</h2>
+          <select id="specialization" onchange="showDoctors()">
+            <option value="" disabled selected>Pilih Spesialisasi</option>
+            <option value="umum">Dokter Umum</option>
+            <option value="gigi">Dokter Gigi</option>
+            <option value="spesialis">Dokter Spesialis</option>
+          </select>
+        </section>
+
+        <section id="doctor-list" style="display: none">
+          <h2>Daftar Dokter</h2>
+          <div id="doctors"></div>
+        </section>
+      </main>
+    </div>
+
+    <footer>
+      <p>&copy; 2024 Klinik SehatBro. | All Rights Reserved</p>
+    </footer>
+
+    <script src="bookingScript.js"></script>
+  </body>
+</html>
