@@ -65,6 +65,10 @@ nav ul img {
   height: 24px;
 }
 
+nav ul li:hover {
+  background-color: #3b9bb839;
+}
+
 #nav-homepage {
   background-color: #3b9ab8;
 }
