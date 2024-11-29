@@ -1,0 +1,139 @@
+/* Reset default margin & padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body style */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Main container */
+.container {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 1100px;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+/* Header style */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    background-color: #3b9ab8;
+    color: white;
+    padding: 15px 30px;
+    border-radius: 8px;
+}
+
+.header .welcome h1 {
+    color: white;
+    font-size: 1.8rem;
+}
+
+.back-btn {
+    background-color: white;
+    color: #3b9ab8;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.back-btn:hover {
+    background-color: #2980b9;
+}
+
+/* Informasi Pasien */
+.patient-info {
+    margin-bottom: 20px;
+}
+
+.patient-info h2 {
+    font-size: 1.5rem;
+    color: #2980b9;
+    margin-bottom: 10px;
+}
+
+.info-box {
+    background-color: #ecf0f1;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.info-box p {
+    font-size: 1.1rem;
+    color: #34495e;
+}
+
+.info-box strong {
+    color: #2c3e50;
+}
+
+/* Medical History Section */
+.medical-history {
+    margin-top: 20px;
+}
+
+.medical-history h2 {
+    font-size: 1.5rem;
+    color: #2980b9;
+    margin-bottom: 15px;
+}
+
+.file-display {
+    background-color: #ecf0f1;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+embed {
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Styling the Embed for PDF */
+embed {
+    max-width: 100%;
+    height: 600px;
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+
+    .header .welcome h1 {
+        font-size: 1.5rem;
+    }
+
+    .back-btn {
+        font-size: 1rem;
+    }
+
+    .info-box p {
+        font-size: 1rem;
+    }
+
+    .file-display embed {
+        height: 400px;
+    }
+}

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pendaftaran Pasien</title>
+    <link rel="stylesheet" href="register-patient.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Pendaftaran Pasien Baru</h1>
+        <form action="/submit" method="POST">
+            <div class="form-group">
+                <label for="nama">Nama Lengkap</label>
+                <input type="text" id="nama" name="nama" placeholder="Masukkan nama lengkap" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="nomor_telepon">Nomor Telepon</label>
+                <input type="tel" id="nomor_telepon" name="nomor_telepon" placeholder="Masukkan nomor telepon" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="tanggal_lahir">Tanggal Lahir</label>
+                <input type="date" id="tanggal_lahir" name="tanggal_lahir" required>
+            </div>
+
+            <div class="form-group">
+                <label for="jenis_kelamin">Jenis Kelamin</label>
+                <select id="jenis_kelamin" name="jenis_kelamin" required>
+                    <option value="">Pilih Jenis Kelamin</option>
+                    <option value="laki-laki">Laki-laki</option>
+                    <option value="perempuan">Perempuan</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="alamat">Alamat</label>
+                <textarea id="alamat" name="alamat" placeholder="Masukkan alamat lengkap" required></textarea>
+            </div>
+
+            <div class="form-buttons">
+                <button type="button" class="btn-kembali" onclick="window.history.back();">Kembali</button>
+                <button type="submit" class="btn-daftar">Daftar</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

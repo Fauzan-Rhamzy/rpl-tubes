@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Dokter</title>
+    <link rel="stylesheet" href="halaman_daftar_dokter.css">
+</head>
+<body>
+    <div class="header">
+        <h1>Daftar Dokter</h1>
+        <button class="btn-kembali" onclick="window.location.href='halaman_utama_admin.html';">Kembali</button>
+    </div>
+
+    <div class="container">
+        <h2>Daftar Dokter</h2>
+
+        <!-- Tabel Daftar Dokter -->
+        <table class="table" id="dokterTable">
+            <thead>
+                <tr>
+                    <th>Nama Dokter</th>
+                    <th>Spesialisasi</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>sekarang buatkan halaman untuk melihat dan menambahkan daftar dokter
+            <tbody>
+                <tr>
+                    <td>Dr. Jane Smith</td>
+                    <td>Spesialis Kulit</td>
+                    <td><button class="btn-edit">Edit</button> <button class="btn-hapus">Hapus</button></td>
+                </tr>
+                <tr>
+                    <td>Dr. Mark Johnson</td>
+                    <td>Spesialis Gigi</td>
+                    <td><button class="btn-edit">Edit</button> <button class="btn-hapus">Hapus</button></td>
+                </tr>
+                <tr>
+                    <td>Dr. Alice Brown</td>
+                    <td>Spesialis Anak</td>
+                    <td><button class="btn-edit">Edit</button> <button class="btn-hapus">Hapus</button></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <hr>
+
+        <!-- Form Menambah Dokter -->
+        <h3>Tambah Dokter Baru</h3>
+        <form>
+            <div class="form-group">
+                <label for="nama-dokter">Nama Dokter</label>
+                <input type="text" id="nama-dokter" name="nama-dokter" placeholder="Masukkan nama dokter" required>
+            </div>
+
+            <div class="form-group">
+                <label for="spesialisasi">Spesialisasi</label>
+                <select id="spesialisasi" name="spesialisasi" required>
+                    <option value="">Pilih Spesialisasi</option>
+                    <option value="kulit">Spesialis Kulit</option>
+                    <option value="gigi">Spesialis Gigi</option>
+                    <option value="anak">Spesialis Anak</option>
+                </select>
+            </div>
+
+            <div class="form-buttons">
+                <button type="submit" class="btn-tambah">Tambah Dokter</button>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>

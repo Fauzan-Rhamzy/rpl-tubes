@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Info Tagihan</title>
+    <link rel="stylesheet" href="halaman_info_tagihan.css">
+</head>
+<body>
+    <div class="header">
+        <h1>Info Tagihan</h1>
+        <button class="btn-kembali" onclick="window.location.href='index.html';">Kembali</button>
+    </div>
+
+    <div class="container">
+        <h2>Tagihan Klinik</h2>
+        <p><strong>Nomor Invoice:</strong> INV-123456</p>
+        <hr>
+
+        <div class="info-tagihan">
+            <div class="info-item">
+                <strong>Nama Pasien:</strong> John Doe
+            </div>
+            <div class="info-item">
+                <strong>ID Pasien:</strong> 12345
+            </div>
+            <div class="info-item">
+                <strong>Tanggal Invoice:</strong> 2024-11-29
+            </div>
+            <div class="info-item">
+                <strong>Dokter:</strong> Dr. Jane Smith
+            </div>
+            <div class="info-item">
+                <strong>Spesialisasi:</strong> Spesialis Kulit
+            </div>
+            <div class="info-item">
+                <strong>Biaya:</strong> Rp 500,000
+            </div>
+
+            <div class="info-item">
+                <strong>Status Tagihan:</strong>
+                <span id="status-tagihan" class="status-belum-lunas">Belum Lunas</span>
+            </div>
+
+            <hr>
+
+            <div class="form-buttons">
+                <button type="button" class="btn-lunas" onclick="ubahStatus()">Tandai Lunas</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Fungsi untuk mengubah status tagihan
+        function ubahStatus() {
+            const statusTagihan = document.getElementById('status-tagihan');
+            
+            if (statusTagihan.textContent === 'Belum Lunas') {
+                statusTagihan.textContent = 'Lunas';
+                statusTagihan.classList.remove('status-belum-lunas');
+                statusTagihan.classList.add('status-lunas');
+            }
+        }
+    </script>
+</body>
+</html>

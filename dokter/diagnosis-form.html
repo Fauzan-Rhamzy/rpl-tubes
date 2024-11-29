@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Diagnosa Pasien - Klinik</title>
+    <link rel="stylesheet" href="diagnosis-form.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="welcome">
+                <h1>Form Diagnosa Pasien</h1>
+            </div>
+            <a href="doctor-dashboard.html" class="back-btn">Kembali</a>
+        </header>
+
+        <!-- Form Diagnosa -->
+        <section class="diagnosis-form">
+            <form action=""></form>
+                <h2>Informasi Pasien</h2>
+
+                <!-- Informasi Pasien -->
+                <div class="patient-info">
+                    <p><strong>Nomor Janji Temu:</strong> 12345</p>
+                    <p><strong>Nama Pasien:</strong> Andi Susanto</p>
+                    <p><strong>ID Pasien:</strong> P123456789</p>
+                    <p><strong>Nomor Telepon:</strong> 081234567890</p>
+                </div>
+
+                <!-- Informasi Diagnosa -->
+                <div class="diagnosis-info">
+                    <p><strong>Tanggal Diagnosa:</strong> <input type="date" id="diagnosis-date"></p>
+                    <p><strong>Nama Dokter:</strong> Dr. Dokter</p>
+                    <p><strong>Spesialis:</strong> Penyakit Dalam</p>
+                </div>
+
+                <!-- Kotak Catatan dan Resep Obat -->
+                <div class="diagnosis-notes">
+                    <label for="doctor-notes">Catatan Dokter:</label>
+                    <textarea id="doctor-notes" rows="5" placeholder="Tuliskan catatan diagnosa di sini..."></textarea>
+                </div>
+
+                <div class="medication">
+                    <label for="prescription">Resep Obat:</label>
+                    <textarea id="prescription" rows="5" placeholder="Tuliskan resep obat di sini..."></textarea>
+                </div>
+
+                <!-- Tombol untuk Merecord Diagnosa -->
+                <div class="buttons">
+                    <button type="submit" class="btn" id="save-diagnosis">Rekam Diagnosa</button>
+                </div>
+
+            </form>
+        </section>
+    </div>
+</body>
+</html>

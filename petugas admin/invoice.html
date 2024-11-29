@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buat Invoice</title>
+    <link rel="stylesheet" href="invoice.css">
+</head>
+<body>
+    <div class="header">
+        <h1>Buat Invoice</h1>
+        <button class="btn-kembali" onclick="window.location.href='index.html';">Kembali</button>
+    </div>
+
+    <div class="container">
+        <h2>Tagihan Klinik</h2>
+        <p><strong>Nomor Invoice:</strong> INV-123456</p>
+        <hr>
+
+        <form>
+            <!-- Input data pasien -->
+            <div class="form-group">
+                <label for="nama-pasien">Nama Pasien</label>
+                <input type="text" id="nama-pasien" name="nama-pasien" placeholder="Masukkan nama pasien" required>
+            </div>
+
+            <div class="form-group">
+                <label for="id-pasien">ID Pasien</label>
+                <input type="text" id="id-pasien" name="id-pasien" placeholder="Masukkan ID pasien" required>
+            </div>
+
+            <div class="form-group">
+                <label for="tanggal">Tanggal Invoice</label>
+                <input type="date" id="tanggal" name="tanggal" required>
+            </div>
+
+            <!-- Input data dokter -->
+            <div class="form-group">
+                <label for="spesialisasi">Spesialisasi</label>
+                <select id="spesialisasi" name="spesialisasi" required>
+                    <option value="">Pilih Spesialisasi</option>
+                    <option value="kulit">Spesialis Kulit</option>
+                    <option value="gigi">Spesialis Gigi</option>
+                    <option value="anak">Spesialis Anak</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="dokter">Dokter</label>
+                <select id="dokter" name="dokter" required>
+                    <option value="">Pilih Dokter</option>
+                </select>
+            </div>
+
+            <hr>
+
+            <!-- Biaya otomatis -->
+            <div class="form-group">
+                <label for="biaya">Biaya</label>
+                <input type="text" id="biaya" name="biaya" placeholder="Biaya akan terisi otomatis" readonly>
+            </div>
+
+            <!-- Tombol -->
+            <div class="form-buttons">
+                <button type="submit" class="btn-buat-tagihan">Buat Tagihan</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Data dokter berdasarkan spesialisasi
+        const dokterData = {
+            kulit: ['Dr. Jane Smith', 'Dr. Emily White', 'Dr. John Black'],
+            gigi: ['Dr. Mark Johnson', 'Dr. Lisa Green'],
+            anak: ['Dr. Rachel Blue', 'Dr. Alice Brown']
+        };
+
+        // Skrip untuk mengubah pilihan dokter berdasarkan spesialisasi
+        document.getElementById('spesialisasi').addEventListener('change', function () {
+            const spesialisasi = this.value;
+            const dokterSelect = document.getElementById('dokter');
+            const biayaInput = document.getElementById('biaya');
+            
+            // Reset pilihan dokter
+            dokterSelect.innerHTML = '<option value="">Pilih Dokter</option>';
+            
+            // Tambahkan dokter berdasarkan spesialisasi yang dipilih
+            if (spesialisasi && dokterData[spesialisasi]) {
+                dokterData[spesialisasi].forEach(function (dokter) {
+                    let option = document.createElement('option');
+                    option.value = dokter;
+                    option.textContent = dokter;
+                    dokterSelect.appendChild(option);
+                });
+
+                // Biaya otomatis berdasarkan spesialisasi
+                if (spesialisasi === 'kulit') {
+                    biayaInput.value = '500000';
+                } else if (spesialisasi === 'gigi') {
+                    biayaInput.value = '300000';
+                } else if (spesialisasi === 'anak') {
+                    biayaInput.value = '400000';
+                }
+            } else {
+                biayaInput.value = '';
+            }
+        });
+    </script>
+</body>
+</html>

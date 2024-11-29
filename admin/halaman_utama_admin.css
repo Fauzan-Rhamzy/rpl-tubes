@@ -1,0 +1,106 @@
+/* Basic reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body and container */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7fc;
+    padding: 20px;
+}
+
+.container {
+    background-color: #ffffff;
+    padding: 30px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    max-width: 800px;
+    margin: 30px auto;
+}
+
+/* Header styles */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #4CAF50;
+    padding: 15px 25px;
+    border-radius: 12px;
+    color: white;
+    margin-bottom: 30px;
+}
+
+.header h1 {
+    font-size: 28px;
+}
+
+.header .btn-logout {
+    background-color: #f44336;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.header .btn-logout:hover {
+    background-color: #e53935;
+}
+
+/* Menu Styles */
+.menu {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.menu-item h3 {
+    font-size: 22px;
+    color: #333;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.menu-item ul {
+    list-style-type: none;
+}
+
+.menu-item li {
+    margin-bottom: 12px;
+}
+
+.menu-item .btn-link {
+    text-decoration: none;
+    color: #007bff;
+    font-size: 18px;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.menu-item .btn-link:hover {
+    color: #0056b3;
+}
+
+/* Button styles */
+button {
+    padding: 12px 24px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-logout {
+    background-color: #f44336;
+    color: white;
+}
+
+.btn-logout:hover {
+    background-color: #e53935;
+}

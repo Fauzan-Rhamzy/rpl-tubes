@@ -1,0 +1,131 @@
+/* Basic reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body and container */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f9fafb;
+    padding: 20px;
+}
+
+.container {
+    background-color: #ffffff;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+/* Header styles */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #3b9ab8;
+    padding: 10px 20px;
+    border-radius: 10px;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.header h1 {
+    font-size: 24px;
+}
+
+.header .btn-kembali {
+    background-color: white;
+    color: #3b9ab8;
+    padding: 8px 16px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.header .btn-kembali:hover {
+    background-color: #f1f1f1;
+}
+
+/* Form styles */
+h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+form {
+    margin-top: 10px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #555;
+}
+
+input, select {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+    background-color: #f9f9f9;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: #4CAF50;
+}
+
+/* Horizontal rule */
+hr {
+    border: 0;
+    height: 1px;
+    background-color: #ddd;
+    margin: 20px 0;
+}
+
+/* Buttons */
+.form-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-kembali {
+    background-color: #f44336;
+    color: white;
+}
+
+.btn-kembali:hover {
+    background-color: #e53935;
+}
+
+.btn-buat-tagihan {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-buat-tagihan:hover {
+    background-color: #0056b3;
+}
