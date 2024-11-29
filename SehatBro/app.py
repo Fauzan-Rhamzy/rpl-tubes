@@ -34,3 +34,11 @@ def booking():
 @app.route('/Login')
 def login():
     return render_template("LoginPage/index.html")
+
+@app.route('/Profile')
+def profile():
+    return render_template("Profile/index.html")
+
+@app.route('/Tagihan')
+def tagihan():
+    return render_template("Tagihan/index.html")

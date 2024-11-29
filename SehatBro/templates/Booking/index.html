@@ -1,74 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/Booking/bookingStyle.css') }}" />
-    <script src="{{ url_for('static', filename='javascript/Booking/booking.js') }}"></script>
-    <title>Booking Dokter</title>
-  </head>
-  <body>
-    <div class="container">
-      <aside class="sidebar">
-        <div class="logo">
-          <h1>Klinik SehatBro.</h1>
-        </div>
-        <nav>
-          <ul>
-            <li id="nav-homepage">
-              <img src="{{ url_for('static', filename='images/Booking/home-gray.png') }}" />
-              <a href="{{ url_for('homepage') }}" id="link-homepage">Homepage</a>
-            </li>
-            <li id="nav-booking">
-              <img src="{{ url_for('static', filename='images/Booking/calendar-add-white.png') }}" />
-              <a href="#">Booking</a>
-            </li>
-            <li id="nav-jadwal">
-              <img src="{{ url_for('static', filename='images/Booking/calendar-tick-gray.png') }}" />
-              <a href="{{ url_for('jadwaltemu') }}">Jadwal Temu</a>
-            </li>
-            <li id="nav-tagihan">
-              <img src="{{ url_for('static', filename='images/Booking/receipt-text.png') }}" />
-              <a href="#bill">Tagihan</a>
-            </li>
-            <li id="nav-profile">
-              <img src="{{ url_for('static', filename='images/Booking/profile-circle.png') }}" />
-              <a href="#profile">Profile</a>
-            </li>
-            <li id="nav-logout">
-              <img src="{{ url_for('static', filename='images/Booking/logout.png') }}" />
-              <a href="#logout">Logout</a>
-            </li>
-          </ul>
-        </nav>
-      </aside>
 
-      <main class="main-content">
-        <header>
-          <h1>Booking Dokter</h1>
-        </header>
-        <section id="specialization-selection">
-          <h2>Pilih Spesialisasi Dokter</h2>
-          <select id="specialization" onchange="showDoctors()">
-            <option value="" disabled selected>Pilih Spesialisasi</option>
-            <option value="umum">Dokter Umum</option>
-            <option value="gigi">Dokter Gigi</option>
-            <option value="spesialis">Dokter Spesialis</option>
-          </select>
-        </section>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles/Booking/bookingStyle.css') }}" />
+  <script src="{{ url_for('static', filename='javascript/Booking/booking.js') }}"></script>
+  <title>Booking Dokter</title>
+</head>
 
-        <section id="doctor-list" style="display: none">
-          <h2>Daftar Dokter</h2>
-          <div id="doctors"></div>
-        </section>
-      </main>
-    </div>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <div class="logo">
+        <h1>Klinik SehatBro.</h1>
+      </div>
+      <nav>
+        <ul>
+          <li id="nav-homepage">
+            <img src="{{ url_for('static', filename='images/Booking/home-gray.png') }}" />
+            <a href="{{ url_for('homepage') }}" id="link-homepage">Homepage</a>
+          </li>
+          <li id="nav-booking">
+            <img src="{{ url_for('static', filename='images/Booking/calendar-add-white.png') }}" />
+            <a href="#">Booking</a>
+          </li>
+          <li id="nav-jadwal">
+            <img src="{{ url_for('static', filename='images/Booking/calendar-tick-gray.png') }}" />
+            <a href="{{ url_for('jadwaltemu') }}">Jadwal Temu</a>
+          </li>
+          <li id="nav-tagihan">
+            <img src="{{ url_for('static', filename='images/Booking/receipt-text.png') }}" />
+            <a href="{{ url_for('tagihan') }}">Tagihan</a>
+          </li>
+          <li id="nav-profile">
+            <img src="{{ url_for('static', filename='images/Booking/profile-circle.png') }}" />
+            <a href="{{ url_for('profile') }}">Profile</a>
+          </li>
+          <li id="nav-logout">
+            <img src="{{ url_for('static', filename='images/Booking/logout.png') }}" />
+            <a href="#loginpage">Logout</a>
+          </li>
+        </ul>
+      </nav>
+    </aside>
 
-    <footer>
-      <p>&copy; 2024 Klinik SehatBro. | All Rights Reserved</p>
-    </footer>
+    <main class="main-content">
+      <header>
+        <h1>Booking Dokter</h1>
+      </header>
+      <section id="specialization-selection">
+        <h2>Pilih Spesialisasi Dokter</h2>
+        <select id="specialization" onchange="showDoctors()">
+          <option value="" disabled selected>Pilih Spesialisasi</option>
+          <option value="umum">Dokter Umum</option>
+          <option value="gigi">Dokter Gigi</option>
+          <option value="spesialis">Dokter Spesialis</option>
+        </select>
+      </section>
 
-    <!-- bookingScript.js emng blm ada? -->
-    <script src="{{ url_for('static', filename='javascript/Booking/bookingScript.js') }}"></script> 
-  </body>
+      <section id="doctor-list" style="display: none">
+        <h2>Daftar Dokter</h2>
+        <div id="doctors"></div>
+      </section>
+    </main>
+  </div>
+
+  <footer>
+    <p>&copy; 2024 Klinik SehatBro. | All Rights Reserved</p>
+  </footer>
+
+  <!-- bookingScript.js emng blm ada? -->
+  <script src="{{ url_for('static', filename='javascript/Booking/bookingScript.js') }}"></script>
+</body>
+
 </html>
