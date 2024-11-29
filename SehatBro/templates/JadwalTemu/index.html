@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles/JadwalTemu/jadwalStyle.css')}}" />
+  <title>Jadwal Temu Pasien</title>
+</head>
+
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <div class="logo">
+        <h1>Klinik SehatBro.</h1>
+      </div>
+      <nav>
+        <ul>
+          <li id="nav-homepage">
+            <img src="{{ url_for('static', filename='images/JadwalTemu/home-gray.png') }}" />
+            <a href="{{ url_for('homepage') }}" id="link-homepage">Homepage</a>
+          </li>
+          <li id="nav-booking">
+            <img src="{{ url_for('static', filename='images/JadwalTemu/calendar-add.png' )}}" />
+            <a href="{{ url_for('booking') }}">Booking</a>
+          </li>
+          <li id="nav-jadwal">
+            <img src="{{ url_for('static', filename='images/JadwalTemu/calendar-tick.png') }}" />
+            <a href="{{ url_for('jadwaltemu') }}">Jadwal Temu</a>
+          </li>
+          <li id="nav-tagihan">
+            <img src="{{ url_for('static', filename='images/JadwalTemu/receipt-text.png') }}" />
+            <a href="#bill">Tagihan</a>
+          </li>
+          <li id="nav-profile">
+            <img src="{{ url_for('static', filename='images/JadwalTemu/profile-circle.png') }}" />
+            <a href="#profile">Profile</a>
+          </li>
+          <li id="nav-logout">
+            <img src="{{ url_for('static', filename='images/JadwalTemu/logout.png') }}" />
+            <a href="#logout">Logout</a>
+          </li>
+        </ul>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <header>
+        <h1>Jadwal Janji Temu</h1>
+      </header>
+
+      <section class="upcoming-appointments">
+        <h2>Jadwal Janji Temu Mendatang</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Dokter</th>
+              <th>Spesialisasi</th>
+              <th>Tanggal & Waktu</th>
+              <th>Lokasi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Jadwal Janji Temu -->
+            <tr>
+              <td>Dr. John Doe</td>
+              <td>Dokter Umum</td>
+              <td>20 Januari 2024, 10:00</td>
+              <td>Klinik SehatBro - Ruang 1</td>
+            </tr>
+            <tr>
+              <td>Dr. Jane Smith</td>
+              <td>Spesialis Jantung</td>
+              <td>22 Januari 2024, 14:00</td>
+              <td>Klinik SehatBro - Ruang 3</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="history-appointments">
+        <h2>History Janji Temu</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Dokter</th>
+              <th>Spesialisasi</th>
+              <th>Tanggal & Waktu</th>
+              <th>Lokasi</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- History Janji Temu -->
+            <tr>
+              <td>Dr. Emily Johnson</td>
+              <td>Dokter Umum</td>
+              <td>15 Desember 2023, 09:00</td>
+              <td>Klinik SehatBro - Ruang 2</td>
+              <td>Selesai</td>
+            </tr>
+            <tr>
+              <td>Dr. Michael Lee</td>
+              <td>Spesialis Kulit</td>
+              <td>12 Desember 2023, 11:30</td>
+              <td>Klinik SehatBro - Ruang 4</td>
+              <td>Selesai</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+    </main>
+  </div>
+
+  <footer>
+    <p>&copy; 2024 Klinik SehatBro. | All Rights Reserved</p>
+  </footer>
+</body>
+
+</html>

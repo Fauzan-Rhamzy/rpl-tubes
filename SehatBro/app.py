@@ -19,6 +19,18 @@ cursor = connection.cursor()
 # cursor.execute(sql)
 # connection.commit()
 
-@app.route('/home')
+@app.route('/HomePage')
 def homepage():
-    return render_template("homepagetest.html")
+    return render_template("HomepagePasien/index.html")
+
+@app.route('/JadwalTemu')
+def jadwaltemu():
+    return render_template("JadwalTemu/index.html")
+
+@app.route('/Booking')
+def booking():
+    return render_template("Booking/index.html")
+
+@app.route('/Login')
+def login():
+    return render_template("LoginPage/index.html")

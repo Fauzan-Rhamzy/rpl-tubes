@@ -6,3 +6,6 @@
 
 #Buat connection ke database
     cek file ".env"
+
+#Run di vscode
+kalo gabisa run pake f5/tombol run di vscode ketik di terminal aja 'flask run'
