@@ -1,7 +1,7 @@
 import os
 import psycopg2
 from dotenv import load_dotenv
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 
 load_dotenv()
 app = Flask(__name__)
@@ -9,15 +9,13 @@ url = os.getenv("DATABASE_URL")
 connection = psycopg2.connect(url)
 cursor = connection.cursor()
 
-# sql = '''CREATE TABLE articals(
-#                 publisher_id SERIAL PRIMARY KEY,
-#                 publisher_name VARCHAR(255) NOT NULL,
-#                 publisher_estd INT,
-#                 publsiher_location VARCHAR(255),
-#                 publsiher_type VARCHAR(255)
-# )'''
-# cursor.execute(sql)
-# connection.commit()
+
+@app.route('/', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        # Abaikan validasi, langsung redirect ke homepage
+        return redirect(url_for('homepage'))
+    return render_template("LoginPage/index.html")
 
 @app.route('/HomePage')
 def homepage():
@@ -30,10 +28,6 @@ def jadwaltemu():
 @app.route('/Booking')
 def booking():
     return render_template("Booking/index.html")
-
-@app.route('/Login')
-def login():
-    return render_template("LoginPage/index.html")
 
 @app.route('/Profile')
 def profile():
