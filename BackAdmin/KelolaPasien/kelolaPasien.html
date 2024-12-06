@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kelola Pasien</title>
+    <link rel="stylesheet" href="kelolaPasienStyle.css" />
+  </head>
+  <body>
+    <div class="container">
+      <aside class="sidebar">
+        <div class="logo">
+          <h1>Klinik SehatBro.</h1>
+        </div>
+        <nav class="sidenav">
+          <ul>
+            <li id="nav-homepage">
+              <img src="../Assets/home_gray.png" />
+              <a href="/BackAdmin/Homepage/homepage.html" id="link-homepage"
+                >Dashboard</a
+              >
+            </li>
+            <li id="nav-pekerja" class="dropdown">
+              <img src="../Assets/person_gray.png" />
+              <a href="#" id="link-pekerja">Kelola Pekerja</a>
+              <ul class="dropdown-menu">
+                <li><a href="../KelolaDokter/kelolaDokter.html">Dokter</a></li>
+                <li>
+                  <a href="../KelolaPerawat/kelolaPerawat.html">Perawat</a>
+                </li>
+                <li>
+                  <a href="../KelolaPetugas/kelolaPetugas.html"
+                    >Petugas Administrasi</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li id="nav-pasien">
+              <img src="../Assets/patient_white.png" />
+              <a href="../KelolaPasien/kelolaPasien.html" id="link-pasien"
+                >Kelola Pasien</a
+              >
+            </li>
+            <li id="nav-logout">
+              <img src="../Assets/logout.png" />
+              <a href="../LoginPage/index.html">Logout</a>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+      <main class="main-content">
+        <header>
+          <h1>Kelola Pasien</h1>
+        </header>
+      </main>
+    </div>
+  </body>
+</html>
