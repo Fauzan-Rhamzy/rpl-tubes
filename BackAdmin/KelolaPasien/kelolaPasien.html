@@ -53,7 +53,110 @@
         <header>
           <h1>Kelola Pasien</h1>
         </header>
+
+        <section class="search-patient">
+          <input type="text" id="search-patient" placeholder="Cari Pasien" />
+          <button type="button" onclick="searchPatient()">Cari</button>
+        </section>
+
+        <section class="list-patient">
+          <h2>Daftar Pasien</h2>
+          <table class="patient-table">
+            <thead>
+              <tr>
+                <th>Nomor Rekam Medis</th>
+                <th>Nama Pasien</th>
+                <th>Nama Dokter</th>
+                <th>Spesialisasi</th>
+                <th>Tanggal Janji Temu</th>
+                <th>Hari</th>
+                <th>Jam</th>
+                <th>Detail</th>
+                <th>Edit</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Daftar Pasien Terdaftar -->
+              <tr>
+                <td>123445667</td>
+                <td>Ahmad Fauzi</td>
+                <td>dr. Andreas</td>
+                <td>Penyakit Dalam</td>
+                <td>Senin</td>
+                <td>2024-12-01</td>
+                <td>09:00</td>
+                <td>
+                  <button type="button" class="detail-button">Detail</button>
+                </td>
+                <td>
+                  <button type="button" class="edit-button">Edit</button>
+                </td>
+              </tr>
+              <tr>
+                <td>138397987</td>
+                <td>Siti Nurhaliza</td>
+                <td>dr. Maria</td>
+                <td>Anak</td>
+                <td>Selasa</td>
+                <td>2024-12-03</td>
+                <td>10:30</td>
+                <td>
+                  <button type="button" class="detail-button">Detail</button>
+                </td>
+                <td>
+                  <button type="button" class="edit-button">Edit</button>
+                </td>
+              </tr>
+              <tr>
+                <td>192083038</td>
+                <td>Deni Ramadhan</td>
+                <td>dr. Fauziah</td>
+                <td>Gigi</td>
+                <td>Rabu</td>
+                <td>2024-12-05</td>
+                <td>08:00</td>
+                <td>
+                  <button type="button" class="detail-button">Detail</button>
+                </td>
+                <td>
+                  <button type="button" class="edit-button">Edit</button>
+                </td>
+              </tr>
+              <tr>
+                <td>128973892</td>
+                <td>Lina Permata</td>
+                <td>dr. Kevin</td>
+                <td>Mata</td>
+                <td>Kamis</td>
+                <td>2024-12-7</td>
+                <td>14:00</td>
+                <td>
+                  <button type="button" class="detail-button">Detail</button>
+                </td>
+                <td>
+                  <button type="button" class="edit-button">Edit</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
       </main>
     </div>
+
+    <footer>
+      <p>&copy; 2024 Klinik SehatBro. | All Rights Reserved</p>
+    </footer>
   </body>
+
+  <script>
+    const editButton = document.querySelector(".edit-button");
+    editButton.addEventListener("click", function () {
+      window.location.href = "editPasien.html";
+    });
+
+    const detailButton = document.querySelector(".detail-button");
+    detailButton.addEventListener("click", function () {
+      window.location.href = "detailPasien.html";
+    });
+  </script>
 </html>

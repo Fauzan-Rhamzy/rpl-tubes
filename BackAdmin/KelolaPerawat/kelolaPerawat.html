@@ -89,7 +89,7 @@
                 />
               </div>
 
-              <button type="submit" class="btn">Tambah Perawat</button>
+              <button type="submit" class="add-button">Tambah Perawat</button>
             </form>
           </section>
           <div class="nurse-img">
@@ -113,7 +113,7 @@
                 <td>Nina Pratiwi</td>
                 <td>perawat_nina</td>
                 <td>nina123</td>
-                <td><button type="button">Edit</button></td>
+                <td><button type="button" class="edit-button">Edit</button></td>
               </tr>
 
               <tr>
@@ -121,7 +121,7 @@
                 <td>Budi Santoso</td>
                 <td>perawat_budi</td>
                 <td>budi456</td>
-                <td><button type="button">Edit</button></td>
+                <td><button type="button" class="edit-button">Edit</button></td>
               </tr>
 
               <tr>
@@ -129,7 +129,7 @@
                 <td>Ika Nuraini</td>
                 <td>perawat_ika</td>
                 <td>ikapass</td>
-                <td><button type="button">Edit</button></td>
+                <td><button type="button" class="edit-button">Edit</button></td>
               </tr>
 
               <tr>
@@ -137,7 +137,7 @@
                 <td>Yusuf Aditya</td>
                 <td>perawat_yusuf</td>
                 <td>yusuf123</td>
-                <td><button type="button">Edit</button></td>
+                <td><button type="button" class="edit-button">Edit</button></td>
               </tr>
             </tbody>
           </table>
@@ -149,4 +149,16 @@
       <p>&copy; 2024 Klinik SehatBro. | All Rights Reserved</p>
     </footer>
   </body>
+
+  <script>
+    const addButton = document.querySelector(".add-button");
+    addButton.addEventListener("click", function () {
+      alert("Perawat berhasil ditambahkan!");
+    });
+
+    const editButton = document.querySelector(".edit-button");
+    editButton.addEventListener("click", function () {
+      window.location.href = "editPerawat.html";
+    });
+  </script>
 </html>

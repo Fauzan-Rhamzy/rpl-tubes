@@ -112,7 +112,9 @@
                   step="1000"
                 />
               </div>
-              <button type="submit" class="btn">Tambah Dokter</button>
+              <button type="submit" class="add-doct-button">
+                Tambah Dokter
+              </button>
             </form>
           </section>
 
@@ -160,7 +162,9 @@
                   required
                 />
               </div>
-              <button type="submit" class="btn">Buat Jadwal</button>
+              <button type="submit" class="add-sched-button">
+                Buat Jadwal
+              </button>
             </form>
           </section>
 
@@ -195,7 +199,9 @@
                 <td rowspan="3">Rp 200,000</td>
                 <td>Senin</td>
                 <td>08:00 - 12:00</td>
-                <td rowspan="3"><button type="button">Edit</button></td>
+                <td rowspan="3">
+                  <button type="button" class="edit-button">Edit</button>
+                </td>
               </tr>
               <tr>
                 <td>Rabu</td>
@@ -213,7 +219,7 @@
                 <td>Rp 150,000</td>
                 <td>Selasa</td>
                 <td>09:00 - 11:00</td>
-                <td><button type="button">Edit</button></td>
+                <td><button type="button" class="edit-button">Edit</button></td>
               </tr>
               <tr>
                 <td>003</td>
@@ -223,7 +229,7 @@
                 <td>Rp 250,000</td>
                 <td>Rabu</td>
                 <td>14:00 - 16:00</td>
-                <td><button type="button">Edit</button></td>
+                <td><button type="button" class="edit-button">Edit</button></td>
               </tr>
             </tbody>
           </table>
@@ -234,4 +240,22 @@
       <p>&copy; 2024 Klinik SehatBro. | All Rights Reserved</p>
     </footer>
   </body>
+
+  <script>
+    const addDoctButton = document.querySelector(".add-doct-button");
+    addDoctButton.addEventListener("click", function () {
+      alert("Dokter berhasil ditambahkan!");
+    });
+
+    const addSchedButton = document.querySelector(".add-sched-button");
+    addSchedButton.addEventListener("click", function () {
+      alert("Jadwal dokter berhasil ditambahkan!");
+    });
+
+    const editButton = document.querySelector(".edit-button");
+
+    editButton.addEventListener("click", function () {
+      window.location.href = "editDokter.html";
+    });
+  </script>
 </html>

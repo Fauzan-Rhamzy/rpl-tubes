@@ -68,7 +68,9 @@
               </div>
 
               <div class="form-group">
-                <label for="admin-username">Username Admin</label>
+                <label for="admin-username"
+                  >Username Petugas Administrasi</label
+                >
                 <input
                   type="text"
                   id="admin-username"
@@ -79,7 +81,9 @@
               </div>
 
               <div class="form-group">
-                <label for="admin-password">Password Perawat</label>
+                <label for="admin-password"
+                  >Password Petugas Administrasi</label
+                >
                 <input
                   type="text"
                   id="admin-password"
@@ -89,7 +93,9 @@
                 />
               </div>
 
-              <button type="submit" class="btn">Tambah Petugas</button>
+              <button type="submit" class="add-button">
+                Tambah Petugas Administrasi
+              </button>
             </form>
           </section>
           <div class="nurse-img">
@@ -113,7 +119,7 @@
                 <td>Rizki Amelia</td>
                 <td>admin_rizki</td>
                 <td>rizkiadmin</td>
-                <td><button type="button">Edit</button></td>
+                <td><button type="button" class="edit-button">Edit</button></td>
               </tr>
 
               <tr>
@@ -121,7 +127,7 @@
                 <td>Hendra Wijaya</td>
                 <td>admin_hendra</td>
                 <td>securehendra</td>
-                <td><button type="button">Edit</button></td>
+                <td><button type="button" class="edit-button">Edit</button></td>
               </tr>
 
               <tr>
@@ -129,7 +135,7 @@
                 <td>Amelia Yuliana</td>
                 <td>admin_amelia</td>
                 <td>amelia456</td>
-                <td><button type="button">Edit</button></td>
+                <td><button type="button" class="edit-button">Edit</button></td>
               </tr>
 
               <tr>
@@ -137,7 +143,7 @@
                 <td>Rian Setiawan</td>
                 <td>admin_rian</td>
                 <td>rianpass123</td>
-                <td><button type="button">Edit</button></td>
+                <td><button type="button" class="edit-button">Edit</button></td>
               </tr>
             </tbody>
           </table>
@@ -148,4 +154,16 @@
       <p>&copy; 2024 Klinik SehatBro. | All Rights Reserved</p>
     </footer>
   </body>
+
+  <script>
+    const addButton = document.querySelector(".add-button");
+    addButton.addEventListener("click", function () {
+      alert("Petugas Administrasi berhasil ditambahkan!");
+    });
+
+    const editButton = document.querySelector(".edit-button");
+    editButton.addEventListener("click", function () {
+      window.location.href = "editPetugas.html";
+    });
+  </script>
 </html>
