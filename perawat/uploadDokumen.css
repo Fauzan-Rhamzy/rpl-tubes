@@ -69,11 +69,11 @@
     background-color: #3b9bb839;
   }
   
-  #nav-profile {
+  #nav-dokumen {
     background-color: #3b9ab8;
   }
   
-  #link-homepage {
+  .link-active {
     color: white;
   }
   
@@ -171,9 +171,10 @@
   textarea {
     resize: none;
     width: 100%;
+    padding: 10px;
   }
 
-  .btn-diagnosa {
+  .btn-unggah {
     margin-top: 20px;
     background-color: #3b9ab8; /* Green color for the button */
     color: white; /* Text color */
@@ -185,12 +186,13 @@
     transition: background-color 0.3s, transform 0.2s ease;  
   }
   
-  .btn-diagnosa:hover {
+  .btn-unggah:hover {
     background-color: #3b9ab8; /* Slightly darker green */
     transform: scale(1.05); /* Slightly enlarge the button */
   }
   
   /* Focus effect (for accessibility) */
-  .btn-diagnosa:focus {
+  .btn-unggah:focus {
     outline: 3px solid white; /* Yellow outline on focus */
   }
+  

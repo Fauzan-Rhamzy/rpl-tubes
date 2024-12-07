@@ -69,11 +69,11 @@
     background-color: #3b9bb839;
   }
   
-  #nav-homepage {
+  #nav-daftar {
     background-color: #3b9ab8;
   }
   
-  #link-homepage {
+  .link-active {
     color: white;
   }
   
@@ -168,3 +168,47 @@
     bottom: 0;
   }
   
+  textarea {
+    resize: none;
+    width: 100%;
+    padding: 10px;
+  }
+
+  .btn-unggah {
+    margin-top: 20px;
+    background-color: #3b9ab8; /* Green color for the button */
+    color: white; /* Text color */
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s, transform 0.2s ease;  
+  }
+  
+  .btn-unggah:hover {
+    background-color: #3b9ab8; /* Slightly darker green */
+    transform: scale(1.05); /* Slightly enlarge the button */
+  }
+  
+  /* Focus effect (for accessibility) */
+  .btn-unggah:focus {
+    outline: 3px solid white; /* Yellow outline on focus */
+  }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    table th, table td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    table th {
+        background-color: #f8f8f8;
+        color: #333;
+    }
