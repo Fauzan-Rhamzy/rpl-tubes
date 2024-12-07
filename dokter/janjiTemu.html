@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="janjiTemu.css" />
+    <title>Homepage Pasien</title>
+  </head>
+  <body>
+    <div class="container">
+      <aside class="sidebar">
+        <div class="logo">
+          <h1>Klinik SehatBro.</h1>
+        </div>
+        <nav>
+          <ul>
+            <li id="nav-homepage">
+              <img src="assets/home-gray.png" />
+              <a href="index.html" id="link-homepage">Homepage</a>
+            </li>
+            <li id="nav-jadwal">
+              <img src="assets/calendar-tick.png" />
+              <a href="janjiTemu.html">Janji Temu</a>
+            </li>
+            <li id="nav-profile">
+              <img src="assets/profile-circle.png" />
+              <a href="#profile">Profile</a>
+            </li>
+            <li id="nav-logout">
+              <img src="assets/logout.png" />
+              <a href="#logout">Logout</a>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+      <main class="main-content">
+        <header>
+          <h1>Jadwal Janji Temu</h1>
+        </header>
+
+        <section class="upcoming-appointments">
+            <h2>Daftar Pasien Hari Ini</h2>
+            <!-- fitur cari pasien -->
+            <form action="cariPasien">
+              <input type="text" name="nama" placeholder="Cari Nama Pasien">
+              <button type="submit">Cari</button>
+            </form>
+
+            <!-- Jadwal Janji Temu -->
+            <table>
+              <thead>
+                <tr>
+                  <th>Nama</th>
+                  <th>Umur</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Pasien 1</td>
+                  <td>20 Tahun</td>
+                  <td>
+                    <a href="cekPasien.html">
+                      <button class="btn-cek-sekarang">Cek Sekarang</button>
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Pasein 2</td>
+                  <td>6 Tahun</td>
+                  <td>
+                    <a href="cekPasien.html">
+                      <button class="btn-cek-sekarang">Cek Sekarang</button>
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </section>  
+        </main>
+    </div>
+    <footer>
+      <p>&copy; 2024 Klinik SehatBro. | All Rights Reserved</p>
+    </footer>
+  </body>
+</html>
