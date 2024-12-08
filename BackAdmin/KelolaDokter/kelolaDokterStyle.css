@@ -160,6 +160,11 @@ header h1 {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+.add-doctor-container {
+  display: flex;
+  column-gap: 20px;
+}
+
 .img-schedule img {
   width: 350px;
 }
@@ -187,6 +192,7 @@ button {
 
 input {
   height: 30px;
+  width: 250px;
 }
 
 select {

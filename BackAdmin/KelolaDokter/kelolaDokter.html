@@ -56,62 +56,97 @@
           <section class="add-doctor">
             <h2>Tambah Dokter Baru</h2>
             <form id="add-doctor-form" action="#" method="POST">
-              <div class="form-group">
-                <label for="doctor-npa">NPA Dokter</label>
-                <input
-                  type="text"
-                  id="doctor-npa"
-                  name="doctor-npa"
-                  placeholder="Ex: 0214.010902"
-                  required
-                />
+              <div class="add-doctor-container">
+                <div class="left-group">
+                  <div class="form-group">
+                    <label for="doctor-npa">NPA Dokter</label>
+                    <input
+                      type="text"
+                      id="doctor-npa"
+                      name="doctor-npa"
+                      placeholder="Ex: 0214.010902"
+                      required
+                    />
+                  </div>
+
+                  <div class="form-group">
+                    <label for="doctor-name">Nama Dokter</label>
+                    <input
+                      type="text"
+                      id="doctor-name"
+                      name="doctor-name"
+                      placeholder="Ex: dr. John Doe"
+                      required
+                    />
+                  </div>
+
+                  <div class="form-group">
+                    <label for="doctor-specialty">Spesialisasi</label>
+                    <select
+                      id="doctor-specialty"
+                      name="doctor-specialty"
+                      required
+                    >
+                      <option value="" disabled selected>
+                        -- Pilih Spesialisasi --
+                      </option>
+                      <option value="penyakit-dalam">Penyakit Dalam</option>
+                      <option value="gigi">Gigi</option>
+                      <option value="mata">Mata</option>
+                      <option value="anak">Anak</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="doctor-quota">Kuota Pasien</label>
+                    <input
+                      type="number"
+                      id="doctor-quota"
+                      name="doctor-quota"
+                      placeholder="Ex: 10"
+                      required
+                      min="1"
+                    />
+                  </div>
+                </div>
+
+                <div class="right-group">
+                  <div class="form-group">
+                    <label for="doctor-fee">Tarif Dokter (Rp)</label>
+                    <input
+                      type="number"
+                      id="doctor-fee"
+                      name="doctor-fee"
+                      placeholder="Ex: 100000"
+                      required
+                      min="0"
+                      step="1000"
+                    />
+                  </div>
+
+                  <div class="form-group">
+                    <label for="doctor-username">Username</label>
+                    <input
+                      type="text"
+                      id="doctor-username"
+                      name="doctor-username"
+                      placeholder="Ex: doct_John"
+                      required
+                    />
+                  </div>
+
+                  <div class="form-group">
+                    <label for="doctor-password">Password</label>
+                    <input
+                      type="text"
+                      id="doctor-password"
+                      name="doctor-password"
+                      placeholder="Ex: john1234"
+                      required
+                    />
+                  </div>
+                </div>
               </div>
 
-              <div class="form-group">
-                <label for="doctor-name">Nama Dokter</label>
-                <input
-                  type="text"
-                  id="doctor-name"
-                  name="doctor-name"
-                  placeholder="Ex: dr. John Doe"
-                  required
-                />
-              </div>
-              <div class="form-group">
-                <label for="doctor-specialty">Spesialisasi</label>
-                <select id="doctor-specialty" name="doctor-specialty" required>
-                  <option value="" disabled selected>
-                    -- Pilih Spesialisasi --
-                  </option>
-                  <option value="penyakit-dalam">Penyakit Dalam</option>
-                  <option value="gigi">Gigi</option>
-                  <option value="mata">Mata</option>
-                  <option value="anak">Anak</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="doctor-quota">Kuota Pasien</label>
-                <input
-                  type="number"
-                  id="doctor-quota"
-                  name="doctor-quota"
-                  placeholder="Ex: 10"
-                  required
-                  min="1"
-                />
-              </div>
-              <div class="form-group">
-                <label for="doctor-fee">Tarif Dokter (Rp)</label>
-                <input
-                  type="number"
-                  id="doctor-fee"
-                  name="doctor-fee"
-                  placeholder="Ex: 100000"
-                  required
-                  min="0"
-                  step="1000"
-                />
-              </div>
               <button type="submit" class="add-doct-button">
                 Tambah Dokter
               </button>
@@ -167,10 +202,6 @@
               </button>
             </form>
           </section>
-
-          <div class="img-schedule">
-            <img src="/BackAdmin/Assets/rb_1434.png" />
-          </div>
         </div>
 
         <!-- Daftar Dokter dan Jadwal -->
