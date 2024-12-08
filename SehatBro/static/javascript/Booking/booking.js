@@ -70,6 +70,11 @@ function getDoctorsBySpecialization(specialization) {
         specialization: "Dokter Spesialis Kulit",
         schedule: "Selasa - Jumat, 09:00 - 17:00",
       },
+      {
+        name: "Dr. test",
+        specialization: "Dokter Spesialis Test",
+        schedule: "Selasa - minggu, 09:00 - 17:00",
+      },
     ],
   };
 

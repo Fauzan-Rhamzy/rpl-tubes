@@ -53,9 +53,11 @@
         <h2>Pilih Spesialisasi Dokter</h2>
         <select id="specialization" onchange="showDoctors()">
           <option value="" disabled selected>Pilih Spesialisasi</option>
-          <option value="umum">Dokter Umum</option>
+          <option value="mata">Dokter Mata</option>
           <option value="gigi">Dokter Gigi</option>
-          <option value="spesialis">Dokter Spesialis</option>
+          <option value="penyakit dalam">Dokter Penyakit dalam</option>
+          <option value="anak">Dokter Anak</option>
+          <!-- tambah klo perlu -->
         </select>
       </section>
 
@@ -70,8 +72,53 @@
     <p>&copy; 2024 Klinik SehatBro. | All Rights Reserved</p>
   </footer>
 
-  <!-- bookingScript.js emng blm ada? -->
-  <script src="{{ url_for('static', filename='javascript/Booking/bookingScript.js') }}"></script>
+  <script>
+    // Data dokter dari server
+    const doctorsData = {{ doctors_data|tojson }};
+
+    function getDoctorsBySpecialization(specialization) {
+      return doctorsData[specialization] || [];
+    }
+    // Fungsi untuk menampilkan daftar dokter sesuai spesialisasi
+    function showDoctors() {
+      const specialization = document.getElementById("specialization").value;
+      const doctorList = document.getElementById("doctor-list");
+      const doctorsContainer = document.getElementById("doctors");
+
+      // Menyembunyikan daftar dokter jika spesialisasi belum dipilih
+      if (!specialization) {
+        doctorList.style.display = "none";
+        return;
+      }
+
+      // Menampilkan daftar dokter berdasarkan spesialisasi
+      doctorList.style.display = "block";
+      doctorsContainer.innerHTML = ""; // Menghapus daftar dokter sebelumnya
+
+      const doctors = getDoctorsBySpecialization(specialization);
+
+      // Menampilkan dokter yang sesuai dengan spesialisasi
+      doctors.forEach((doctor) => {
+        const doctorCard = document.createElement("div");
+        doctorCard.classList.add("doctor-card");
+
+        doctorCard.innerHTML = `
+        <h3>${doctor.name}</h3>
+        <p>Spesialis: ${specialization.charAt(0).toUpperCase() + specialization.slice(1)}</p>
+        <p class="schedule">Jadwal: ${doctor.schedule}</p>
+        <button onclick="bookAppointment('${doctor.name}')">Booking</button>
+      `;
+
+        doctorsContainer.appendChild(doctorCard);
+      });
+    }
+
+    // Fungsi untuk melakukan booking janji temu
+    function bookAppointment(doctorName) {
+      alert(`Anda berhasil melakukan booking janji temu dengan ${doctorName}.`);
+    }
+
+  </script>
 </body>
 
 </html>
