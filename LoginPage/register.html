@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register Pasien</title>
+    <link rel="stylesheet" href="registerStyle.css" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header dengan logo dan tombol Home -->
+      <div class="header">
+        <div class="home-button">
+          <a href="index.html">Home</a>
+        </div>
+      </div>
+
+      <!-- Bagian Kiri dengan Gambar -->
+      <div class="login-pict">
+        <h1 class="logo">Klinik SehatBro.</h1>
+        <img src="assets/login-pict.png" alt="Gambar Dokter" />
+      </div>
+
+      <!-- Bagian Kanan dengan Form Login -->
+      <div class="login-text">
+        <div class="login-input">
+          <h2>Selamat datang!</h2>
+          <p>Sudah punya akun? <a href="#">Sign In</a></p>
+          <form action="../HomepagePasien/index.html" method="GET">
+            <div class="input-container">
+              <div class="left-input">
+                <label for="username">Username</label>
+                <input
+                  type="username"
+                  id="username"
+                  placeholder="Ex: jane_doe"
+                  required
+                />
+                <label for="password">Password</label>
+                <input
+                  type="password"
+                  id="password"
+                  placeholder="********"
+                  required
+                />
+
+                <label for="name">Nama</label>
+                <input
+                  type="name"
+                  id="name"
+                  placeholder="Ex: Jane Doe"
+                  required
+                />
+
+                <label for="address">Alamat</label>
+                <textarea
+                  id="address"
+                  name="address"
+                  required
+                  placeholder="Ex: Jalan Raya No. 141, Bandung"
+                ></textarea>
+              </div>
+
+              <div class="right-input">
+                <label for="patient-gender">Gender</label>
+                <select id="patient-gender" name="patient-gender">
+                  <option value="" disabled selected>-- Pilih Gender --</option>
+                  <option value="man">Laki-laki</option>
+                  <option value="woman">Perempuan</option>
+                </select>
+
+                <label for="patient-birthdate">Tanggal Lahir</label>
+                <input
+                  type="date"
+                  id="patient-birthdate"
+                  name="patient-birthdate"
+                />
+
+                <label for="patient-contact">Kontak</label>
+                <input
+                  type="text"
+                  id="patient-contact"
+                  name="patient-contact"
+                  placeholder="Ex: 08xxxxxxx"
+                />
+              </div>
+            </div>
+
+            <button type="submit">Buat Akun</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
