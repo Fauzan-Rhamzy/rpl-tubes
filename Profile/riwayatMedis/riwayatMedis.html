@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="riwayatMedisStyle.css" />
+    <title>Riwayat Medis Pasien</title>
+  </head>
+  <body>
+    <div class="container">
+      <aside class="sidebar">
+        <div class="logo">
+          <h1>Klinik SehatBro.</h1>
+        </div>
+        <nav>
+          <ul>
+            <li id="nav-homepage">
+              <img src="../assets/home-gray.png" />
+              <a href="../HomepagePasien/index.html">Homepage</a>
+            </li>
+            <li id="nav-booking">
+              <img src="../assets/calendar-add.png" />
+              <a href="../Booking/index.html">Booking</a>
+            </li>
+            <li id="nav-jadwal">
+              <img src="../assets/calendar-tick-gray.png" />
+              <a href="../JadwalTemu/index.html">Jadwal Temu</a>
+            </li>
+            <li id="nav-tagihan">
+              <img src="../assets/receipt-text.png" />
+              <a href="../Tagihan/index.html">Tagihan</a>
+            </li>
+            <li id="nav-profile">
+              <img src="../assets/profile-circle-white.png" />
+              <a href="#profile">Profile</a>
+            </li>
+            <li id="nav-logout">
+              <img src="../assets/logout.png" />
+              <a href="../LoginPage/index.html">Logout</a>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+      <main class="main-content">
+        <header>
+          <h1>Riwayat Medis</h1>
+        </header>
+        <section class="medical-history">
+          <div class="pdf-container">
+            <!-- Embed PDF -->
+            <iframe
+              src="../assets/INFORMED-CONSENT.pdf"
+              width="100%"
+              height="600px"
+              frameborder="0"
+            >
+              Your browser does not support iframes. Please download the PDF:
+              <a href="../assets/INFORMED-CONSENT.pdf">Download PDF</a>
+            </iframe>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <footer class="footer">
+      <p>&copy; 2024 Klinik SehatBro | All Rights Reserved</p>
+    </footer>
+  </body>
+</html>

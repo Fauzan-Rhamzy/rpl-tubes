@@ -60,9 +60,9 @@
             <p><strong>Nomor Rekam Medis:</strong> 200410485</p>
             <p><strong>Tanggal Lahir:</strong> 1990-05-15</p>
             <p><strong>Jenis Kelamin:</strong> Laki-laki</p>
-            <p><strong>Email:</strong> johndoe@example.com</p>
+            <p><strong>Username:</strong> john_doe</p>
             <p><strong>Alamat:</strong> Jalan Sunda No.14, Bandung</p>
-            <p><strong>Telepon:</strong> 081234567890</p>
+            <p><strong>Kontak:</strong> 081234567890</p>
           </div>
         </section>
       </main>
@@ -72,4 +72,11 @@
       <p>&copy; 2024 Klinik SehatBro | All Rights Reserved</p>
     </footer>
   </body>
+
+  <script>
+    const editButton = document.querySelector(".edit-profile-button");
+    editButton.addEventListener("click", function () {
+      window.location.href = "editProfile/editProfile.html";
+    });
+  </script>
 </html>
