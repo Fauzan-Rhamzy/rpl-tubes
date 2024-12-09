@@ -16,13 +16,14 @@ def login():
         return redirect(url_for('homepage'))
     return render_template("LoginPage/index.html")
 
+# PASIEN #################################################################
 @app.route('/HomePage')
 def homepage():
-    return render_template("HomepagePasien/index.html")
+    return render_template("Pasien/HomepagePasien/index.html")
 
 @app.route('/JadwalTemu')
 def jadwaltemu():
-    return render_template("JadwalTemu/index.html")
+    return render_template("Pasien/JadwalTemu/index.html")
 
 @app.route('/Booking')
 def booking():
@@ -46,13 +47,16 @@ def booking():
             "schedule": row[2]
         })
 
-    return render_template("Booking/index.html", doctors_data=doctors_data)
+    return render_template("Pasien/Booking/index.html", doctors_data=doctors_data)
     # return render_template("Booking/index.html")
 
 @app.route('/Profile')
 def profile():
-    return render_template("Profile/index.html")
+    return render_template("Pasien/Profile/index.html")
 
 @app.route('/Tagihan')
 def tagihan():
-    return render_template("Tagihan/index.html")
+    return render_template("Pasien/Tagihan/index.html")
+
+###########################################################
+
