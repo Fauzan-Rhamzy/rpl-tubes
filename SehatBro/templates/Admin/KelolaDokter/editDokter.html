@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Dokter & Jadwal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/Admin/editDokter.css') }}" />
+  </head>
+  <body>
+    <div class="container">
+      <aside class="sidebar">
+        <div class="logo">
+          <h1>Klinik SehatBro.</h1>
+        </div>
+        {% include "Admin/nav-admin-kelola-pekerja.html" %}
+      </aside>
+
+      <main class="main-content">
+        <header>
+          <h1>Edit Data Dokter & Jadwal</h1>
+        </header>
+
+        <section class="create-schedule">
+          <h2>Edit Data Dokter dan Jadwal</h2>
+          <form id="create-schedule-form" action="#" method="POST">
+            <div class="left-group">
+              <div class="form-group">
+                <label for="doctor-select">Pilih Dokter</label>
+                <select id="doctor-select" name="doctor-select" required>
+                  <option value="" disabled selected>-- Pilih Dokter --</option>
+                  <option value="dr-andreas">Dr. Andreas</option>
+                  <option value="dr-maria">Dr. Maria</option>
+                  <option value="dr-fauziah">Dr. Fauziah</option>
+                  <option value="dr-kevin">Dr. Kevin</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="schedule-day">Pilih Hari</label>
+                <select id="schedule-day" name="schedule-day">
+                  <option value="" disabled selected>-- Pilih Hari --</option>
+                  <option value="senin">Senin</option>
+                  <option value="selasa">Selasa</option>
+                  <option value="rabu">Rabu</option>
+                  <option value="kamis">Kamis</option>
+                  <option value="jumat">Jumat</option>
+                  <option value="sabtu">Sabtu</option>
+                  <option value="minggu">Minggu</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="doctor-quota">Kuota Pasien</label>
+                <input
+                  type="number"
+                  id="doctor-quota"
+                  name="doctor-quota"
+                  placeholder="Ex: 10"
+                  min="1"
+                />
+              </div>
+            </div>
+            <div class="right-group">
+              <div class="form-group">
+                <label for="schedule-time-start">Waktu Mulai</label>
+                <input
+                  type="time"
+                  id="schedule-time-start"
+                  name="schedule-time-start"
+                />
+              </div>
+              <div class="form-group">
+                <label for="schedule-time-end">Waktu Selesai</label>
+                <input
+                  type="time"
+                  id="schedule-time-end"
+                  name="schedule-time-end"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="doctor-fee">Tarif Dokter (Rp)</label>
+                <input
+                  type="number"
+                  id="doctor-fee"
+                  name="doctor-fee"
+                  placeholder="Ex: 100000"
+                  min="0"
+                  step="1000"
+                />
+              </div>
+            </div>
+          </form>
+          <button type="submit" class="edit-button">Simpan Perubahan</button>
+        </section>
+      </main>
+    </div>
+    <footer>
+      <p>&copy; 2024 Klinik SehatBro. | All Rights Reserved</p>
+    </footer>
+  </body>
+  <script>
+    const editButton = document.querySelector(".edit-button");
+    editButton.addEventListener("click", function () {
+      alert("Perubahan berhasil disimpan!");
+    });
+  </script>
+</html>

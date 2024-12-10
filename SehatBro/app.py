@@ -60,3 +60,55 @@ def tagihan():
 
 ###########################################################
 
+# ADMIN ##################################################
+@app.route('/Admin')
+def homepageAdmin():
+    return render_template("Admin/Homepage/homepage.html")
+
+#kelola dokter
+@app.route('/Admin/KelolaDokter')
+def kelolaDokter():
+    return render_template("Admin/KelolaDokter/kelolaDokter.html")
+
+#edit dokter
+@app.route('/Admin/KelolaDokter/EditDokter')
+def editDokter():
+    return render_template("Admin/KelolaDokter/editDokter.html")
+
+#kelola perwat
+@app.route('/Admin/KelolaPerawat')
+def kelolaPerawat():
+    return render_template("Admin/KelolaPerawat/kelolaPerawat.html")
+
+#edit perawat
+@app.route('/Admin/KelolaPerawat/EditPerawat')
+def editPerawat():
+    return render_template("Admin/KelolaPerawat/editPerawat.html")
+
+#kelola petugas
+@app.route('/Admin/KelolaPetugas')
+def kelolaPetugas():
+    return render_template("Admin/KelolaPetugas/kelolaPetugas.html")
+
+#edit petugas
+@app.route('/Admin/KelolaPetugas/EditPetugas')
+def editPetugas():
+    return render_template("Admin/KelolaPetugas/editPetugas.html")
+
+#kelola pasien
+@app.route('/Admin/KelolaPasien')
+def kelolaPasien():
+    return render_template("Admin/KelolaPasien/kelolaPasien.html")
+
+#edit pasien
+@app.route('/Admin/KelolaPasien/EditPasien')
+def editPasien():
+    return render_template("Admin/KelolaPasien/editPasien.html")
+
+#detail pasien
+@app.route('/Admin/KelolaPasien/DetailPasien')
+def detailPasien():
+    return render_template("Admin/KelolaPasien/detailPasien.html")
+    
+
+##################################################################
