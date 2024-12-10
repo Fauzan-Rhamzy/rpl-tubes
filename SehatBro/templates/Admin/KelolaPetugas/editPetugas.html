@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Data Petugas</title>
+    <link rel="stylesheet" href="editPetugasStyle.css" />
+  </head>
+  <body>
+    <div class="container">
+      <aside class="sidebar">
+        <div class="logo">
+          <h1>Klinik SehatBro.</h1>
+        </div>
+        {% include "Admin/nav-admin-kelola-pekerja.html" %}
+      </aside>
+
+      <main class="main-content">
+        <header>
+          <h1>Edit Data Petugas Administrasi</h1>
+        </header>
+
+        <section class="add-admin">
+          <h2>Tambah Petugas Administrasi Baru</h2>
+          <form id="add-admin-form" action="#" method="POST">
+            <div class="form-group">
+              <label for="admin-name">Nama Petugas Administrasi</label>
+              <input
+                type="text"
+                id="admin-name"
+                name="admin-name"
+                placeholder="Ex: Jane Doe"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="admin-username">Username Admin</label>
+              <input
+                type="text"
+                id="admin-username"
+                name="admin-username"
+                placeholder="Ex: jane_doe"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="admin-password">Password Admin</label>
+              <input
+                type="text"
+                id="admin-password"
+                name="admin-password"
+                placeholder="Ex: janedoe1234"
+              />
+            </div>
+
+            <button type="submit" class="edit-button">Simpan Perubahan</button>
+          </form>
+        </section>
+      </main>
+    </div>
+
+    <footer>
+      <p>&copy; 2024 Klinik SehatBro. | All Rights Reserved</p>
+    </footer>
+  </body>
+
+  <script>
+    const editButton = document.querySelector(".edit-button");
+    editButton.addEventListener("click", function () {
+      alert("Perubahan berhasil disimpan!");
+    });
+  </script>
+</html>
