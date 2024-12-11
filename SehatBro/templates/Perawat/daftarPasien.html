@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="stylesheet" href="{{ url_for('static', filename='styles/Perawat/daftarPasien.css') }}" />
+      <title>Homepage Perawat</title>
+      </head>
+    <body>
+      <div class="container">
+        <aside class="sidebar">
+          <div class="logo">
+            <h1>Klinik SehatBro.</h1>
+          </div>
+          <nav>
+            <ul>
+              <li id="nav-homepage">
+                <img src="{{ url_for('static', filename='images/Perawat/home-gray.png') }}" />
+                <a href="{{ url_for('homepagePerawat') }}">Homepage</a>
+                </li>
+              <li id="nav-daftar">
+                <img src="{{ url_for('static', filename='images/Perawat/list-white.png') }}" />
+                <a href="{{ url_for('daftarPasien') }}" class="link-active">Daftar Pasien</a>
+              </li>
+              <li id="nav-vital">
+                <img src="{{ url_for('static', filename='images/Perawat/vital-black.png') }}" />
+                <a href="{{ url_for('catatVital') }}">Catat Vital</a>
+              </li>
+              <li id="nav-dokumen">
+                <img src="{{ url_for('static', filename='images/Perawat/document-black.png') }}" />
+                <a href="{{ url_for('uploadDokumen') }}">Unggah Dokumen</a>
+              </li>
+              <li id="nav-profile">
+                <img src="{{ url_for('static', filename='images/Perawat/profile-circle.png') }}" />
+                <a href="#profile">Profile</a>
+              </li>
+              <li id="nav-logout">
+                <img src="{{ url_for('static', filename='images/Perawat/logout.png') }}" />
+                <a href="{{ url_for('logout') }}">Logout</a>
+                </li>
+            </ul>
+          </nav>
+        </aside>
+  
+        <main class="main-content">
+            <header>
+              <h1>Daftar Pasien</h1>
+            </header>
+        
+            <form action="" method="GET">
+                <input type="text" placeholder="Cari Nama Pasien">
+                <button type="submit">Cari</button>
+            </form>
+            <section id="homepage" class="content-section">
+                <table>
+                    <tr>
+                        <th>ID Pasien</th>
+                        <th>Nama Pasien</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            6182
+                        </td>
+                        <td>
+                            Fauiza
+                        </td>
+                    </tr>
+                </table>
+            </section>
+          </main>
+        </div>
+  
+      <footer>
+        <p>&copy; 2024 Klinik SehatBro. | All Rights Reserved</p>
+      </footer>
+    </body>
+  </html>
+  

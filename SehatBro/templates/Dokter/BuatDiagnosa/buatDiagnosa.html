@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/Dokter/buatDiagnosa.css') }}" />
+    <title>Buat Diagnosa</title>
+  </head>
+  <body>
+    <div class="container">
+      <aside class="sidebar">
+        <div class="logo">
+          <h1>Klinik SehatBro.</h1>
+        </div>
+
+        <!-- nav bar -->
+        <nav>
+          <ul>
+            <li id="nav-homepage">
+              <img src="{{ url_for('static', filename='images/Dokter/vital-black.png') }}" />
+              <a href="{{ url_for('cekPasien') }}">Catatan Vital</a>
+            </li>
+            <li id="nav-booking">
+              <img src="{{ url_for('static', filename='images/Dokter/document-black.png') }}" />
+              <a href="{{ url_for('riwayatMedis') }}">Riwayat Medis</a>
+            </li>
+            <li id="nav-profile">
+              <img src="{{ url_for('static', filename='images/Dokter/diagnosa-whitepng.png') }}" />
+              <a href="{{ url_for('buatDiagnosa') }}" id="link-homepage">Buat Diagnosa</a>
+            </li>
+            <li id="nav-logout">
+              <img src="{{ url_for('static', filename='images/Dokter/logout.png') }}" />
+              <a href="{{ url_for('janjiTemu') }}">Kembali</a>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+      <!--  -->
+
+      <!-- konten -->
+      <main class="main-content">
+        <header>
+          <h1>Diagnosa</h1>
+        </header>
+
+        <!-- form catatan -->
+        <form action="" >
+            <section id="homepage" class="content-section">
+                    Nomor Pasien: 
+                    <h2>
+                        <span>
+                            #121
+                        </span>
+                    </h2>
+                    <hr>
+                <div class="feature-cards">
+                    <div class="card">
+                        <table>
+                            <tr>
+                                <td>Nama: </td>
+                                <td>Fauzi. S</td>
+                            </tr>
+                            <tr>
+                                <td>ID: </td>
+                                <td>12121212121</td>
+                            </tr>
+                            <tr>
+                                <td>Tanggal: </td>
+                                <td>Tanggal hari ini</td>
+                            </tr>
+                            <tr>
+                                <td>Nomor Telepon: </td>
+                                <td>0811111</td>
+                            </tr>
+                            <tr>
+                                <td>Dama dokter: </td>
+                                <td>Nama dokter</td>
+                            </tr>
+                            <tr>
+                                <td>Spesialis: </td>
+                                <td>Jantung</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </section>
+            <section id="diagnosa" class="content-section">
+                <h3>Catatan Dokter</h3>
+                <div>
+                    <textarea name="catatan" id="catatan" placeholder="Masukkan diagnosa..."></textarea>
+                </div>
+            </section>
+            <button class="btn-diagnosa">Diagnosa</button>
+        </form>
+        <!--  -->
+
+      </main>
+    </div>
+    <!--  -->
+
+    <!-- footer -->
+    <footer>
+      <p>&copy; 2024 Klinik SehatBro. | All Rights Reserved</p>
+    </footer>
+  </body>
+</html>

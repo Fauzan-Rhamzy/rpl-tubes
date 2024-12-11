@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Data Pasien</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/Admin/editPasien.css') }}" />
+
+  </head>
+  <body>
+    <div class="container">
+      <aside class="sidebar">
+        <div class="logo">
+          <h1>Klinik SehatBro.</h1>
+        </div>
+        {% include 'Admin/nav-admin-kelola-pasien.html' %}
+      </aside>
+
+      <main class="main-content">
+        <header>
+          <h1>Edit Data Pasien</h1>
+        </header>
+
+        <section class="edit-patient">
+          <h2>Edit Data Pasien</h2>
+
+          <form id="create-schedule-form" action="#" method="POST">
+            <div class="left-group">
+              <div class="form-group">
+                <label for="patient-name">Nama Pasien</label>
+                <input
+                  type="text"
+                  id="patient-name"
+                  name="patient-name"
+                  placeholder="Ex: Jane Doe"
+                />
+              </div>
+              <div class="form-group">
+                <label for="patient-gender">Gender</label>
+                <select id="patient-gender" name="patient-gender">
+                  <option value="" disabled selected>-- Pilih Gender --</option>
+                  <option value="man">Laki-laki</option>
+                  <option value="woman">Perempuan</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="patient-address">Alamat</label>
+                <input
+                  type="text"
+                  id="patient-address"
+                  name="patient-address"
+                  placeholder="Ex: Jl. Pahlawan No. 3, Jakarta"
+                />
+              </div>
+            </div>
+            <div class="right-group">
+              <div class="form-group">
+                <label for="patient-birthdate">Tanggal Lahir</label>
+                <input
+                  type="date"
+                  id="patient-birthdate"
+                  name="patient-birthdate"
+                />
+              </div>
+              <div class="form-group">
+                <label for="patient-contact">Kontak</label>
+                <input
+                  type="text"
+                  id="patient-contact"
+                  name="patient-contact"
+                  placeholder="Ex: 08xxxxxxx"
+                />
+              </div>
+            </div>
+          </form>
+          <button type="submit" class="edit-button">Simpan Perubahan</button>
+        </section>
+      </main>
+    </div>
+
+    <footer>
+      <p>&copy; 2024 Klinik SehatBro. | All Rights Reserved</p>
+    </footer>
+  </body>
+
+  <script>
+    const editButton = document.querySelector(".edit-button");
+    editButton.addEventListener("click", function () {
+      alert("Perubahan berhasil disimpan!");
+    });
+  </script>
+</html>

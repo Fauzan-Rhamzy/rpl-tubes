@@ -5,7 +5,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="{{ url_for('static', filename='styles/Booking/bookingStyle.css') }}" />
-  <script src="{{ url_for('static', filename='javascript/Booking/booking.js') }}"></script>
   <title>Booking Dokter</title>
 </head>
 
@@ -49,21 +48,27 @@
       <header>
         <h1>Booking Dokter</h1>
       </header>
+
       <section id="specialization-selection">
-        <h2>Pilih Spesialisasi Dokter</h2>
+        <h2>Pilih Spesialisasi</h2>
         <select id="specialization" onchange="showDoctors()">
           <option value="" disabled selected>Pilih Spesialisasi</option>
-          <option value="mata">Dokter Mata</option>
           <option value="gigi">Dokter Gigi</option>
-          <option value="penyakit dalam">Dokter Penyakit dalam</option>
+          <option value="mata">Dokter Mata</option>
+          <option value="penyakit dalam">Dokter Penyakit Dalam</option>
           <option value="anak">Dokter Anak</option>
-          <!-- tambah klo perlu -->
         </select>
       </section>
 
-      <section id="doctor-list" style="display: none">
+      <section id="doctor-list" style="display:none;">
         <h2>Daftar Dokter</h2>
         <div id="doctors"></div>
+      </section>
+
+      <section id="schedule-selection" style="display:none;">
+        <h2>Pilih Jadwal</h2>
+        <div id="schedule-buttons"></div>
+        <button id="booking-btn" onclick="bookAppointment()" style="display:none;">Booking</button>
       </section>
     </main>
   </div>
@@ -73,29 +78,29 @@
   </footer>
 
   <script>
-    // Data dokter dari server
-    const doctorsData = {{ doctors_data|tojson }};
+    // Data dokter dan jadwal praktik
+    const doctorsData = {{ doctors_data | tojson }};
 
-    function getDoctorsBySpecialization(specialization) {
-      return doctorsData[specialization] || [];
-    }
-    // Fungsi untuk menampilkan daftar dokter sesuai spesialisasi
     function showDoctors() {
       const specialization = document.getElementById("specialization").value;
       const doctorList = document.getElementById("doctor-list");
       const doctorsContainer = document.getElementById("doctors");
+      const scheduleSection = document.getElementById("schedule-selection");
+      const bookingBtn = document.getElementById("booking-btn");
 
-      // Menyembunyikan daftar dokter jika spesialisasi belum dipilih
+      // Menyembunyikan daftar dokter dan jadwal jika spesialisasi belum dipilih
       if (!specialization) {
         doctorList.style.display = "none";
+        scheduleSection.style.display = "none";
         return;
       }
 
       // Menampilkan daftar dokter berdasarkan spesialisasi
       doctorList.style.display = "block";
       doctorsContainer.innerHTML = ""; // Menghapus daftar dokter sebelumnya
+      scheduleSection.style.display = "none"; // Menyembunyikan jadwal
 
-      const doctors = getDoctorsBySpecialization(specialization);
+      const doctors = doctorsData[specialization];
 
       // Menampilkan dokter yang sesuai dengan spesialisasi
       doctors.forEach((doctor) => {
@@ -104,20 +109,51 @@
 
         doctorCard.innerHTML = `
         <h3>${doctor.name}</h3>
-        <p>Spesialis: ${specialization.charAt(0).toUpperCase() + specialization.slice(1)}</p>
-        <p class="schedule">Jadwal: ${doctor.schedule}</p>
-        <button onclick="bookAppointment('${doctor.name}')">Booking</button>
-      `;
+        <p>Spesialis: ${doctor.specialization}</p>
+        <button onclick="selectSchedule('${doctor.name}')">Pilih Jadwal</button>
+        `;
 
         doctorsContainer.appendChild(doctorCard);
       });
     }
 
-    // Fungsi untuk melakukan booking janji temu
-    function bookAppointment(doctorName) {
-      alert(`Anda berhasil melakukan booking janji temu dengan ${doctorName}.`);
+    let selectedDoctor = null;
+
+    function selectSchedule(doctorName) {
+      const scheduleSection = document.getElementById("schedule-selection");
+      const scheduleButtons = document.getElementById("schedule-buttons");
+      const bookingBtn = document.getElementById("booking-btn");
+
+      selectedDoctor = doctorsData[Object.keys(doctorsData).find(key => doctorsData[key].some(d => d.name === doctorName))]
+        .find(d => d.name === doctorName);
+
+      // Menampilkan pilihan jadwal untuk dokter yang dipilih
+      scheduleSection.style.display = "block";
+      scheduleButtons.innerHTML = ""; // Menghapus tombol jadwal sebelumnya
+      bookingBtn.style.display = "none"; // Sembunyikan tombol booking sampai jadwal dipilih
+
+      // Membuat tombol untuk setiap jadwal
+      selectedDoctor.schedule.forEach((schedule) => {
+        const scheduleButton = document.createElement("button");
+        scheduleButton.textContent = schedule;
+        scheduleButton.onclick = function () {
+          selectTimeSlot(schedule);
+        };
+        scheduleButtons.appendChild(scheduleButton);
+      });
     }
 
+    let selectedSchedule = null;
+
+    function selectTimeSlot(schedule) {
+      selectedSchedule = schedule;
+      document.getElementById("booking-btn").style.display = "inline-block"; // Menampilkan tombol booking
+    }
+
+    function bookAppointment() {
+      alert("Anda berhasil melakukan booking dengan ${selectedDoctor.name} pada jadwal ${selectedSchedule}.");
+      // Data booking dapat dikirim ke server di sini
+    }
   </script>
 </body>
 
