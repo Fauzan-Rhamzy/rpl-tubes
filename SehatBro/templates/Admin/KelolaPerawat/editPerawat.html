@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Edit Perawat</title>
-    <link rel="stylesheet" href="editPerawatStyle.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/Admin/editPerawat.css') }}" />
   </head>
   <body>
     <div class="container">
@@ -12,39 +12,7 @@
         <div class="logo">
           <h1>Klinik SehatBro.</h1>
         </div>
-        <nav class="sidenav">
-          <ul>
-            <li id="nav-homepage">
-              <img src="../Assets/home_gray.png" />
-              <a href="/BackAdmin/Homepage/homepage.html" id="link-homepage"
-                >Dashboard</a
-              >
-            </li>
-            <li id="nav-pekerja" class="dropdown">
-              <img src="../Assets/person_white.png" />
-              <a href="#" id="link-pekerja">Kelola Pekerja</a>
-              <ul class="dropdown-menu">
-                <li><a href="../KelolaDokter/kelolaDokter.html">Dokter</a></li>
-                <li>
-                  <a href="../KelolaPerawat/kelolaPerawat.html">Perawat</a>
-                </li>
-                <li>
-                  <a href="../KelolaPetugas/kelolaPetugas.html"
-                    >Petugas Administrasi</a
-                  >
-                </li>
-              </ul>
-            </li>
-            <li id="nav-pasien">
-              <img src="../Assets/patient_gray.png" />
-              <a href="../KelolaPasien/kelolaPasien.html">Kelola Pasien</a>
-            </li>
-            <li id="nav-logout">
-              <img src="../Assets/logout.png" />
-              <a href="../LoginPage/index.html">Logout</a>
-            </li>
-          </ul>
-        </nav>
+        {% include "Admin/nav-admin-kelola-pekerja.html" %}
       </aside>
 
       <main class="main-content">

@@ -190,7 +190,19 @@
             </thead>
             <tbody>
               <!-- Data Dokter dan Jadwal -->
+              {% for dokter in jadwal_dokter %}
               <tr>
+                <td>{{ dokter['npa'] }}</td>  <!-- npa -->
+                <td>{{ dokter['nama'] }}</td>  <!-- nama -->
+                <td>{{ dokter[2] }}</td>  <!-- spesialisasi -->
+                <td>{{ dokter[3] }}</td>  <!-- kuota_pasien -->
+                <td>Rp. {{ dokter[4] }}</td>  <!-- tarif -->
+                <td>{{ dokter[5] }}</td>  <!-- hari -->
+                <td>{{ dokter[6] }} - {{ dokter[7] }}</td>  <!-- jam_mulai - jam_selesai -->
+                <td><a href="/Admin/KelolaDokter/EditDokter?id_jadwal={{ dokter['id_jadwal'] }}"><button type="button" class="edit-button">Edit</button></a></td>
+              </tr>
+              {% endfor %}
+              <!-- <tr>
                 <td rowspan="3">001</td>
                 <td rowspan="3">Dr. Andreas</td>
                 <td rowspan="3">Penyakit Dalam</td>
@@ -209,8 +221,8 @@
               <tr>
                 <td>Jumat</td>
                 <td>07:00-13:00</td>
-              </tr>
-              <tr>
+              </tr> -->
+              <!-- <tr>
                 <td>002</td>
                 <td>Dr. Maria</td>
                 <td>Anak</td>
@@ -229,7 +241,7 @@
                 <td>Rabu</td>
                 <td>14:00 - 16:00</td>
                 <td><button type="button" class="edit-button">Edit</button></td>
-              </tr>
+              </tr> -->
             </tbody>
           </table>
         </section>
