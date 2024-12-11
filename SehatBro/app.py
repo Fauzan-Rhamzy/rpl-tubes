@@ -212,3 +212,22 @@ def riwayatMedis():
     return render_template("Dokter/RiwayatMedis/riwayatMedis.html")
 
 ####################################################################
+
+# Perawat ##########################################################
+@app.route('/Perawat')
+def homepagePerawat():
+    return render_template("Perawat/index.html")
+
+@app.route('/Perawat/CatatVital')
+def catatVital():
+    return render_template("Perawat/catatVital.html")
+
+@app.route('/Perawat/UploadDokumen')
+def uploadDokumen():
+    return render_template("Perawat/uploadDokumen.html")
+
+@app.route('/Perawat/DaftarPasien')
+def daftarPasien():
+    return render_template("Perawat/daftarPasien.html")
+    
+###################################################################
