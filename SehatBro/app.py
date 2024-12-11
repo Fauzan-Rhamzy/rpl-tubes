@@ -229,3 +229,5 @@ def uploadDokumen():
 @app.route('/Perawat/DaftarPasien')
 def daftarPasien():
     return render_template("Perawat/daftarPasien.html")
+    
+###################################################################
