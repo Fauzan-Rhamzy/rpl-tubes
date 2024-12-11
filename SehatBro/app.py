@@ -2,12 +2,14 @@ import os
 import psycopg2
 from dotenv import load_dotenv
 from flask import Flask, render_template, request, redirect, url_for, json, session
+from psycopg2.extras import DictCursor
 
 load_dotenv()
 app = Flask(__name__)
 url = os.getenv("DATABASE_URL")
 connection = psycopg2.connect(url)
-cursor = connection.cursor()
+# cursor = connection.cursor()
+cursor = connection.cursor(cursor_factory=DictCursor)  # Use DictCursor
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -66,14 +68,85 @@ def homepageAdmin():
     return render_template("Admin/Homepage/homepage.html")
 
 #kelola dokter
-@app.route('/Admin/KelolaDokter')
+@app.route('/Admin/KelolaDokter', methods=['GET', 'POST'])
 def kelolaDokter():
-    return render_template("Admin/KelolaDokter/kelolaDokter.html")
+    if request.method == 'POST':
+        npa = request.form['doctor-npa']
+        nama= request.form['doctor-name']
+        spesialisasi= request.form['doctor-specialty']
+        kuota= request.form['doctor-quota']
+        tarif= request.form['doctor-fee']
+        username= request.form['doctor-username']
+        password= request.form['doctor-password']
+
+        cursor.execute
+
+    cursor.execute("""
+        SELECT dokter.npa as npa, dokter.nama as nama, dokter.spesialisasi as spesialisasi, 
+            jadwal_dokter.kuota_pasien as kuota_pasien, dokter.tarif, 
+            jadwal_dokter.hari as hari, jadwal_dokter.jam_mulai as jam_mulai, 
+            jadwal_dokter.jam_selesai as jam_selesai, 
+            jadwal_dokter.id_jadwal as id_jadwal  -- Ensure this field is included
+        FROM dokter
+        JOIN jadwal_dokter ON dokter.npa = jadwal_dokter.npa
+    """)
+
+    jadwal_dokter = cursor.fetchall()
+    # print(jadwal_dokter)
+    return render_template("Admin/KelolaDokter/kelolaDokter.html", jadwal_dokter = jadwal_dokter)
 
 #edit dokter
-@app.route('/Admin/KelolaDokter/EditDokter')
+@app.route('/Admin/KelolaDokter/EditDokter', methods=['GET', 'POST'])
 def editDokter():
-    return render_template("Admin/KelolaDokter/editDokter.html")
+    id_jadwal = request.args.get('id_jadwal')
+
+    if not id_jadwal:
+        return "No ID Jadwal", 400
+
+    if request.method == 'POST':
+        npa = request.form['doctor-npa']
+        kuota = request.form['doctor-quota']
+        hari = request.form['doctor-day']
+        mulai = request.form['schedule-time-start']
+        akhir = request.form['schedule-time-end']
+        tarif = request.form['doctor-fee']
+
+        cursor.execute("""
+            update jadwal_dokter
+            SET npa=%s, 
+                kuota_pasien=%s, 
+                hari=%s, 
+                jam_mulai=%s, 
+                jam_selesai=%s
+            WHERE id_jadwal=%s
+        """, (npa, kuota, hari, mulai, akhir, id_jadwal))
+        connection.commit()
+
+        cursor.execute("""
+                update  dokter 
+                       SET tarif=%s
+                       where npa=%s
+                       """, (tarif, npa))
+        
+        connection.commit()
+        print("success")
+        return redirect(url_for('kelolaDokter'))
+
+    cursor.execute("""
+        SELECT dokter.npa as npa, dokter.nama as nama, dokter.spesialisasi as spesialisasi, 
+            jadwal_dokter.kuota_pasien as kuota_pasien, dokter.tarif, 
+            jadwal_dokter.hari as hari, jadwal_dokter.jam_mulai as jam_mulai, 
+            jadwal_dokter.jam_selesai as jam_selesai, 
+            jadwal_dokter.id_jadwal as id_jadwal  -- Ensure this field is included
+        FROM dokter
+        JOIN jadwal_dokter ON dokter.npa = jadwal_dokter.npa
+        WHERE id_jadwal = %s
+    """, (id_jadwal))
+    dokter_data = cursor.fetchone()
+    
+    cursor.execute("SELECT * FROM dokter")
+    list_dokter = cursor.fetchall()
+    return render_template("Admin/KelolaDokter/editDokter.html", dokter=dokter_data, list_dokter=list_dokter)
 
 #kelola perwat
 @app.route('/Admin/KelolaPerawat')
