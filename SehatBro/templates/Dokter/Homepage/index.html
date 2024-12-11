@@ -3,8 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="index.css" />
-    <title>Homepage Pasien</title>
+    <link rel="stylesheet" href=".css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/Dokter/index.css') }}" />
+    <title>Homepage Dokter</title>
   </head>
   <body>
     <div class="container">
@@ -15,20 +16,20 @@
         <nav>
           <ul>
             <li id="nav-homepage">
-              <img src="assets/hom‪e-white.png" />
-              <a href="index.html" id="link-homepage">Homepage</a>
+              <img src="{{ url_for('static', filename='images/Dokter/hom‪e-white.png') }}" />
+              <a href="{{ url_for('homepageDokter') }}" id="link-homepage">Homepage</a>
             </li>
             <li id="nav-booking">
-              <img src="assets/calendar-add.png" />
-              <a href="janjiTemu.html">Janji Temu</a>
+              <img src="{{ url_for('static', filename='images/Dokter/calendar-add.png') }}" />
+              <a href="{{ url_for('janjiTemu') }}">Janji Temu</a>
             </li>
             <li id="nav-profile">
-              <img src="assets/profile-circle.png" />
+              <img src="{{ url_for('static', filename='images/Dokter/profile-circle.png') }}" />
               <a href="#profile">Profile</a>
             </li>
             <li id="nav-logout">
-              <img src="assets/logout.png" />
-              <a href="#logout">Logout</a>
+              <img src="{{ url_for('static', filename='images/Dokter/logout.png') }}" />
+              <a href="{{ url_for('logout') }}">Logout</a>
             </li>
           </ul>
         </nav>

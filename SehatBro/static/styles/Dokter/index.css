@@ -79,7 +79,7 @@
   
   /* Header (Above Content) */
   .page-header {
-    background-image: url("assets/background-img.png");
+    background-image: url("/static/images/Dokter/background-img.png");
     background-size: cover;
     background-position: center;
     padding: 60px 20px;

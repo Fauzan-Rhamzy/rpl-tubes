@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="cekPasien.css" />
-    <title>Homepage Pasien</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/Dokter/cekPasien.css') }}" />
+    <title>Cek Pasien</title>
   </head>
   <body>
     <div class="container">
@@ -15,20 +15,20 @@
         <nav>
           <ul>
             <li id="nav-homepage">
-              <img src="assets/vital-white.png" />
-              <a href="cekPasien.html" id="link-homepage">Catatan Vital</a>
-            </li>
+              <img src="{{ url_for('static', filename='images/Dokter/vital-white.png') }}" />
+              <a href="{{ url_for('cekPasien') }}" id="link-homepage">Catatan Vital</a>
+              </li>
             <li id="nav-booking">
-              <img src="assets/document-black.png" />
-              <a href="riwayatMedis.html">Riwayat Medis</a>
+              <img src="{{ url_for('static', filename='images/Dokter/document-black.png') }}" />
+              <a href="{{ url_for('riwayatMedis') }}">Riwayat Medis</a>
             </li>
             <li id="nav-profile">
-              <img src="assets/diagnosa-black.png" />
-              <a href="buatDiagnosa.html">Buat Diagnosa</a>
+              <img src="{{ url_for('static', filename='images/Dokter/diagnosa-black.png') }}" />
+              <a href="{{ url_for('buatDiagnosa') }}">Buat Diagnosa</a>
             </li>
             <li id="nav-logout">
-              <img src="assets/logout.png" />
-              <a href="janjiTemu.html">Kembali</a>
+              <img src="{{ url_for('static', filename='images/Dokter/logout.png') }}" />
+              <a href="{{ url_for('janjiTemu') }}">Kembali</a>
             </li>
           </ul>
         </nav>

@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="riwayatMedis.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/Dokter/riwayatMedis.css') }}" />
+
     <title>Homepage Pasien</title>
   </head>
   <body>
@@ -15,20 +16,21 @@
         <nav>
           <ul>
             <li id="nav-homepage">
-              <img src="assets/vital-black.png" />
-              <a href="cekPasien.html">Catatan Vital</a>
+              <img src="{{ url_for('static', filename='images/Dokter/vital-black.png') }}" />
+              <a href="{{ url_for('cekPasien') }}">Catatan Vital</a>
+
             </li>
             <li id="nav-booking">
-              <img src="assets/document-white.png" />
-              <a href="riwayatMedis.html" id="link-homepage">Riwayat Medis</a>
+              <img src="{{ url_for('static', filename='images/Dokter/document-white.png') }}" />
+              <a href="{{ url_for('riwayatMedis') }}" id="link-homepage">Riwayat Medis</a>
             </li>
             <li id="nav-profile">
-              <img src="assets/diagnosa-black.png" />
-              <a href="buatDiagnosa.html">Buat Diagnosa</a>
+              <img src="{{ url_for('static', filename='images/Dokter/diagnosa-black.png') }}" />
+              <a href="{{ url_for('buatDiagnosa') }}">Buat Diagnosa</a>
             </li>
             <li id="nav-logout">
-              <img src="assets/logout.png" />
-              <a href="janjiTemu.html">Kembali</a>
+              <img src="{{ url_for('static', filename='images/Dokter/logout.png') }}" />
+              <a href="{{ url_for('janjiTemu') }}">Kembali</a>
             </li>
           </ul>
         </nav>
