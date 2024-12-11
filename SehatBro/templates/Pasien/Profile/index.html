@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles/Profile/profileStyle.css') }}" />
+  <title>Profile Pasien</title>
+</head>
+
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <div class="logo">
+        <h1>Klinik SehatBro.</h1>
+      </div>
+      <nav>
+        <ul>
+          <li id="nav-homepage">
+            <img src="{{ url_for('static', filename='images/Profile/home-gray.png') }}" />
+            <a href="{{ url_for('homepage') }}">Homepage</a>
+          </li>
+          <li id="nav-booking">
+            <img src="{{ url_for('static', filename='images/Profile/calendar-add.png') }}" />
+            <a href="{{ url_for('booking') }}">Booking</a>
+          </li>
+          <li id="nav-jadwal">
+            <img src="{{ url_for('static', filename='images/Profile/calendar-tick-gray.png') }}" />
+            <a href="{{ url_for('jadwaltemu') }}">Jadwal Temu</a>
+          </li>
+          <li id="nav-tagihan">
+            <img src="{{ url_for('static', filename='images/Profile/receipt-text.png') }}" />
+            <a href="{{ url_for('tagihan') }}">Tagihan</a>
+          </li>
+          <li id="nav-profile">
+            <img src="{{ url_for('static', filename='images/Profile/profile-circle-white.png') }}" />
+            <a href="#">Profile</a>
+          </li>
+          <li id="nav-logout">
+            <img src="{{ url_for('static', filename='images/Profile/logout.png') }}" />
+            <a href="{{ url_for('login') }}">Logout</a>
+          </li>
+        </ul>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <header>
+        <h1>Profil Saya</h1>
+        <section class="actions">
+          <button class="edit-profile-button">Edit Profil</button>
+          <button class="view-medical-history-button">Riwayat Medis</button>
+        </section>
+      </header>
+
+      <section class="profile-details">
+        <div class="profile-photo">
+          <img src="{{ url_for('static', filename='images/Profile/profile-pict.png') }}" alt="Profile Photo" />
+        </div>
+        <div class="profile-info">
+          <h1>John Doe</h1>
+          <p><strong>Nomor Rekam Medis:</strong> 200410485</p>
+          <p><strong>Tanggal Lahir:</strong> 1990-05-15</p>
+          <p><strong>Jenis Kelamin:</strong> Laki-laki</p>
+          <p><strong>Email:</strong> johndoe@example.com</p>
+          <p><strong>Alamat:</strong> Jalan Sunda No.14, Bandung</p>
+          <p><strong>Telepon:</strong> 081234567890</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer class="footer">
+    <p>&copy; 2024 Klinik SehatBro | All Rights Reserved</p>
+  </footer>
+</body>
+
+</html>
