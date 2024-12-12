@@ -18,6 +18,10 @@ def login():
         return redirect(url_for('homepage'))
     return render_template("LoginPage/index.html")
 
+@app.route('/')
+def logout():
+    return render_template("LoginPage/index.html")
+
 # PASIEN #################################################################
 @app.route('/HomePage')
 def homepage():
@@ -185,3 +189,45 @@ def detailPasien():
     
 
 ##################################################################
+
+# DOKTER #########################################################
+@app.route('/Dokter')
+def homepageDokter():
+    return render_template("Dokter/Homepage/index.html")
+
+@app.route('/Dokter/JanjiTemu')
+def janjiTemu():
+    return render_template("Dokter/JanjiTemu/janjiTemu.html")
+
+@app.route('/Dokter/JanjiTemu/CekPasien')
+def cekPasien():
+    return render_template("Dokter/CekPasien/cekPasien.html")
+
+@app.route('/Dokter/JanjiTemu/CekPasien/BuatDiagnosa')
+def buatDiagnosa():
+    return render_template("Dokter/BuatDiagnosa/buatDiagnosa.html")
+
+@app.route('/Dokter/JanjiTemu/CekPasien/RiwayatMedis')
+def riwayatMedis():
+    return render_template("Dokter/RiwayatMedis/riwayatMedis.html")
+
+####################################################################
+
+# Perawat ##########################################################
+@app.route('/Perawat')
+def homepagePerawat():
+    return render_template("Perawat/index.html")
+
+@app.route('/Perawat/CatatVital')
+def catatVital():
+    return render_template("Perawat/catatVital.html")
+
+@app.route('/Perawat/UploadDokumen')
+def uploadDokumen():
+    return render_template("Perawat/uploadDokumen.html")
+
+@app.route('/Perawat/DaftarPasien')
+def daftarPasien():
+    return render_template("Perawat/daftarPasien.html")
+    
+###################################################################
