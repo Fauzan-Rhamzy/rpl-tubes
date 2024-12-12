@@ -1,117 +1,161 @@
 <!DOCTYPE html>
-  <html lang="en">
-    <head>
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <link rel="stylesheet" href="{{ url_for('static', filename='styles/Perawat/catatVital.css') }}" />
-      <title>Homepage Perawat</title>
-    </head>
-    <body>
-      <div class="container">
-        <aside class="sidebar">
-          <div class="logo">
-            <h1>Klinik SehatBro.</h1>
-          </div>
-          <nav>
-            <ul>
-              <li id="nav-homepage">
-                <img src="{{ url_for('static', filename='images/Perawat/home-gray.png') }}" />
-                <a href="{{ url_for('homepagePerawat') }}">Homepage</a>
-              </li>
-              <li id="nav-daftar">
-                <img src="{{ url_for('static', filename='images/Perawat/list-gray.png') }}" />
-                <a href="{{ url_for('daftarPasien') }}" >Daftar Pasien</a>
-              </li>
-              <li id="nav-vital">
-                <img src="{{ url_for('static', filename='images/Perawat/vital-white.png') }}" />
-                <a href="{{ url_for('catatVital') }}" class="link-active">Catat Vital</a>
-              </li>
-              <li id="nav-dokumen">
-                <img src="{{ url_for('static', filename='images/Perawat/document-black.png') }}" />
-                <a href="{{ url_for('uploadDokumen') }}">Unggah Dokumen</a>
-              </li>
-              <li id="nav-profile">
-                <img src="{{ url_for('static', filename='images/Perawat/profile-circle.png') }}" />
-                <a href="#profile">Profile</a>
-              </li>
-              <li id="nav-logout">
-                <img src="{{ url_for('static', filename='images/Perawat/logout.png') }}" />
-                <a href="{{ url_for('logout') }}">Logout</a>
-              </li>
-            </ul>
-          </nav>
-        </aside>
-  
-        <main class="main-content">
-            <header>
-              <h1>Pencatatan Vital Pasien</h1>
-            </header>
-        
-            <form action="" method="POST">
-                    <section id="homepage" class="content-section">
-                    <h3>Data Pasien</h3> 
-                    <table>
-                        <tr>
-                            <td>Nama: </td>
-                            <td>
-                                <input type="text" name="namaPasien" placeholder="Masukkan Nama Pasien">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>ID Pasien: </td>
-                            <td>
-                                <input type="text" name="idPasien" placeholder="Masukkan ID Pasien">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Usia: </td>
-                            <td></td>
-                        </tr>
-                    </table>
-
-                    <hr>
-                    <div class="feature-cards">
-                        <div class="card">
-                            <div class="form-group">
-                                <label for="suhu-tubuh">Suhu Tubuh (°C)</label><br>
-                                <input type="number" id="suhu-tubuh" name="suhu-tubuh" placeholder="Masukkan suhu tubuh" step="0.1" required>
-                            </div>
-                            <br>
-                
-                            <div class="form-group">
-                                <label for="berat-badan">Berat Badan (kg)</label><br>
-                                <input type="number" id="berat-badan" name="berat-badan" placeholder="Masukkan berat badan" required>
-                            </div>
-                            <br>
-
-                            <div class="form-group">
-                                <label for="tinggi-badan">Tinggi Badan (cm)</label><br>
-                                <input type="number" id="tinggi-badan" name="tinggi-badan" placeholder="Masukkan tinggi badan" required>
-                            </div>
-                            <br>
-                
-                            <div class="form-group">
-                                <label for="tekanan-darah">Tekanan Darah (mmHg)</label><br>
-                                <input type="text" id="tekanan-darah" name="tekanan-darah" placeholder="Masukkan tekanan darah" required>
-                            </div>
-                            <br>
-                        </div>
-                    </div>
-                </section>
-                <section id="keluhan" class="content-section">
-                    <h3>Keterangan Keluhan</h3>
-                    <div>
-                        <textarea id="keluhan" name="keluhan" placeholder="Masukkan keluhan pasien" required></textarea>
-                    </div>
-                </section>
-                <button class="btn-rekam">Rekam Catatan</button>
-            </form>
-          </main>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles/Perawat/catatVital.css') }}"
+    />
+    <title>Catat Vital Pasien</title>
+  </head>
+  <body>
+    <div class="container">
+      <aside class="sidebar">
+        <div class="logo">
+          <h1>Klinik SehatBro.</h1>
         </div>
-  
-      <footer>
-        <p>&copy; 2024 Klinik SehatBro. | All Rights Reserved</p>
-      </footer>
-    </body>
-  </html>
-  
+        <nav>
+          <ul>
+            <li id="nav-homepage">
+              <img
+                src="{{ url_for('static', filename='images/Perawat/home-gray.png') }}"
+              />
+              <a href="{{ url_for('homepagePerawat') }}">Homepage</a>
+            </li>
+            <li id="nav-daftar">
+              <img
+                src="{{ url_for('static', filename='images/Perawat/list-gray.png') }}"
+              />
+              <a href="{{ url_for('daftarPasien') }}">Daftar Pasien</a>
+            </li>
+            <li id="nav-vital">
+              <img
+                src="{{ url_for('static', filename='images/Perawat/vital-white.png') }}"
+              />
+              <a href="{{ url_for('catatVital') }}" class="link-active"
+                >Catat Vital</a
+              >
+            </li>
+            <li id="nav-dokumen">
+              <img
+                src="{{ url_for('static', filename='images/Perawat/document-black.png') }}"
+              />
+              <a href="{{ url_for('uploadDokumen') }}">Unggah Dokumen</a>
+            </li>
+            <li id="nav-logout">
+              <img
+                src="{{ url_for('static', filename='images/Perawat/logout.png') }}"
+              />
+              <a href="{{ url_for('logout') }}">Logout</a>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+      <main class="main-content">
+        <header>
+          <h1>Pencatatan Vital Pasien</h1>
+        </header>
+
+        <form action="{{ url_for('catatVital') }}" method="POST">
+          <section id="homepage" class="content-section">
+            <h2>Data Pasien</h2>
+
+            <div class="data-pasien">
+              <label for="nama-pasien">Nama Pasien</label>
+              <input
+                type="text"
+                id="nama-pasien"
+                name="nama-pasien"
+                placeholder="Masukkan Nama Pasien"
+                required
+              />
+            </div>
+
+            <div class="data-pasien">
+              <label for="nrm-pasien">Nomor Rekam Medis</label>
+              <input
+                type="text"
+                id="nrm-pasien"
+                name="nrm-pasien"
+                placeholder="Masukkan Nomor Rekam Medis Pasien"
+                requireds
+              />
+            </div>
+
+            <hr />
+            <div class="feature-cards">
+              <div class="card">
+                <div class="left-group">
+                  <div class="form-group">
+                    <label for="suhu-tubuh">Suhu Tubuh (°C)</label><br />
+                    <input
+                      type="number"
+                      id="suhu-tubuh"
+                      name="suhu-tubuh"
+                      placeholder="Masukkan suhu tubuh"
+                      step="0.1"
+                      required
+                    />
+                  </div>
+
+                  <div class="form-group">
+                    <label for="berat-badan">Berat Badan (kg)</label><br />
+                    <input
+                      type="number"
+                      id="berat-badan"
+                      name="berat-badan"
+                      placeholder="Masukkan berat badan"
+                      required
+                    />
+                  </div>
+                </div>
+                <div class="right-group">
+                  <div class="form-group">
+                    <label for="tinggi-badan">Tinggi Badan (cm)</label><br />
+                    <input
+                      type="number"
+                      id="tinggi-badan"
+                      name="tinggi-badan"
+                      placeholder="Masukkan tinggi badan"
+                      required
+                    />
+                  </div>
+
+                  <div class="form-group">
+                    <label for="tekanan-darah">Tekanan Darah (mmHg)</label
+                    ><br />
+                    <input
+                      type="text"
+                      id="tekanan-darah"
+                      name="tekanan-darah"
+                      placeholder="Masukkan tekanan darah"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section id="keluhan" class="content-section">
+            <h3>Keterangan Keluhan</h3>
+            <div>
+              <textarea
+                id="keluhan"
+                name="keluhan"
+                placeholder="Masukkan keluhan pasien"
+                required
+              ></textarea>
+            </div>
+          </section>
+          <button class="btn-rekam">Rekam Catatan</button>
+        </form>
+      </main>
+    </div>
+
+    <footer>
+      <p>&copy; 2024 Klinik SehatBro. | All Rights Reserved</p>
+    </footer>
+  </body>
+</html>
