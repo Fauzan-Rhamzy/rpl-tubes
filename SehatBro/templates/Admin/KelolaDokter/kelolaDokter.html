@@ -23,7 +23,9 @@
         <div class="add-schedule-doctor">
           <section class="add-doctor">
             <h2>Tambah Dokter Baru</h2>
-            <form id="add-doctor-form" action="#" method="POST">
+            <!-- TAMBAH DOKTER -->
+            <form id="add-doctor-form" action="/Admin/KelolaDokter" method="POST">
+              <input type="hidden" name="form_type" value="doctor">
               <div class="add-doctor-container">
                 <div class="left-group">
                   <div class="form-group">
@@ -114,8 +116,7 @@
                   </div>
                 </div>
               </div>
-
-              <button type="submit" class="add-doct-button">
+              <button type="submit" class="add-doct-button" name="submit_doctor">
                 Tambah Dokter
               </button>
             </form>
@@ -123,7 +124,9 @@
 
           <section class="create-schedule">
             <h2>Buat Jadwal Dokter</h2>
-            <form id="create-schedule-form" action="#" method="POST">
+            <!-- BUAT JADWAL -->
+            <form id="create-schedule-form" action="/Admin/KelolaDokter" method="POST">
+              <input type="hidden" name="form_type" value="schedule">
               <div class="form-group">
                 <label for="doctor-select">Pilih Dokter</label>
                 <select id="doctor-select" name="doctor-select" required>
@@ -165,7 +168,7 @@
                   required
                 />
               </div>
-              <button type="submit" class="add-sched-button">
+              <button type="submit" class="add-sched-button" name="submit_schedule">
                 Buat Jadwal
               </button>
             </form>
@@ -181,8 +184,8 @@
                 <th>NPA Dokter</th>
                 <th>Nama Dokter</th>
                 <th>Spesialisasi</th>
-                <th>Kuota Pasien</th>
                 <th>Tarif (Rp)</th>
+                <th>Kuota Pasien</th>
                 <th>Hari</th>
                 <th>Waktu</th>
                 <th>Edit</th>
@@ -194,11 +197,35 @@
               <tr>
                 <td>{{ dokter['npa'] }}</td>  <!-- npa -->
                 <td>{{ dokter['nama'] }}</td>  <!-- nama -->
-                <td>{{ dokter[2] }}</td>  <!-- spesialisasi -->
-                <td>{{ dokter[3] }}</td>  <!-- kuota_pasien -->
-                <td>Rp. {{ dokter[4] }}</td>  <!-- tarif -->
-                <td>{{ dokter[5] }}</td>  <!-- hari -->
-                <td>{{ dokter[6] }} - {{ dokter[7] }}</td>  <!-- jam_mulai - jam_selesai -->
+                <td>{{ dokter['spesialisasi'] }}</td>  <!-- spesialisasi -->
+                <td>
+                  {% if dokter['tarif'] is none %}
+                    -
+                  {% else %}
+                    Rp. {{ dokter['tarif'] }}
+                  {% endif %}
+                </td>  <!-- tarif -->
+                <td>
+                  {% if dokter['kuota_pasien'] is none %}
+                    -
+                  {% else %}
+                    {{ dokter['kuota_pasien'] }}
+                  {% endif %}
+                </td>  <!-- kuota_pasien -->
+                <td>
+                  {% if dokter['hari'] is none %}
+                    -
+                  {% else %}
+                    {{ dokter['hari'] }}
+                  {% endif %}
+                </td>  <!-- hari -->
+                <td>
+                  {% if dokter['jam_mulai'] is none or dokter['jam_selesai'] is none %}
+                    -
+                  {% else %}
+                    {{ dokter['jam_mulai'] }} - {{ dokter['jam_selesai'] }}
+                  {% endif %}
+                </td>  <!-- jam_mulai - jam_selesai -->
                 <td><a href="/Admin/KelolaDokter/EditDokter?id_jadwal={{ dokter['id_jadwal'] }}"><button type="button" class="edit-button">Edit</button></a></td>
               </tr>
               {% endfor %}
@@ -261,12 +288,6 @@
     const addSchedButton = document.querySelector(".add-sched-button");
     addSchedButton.addEventListener("click", function () {
       alert("Jadwal dokter berhasil ditambahkan!");
-    });
-
-    const editButton = document.querySelector(".edit-button");
-
-    editButton.addEventListener("click", function () {
-      window.location.href = "editDokter.html";
     });
   </script>
 </html>

@@ -29,10 +29,10 @@
         <h2>Selamat datang!</h2>
         <p>Belum punya akun? <a href="#">Sign up</a></p>
         <form action="{{ url_for('login') }}" method="POST">
-          <label for="email">Email</label>
-          <input type="email" id="email" placeholder="contoh@gmail.com" required />
+          <label for="email">username</label>
+          <input name="username" type="text" id="email" placeholder="contoh@gmail.com" required />
           <label for="password">Password</label>
-          <input type="password" id="password" placeholder="********" required />
+          <input name="password" type="password" id="password" placeholder="********" required />
           <button type="submit">Log in</button>
         </form>
       </div>

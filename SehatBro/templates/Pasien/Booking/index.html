@@ -74,7 +74,6 @@
 
   <script>
     // Data dokter dari server
-    const doctorsData = {{ doctors_data|tojson }};
 
     function getDoctorsBySpecialization(specialization) {
       return doctorsData[specialization] || [];
