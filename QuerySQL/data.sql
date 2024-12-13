@@ -399,6 +399,67 @@ VALUES
 (12, 'Selasa', '08:00:00', '11:00:00', '013281.08.01.051611'),
 (15, 'Jumat', '14:00:00', '17:00:00', '013281.08.01.051611');
 
+select * from jadwal_dokter where hari = 'Kamis'
+
+INSERT INTO Buat_Janji (Tanggal_Janji, Nomor_Rekam_Medis, ID_Jadwal, Nomor_Antrian)
+VALUES
+-- Pasien dengan 2 janji dalam satu hari
+('2024-12-12', 'P0001RM', 4, 1),  -- Dokter pertama
+('2024-12-12', 'P0001RM', 8, 1),  -- Dokter kedua
+('2024-12-12', 'P0002SN', 4, 2),
+('2024-12-12', 'P0002SN', 8, 2),
+('2024-12-12', 'P4003DF', 8, 3),
+
+('2024-12-13', 'P0003DR', 6, 1),  -- Dokter pertama
+('2024-12-13', 'P0003DR', 20, 1),  -- Dokter kedua
+
+('2024-12-16', 'P1002MA', 1, 1),  -- Dokter pertama
+('2024-12-16', 'P1002MA', 7, 1),  -- Dokter kedua
+
+('2024-12-17', 'P2003YK', 3, 1),  -- Dokter pertama
+('2024-12-17', 'P2003YK', 9, 1),  -- Dokter kedua
+
+('2024-12-17', 'P3001TA', 3, 2),  -- Dokter pertama
+('2024-12-17', 'P3001TA', 9, 2), -- Dokter kedua
+
+('2024-12-18', 'P4001FA', 2, 1),
+('2024-12-18', 'P4001FA', 5, 1),
+('2024-12-18', 'P2001ES', 2, 2),
+('2024-12-18', 'P2001ES', 5, 2),
+('2024-12-18', 'P1003BP', 2, 3),
+('2024-12-18', 'P1003BP', 5, 3),
+
+-- Pasien dengan 1 janji dalam satu hari
+('2024-12-16', 'P0002SN', 11, 1),
+('2024-12-18', 'P0004LP', 12, 1),
+('2024-12-17', 'P1001AS', 13, 1),
+('2024-12-19', 'P1003BP', 14, 1),
+('2024-12-18', 'P1004NH', 15, 1),
+('2024-12-13', 'P2001ES', 16, 1),
+('2024-12-16', 'P2002RM', 17, 1),
+('2024-12-19', 'P3002AR', 18, 1),
+('2024-12-17', 'P3003AP', 19, 1),
+('2024-12-20', 'P4001FA', 20, 1),
+('2024-12-16', 'P4002MI', 21, 1),
+('2024-12-18', 'P4003DF', 22, 1),
+('2024-12-17', 'P0004LP', 23, 1),
+('2024-12-19', 'P0002SN', 24, 1),
+('2024-12-18', 'P0002SN', 25, 1),
+('2024-12-13', 'P0002SN', 26, 1),
+('2024-12-17', 'P3002AR', 27, 1),
+('2024-12-12', 'P4001FA', 28, 1),
+('2024-12-17', 'P4003DF', 29, 1),
+('2024-12-20', 'P1003BP', 30, 1),
+('2024-12-16', 'P2001ES', 31, 1),
+('2024-12-19', 'P1004NH', 32, 1),
+('2024-12-17', 'P0004LP', 33, 1),
+('2024-12-18', 'P1003BP', 34, 1),
+('2024-12-18', 'P4001FA', 35, 1),
+('2024-12-20', 'P3001TA', 36, 1),
+('2024-12-16', 'P0001RM', 37, 1),
+('2024-12-12', 'P0003DR', 38, 1),
+('2024-12-17', 'P1002MA', 39, 1),
+('2024-12-20', 'P1002MA', 40, 1);
 
 -- Insert data into Diagnosa table
 INSERT INTO Diagnosa (Keterangan, Nomor_Rekam_Medis, NPA)
@@ -431,40 +492,6 @@ VALUES
 ('riwayat_medis_P2003YK.pdf', '/uploads/riwayat_medis_P2003YK.pdf', 11, 'P2003YK'),
 ('riwayat_medis_P3001TA.pdf', '/uploads/riwayat_medis_P3001TA.pdf', 12, 'P3001TA'),
 ('riwayat_medis_P4002MI.pdf', '/uploads/riwayat_medis_P4002MI.pdf', 16, 'P4002MI');
-
--- Insert dummy data into Buat_Janji table
--- Insert dummy data into Buat_Janji table
-INSERT INTO Buat_Janji (Tanggal_Janji, Nomor_Rekam_Medis, ID_Jadwal, Nomor_Antrian)
-VALUES
--- Pasien dengan 2 janji dalam satu hari
-('2024-12-12', 'P0001RM', 1, 1),  -- Dokter pertama
-('2024-12-12', 'P0001RM', 2, 2),  -- Dokter kedua
-
-('2024-12-13', 'P0003DR', 3, 1),  -- Dokter pertama
-('2024-12-13', 'P0003DR', 4, 2),  -- Dokter kedua
-
-('2024-12-14', 'P1002MA', 5, 1),  -- Dokter pertama
-('2024-12-14', 'P1002MA', 6, 2),  -- Dokter kedua
-
-('2024-12-15', 'P2003YK', 7, 1),  -- Dokter pertama
-('2024-12-15', 'P2003YK', 8, 2),  -- Dokter kedua
-
-('2024-12-16', 'P3001TA', 9, 1),  -- Dokter pertama
-('2024-12-16', 'P3001TA', 10, 2), -- Dokter kedua
-
--- Pasien dengan 1 janji dalam satu hari
-('2024-12-12', 'P0002SN', 11, 1),
-('2024-12-13', 'P0004LP', 12, 1),
-('2024-12-14', 'P1001AS', 13, 1),
-('2024-12-15', 'P1003BP', 14, 1),
-('2024-12-16', 'P1004NH', 15, 1),
-('2024-12-17', 'P2001ES', 16, 1),
-('2024-12-17', 'P2002RM', 17, 1),
-('2024-12-18', 'P3002AR', 18, 1),
-('2024-12-18', 'P3003AP', 19, 1),
-('2024-12-19', 'P4001FA', 20, 1),
-('2024-12-19', 'P4002MI', 21, 1),
-('2024-12-19', 'P4003DF', 22, 1);
 
 -- Insert data ke tabel Transaksi
 INSERT INTO Transaksi (Status_Pembayaran, Tanggal_Transaksi, Jumlah_Pembayaran, Nomor_Rekam_Medis, ID_Petugas_Admin)

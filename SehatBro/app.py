@@ -19,6 +19,10 @@ app.secret_key = 'your_secret_key'
 #         return redirect(url_for('homepage'))
 #     return render_template("LoginPage/index.html")
 
+@app.route('/')
+def home():
+    return render_template('LandingPage/index.html')
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -234,11 +238,7 @@ def editDokter():
         print("success")
         return redirect(url_for('kelolaDokter'))
 
-    cursor.execute("""
-        SELECT *
-        FROM jadwal_detail
-        WHERE id_jadwal = %s
-    """, (id_jadwal))
+    cursor.execute("SELECT * FROM jadwal_detail WHERE id_jadwal = %s", (id_jadwal,))
     dokter_data = cursor.fetchone()
     
     cursor.execute("SELECT * FROM dokter_detail")
