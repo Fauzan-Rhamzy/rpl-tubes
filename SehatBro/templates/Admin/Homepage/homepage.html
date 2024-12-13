@@ -41,28 +41,28 @@
 
       <main class="main-content">
         <section id="homepage" class="content-section">
-          <h1>Selamat datang, BackAdmin!</h1>
+          <h1>Selamat datang, {{ user['nama'] }}!</h1>
           <p>Berikut adalah rekapan aktivitas klinik:</p>
 
           <div class="dashboard-cards">
             <div class="left-cards">
               <div class="card">
                 <h3>Total Pasien</h3>
-                <p>50 orang</p>
+                <p>{{ banyakPasien }} orang</p>
               </div>
               <div class="card">
                 <h3>Total Pekerja</h3>
-                <p>30 orang</p>
+                <p>{{ pekerja }} orang</p>
               </div>
             </div>
             <div class="right-cards">
               <div class="card">
                 <h3>Total Pembayaran</h3>
-                <p>Rp 5,000,000</p>
+                <p>Rp {{ pembayaran }}</p>
               </div>
               <div class="card">
                 <h3>Total Jadwal Pasien</h3>
-                <p>50 Jadwal</p>
+                <p>{{ jadwal }} Jadwal</p>
               </div>
             </div>
 

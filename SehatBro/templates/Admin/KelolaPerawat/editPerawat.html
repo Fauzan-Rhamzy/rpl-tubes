@@ -22,7 +22,7 @@
 
         <section class="add-nurse">
           <h2>Edit Data Perawat</h2>
-          <form id="add-nurse-form" action="#" method="POST">
+          <form id="add-nurse-form" action="/Admin/KelolaPerawat/EditPerawat?id_user={{ perawat['id_user'] }}" method="POST">
             <div class="form-group">
               <label for="nurse-name">Nama Perawat</label>
               <input
@@ -30,6 +30,7 @@
                 id="nurse-name"
                 name="nurse-name"
                 placeholder="Ex: Jane Doe"
+                value="{{ perawat['nama'] }}"
               />
             </div>
 
@@ -40,6 +41,7 @@
                 id="nurse-username"
                 name="nurse-username"
                 placeholder="Ex: jane_doe"
+                value="{{ perawat['username'] }}"
               />
             </div>
 
@@ -50,6 +52,7 @@
                 id="nurse-password"
                 name="nurse-password"
                 placeholder="Ex: janedoe1234"
+                value="{{ perawat['passwords'] }}"
               />
             </div>
 

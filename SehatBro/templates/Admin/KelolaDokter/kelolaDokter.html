@@ -23,7 +23,9 @@
         <div class="add-schedule-doctor">
           <section class="add-doctor">
             <h2>Tambah Dokter Baru</h2>
-            <form id="add-doctor-form" action="#" method="POST">
+            <!-- TAMBAH DOKTER -->
+            <form id="add-doctor-form" action="/Admin/KelolaDokter" method="POST">
+              <input type="hidden" name="form_type" value="doctor">
               <div class="add-doctor-container">
                 <div class="left-group">
                   <div class="form-group">
@@ -114,8 +116,7 @@
                   </div>
                 </div>
               </div>
-
-              <button type="submit" class="add-doct-button">
+              <button type="submit" class="add-doct-button" name="submit_doctor">
                 Tambah Dokter
               </button>
             </form>
@@ -123,7 +124,9 @@
 
           <section class="create-schedule">
             <h2>Buat Jadwal Dokter</h2>
-            <form id="create-schedule-form" action="#" method="POST">
+            <!-- BUAT JADWAL -->
+            <form id="create-schedule-form" action="/Admin/KelolaDokter" method="POST">
+              <input type="hidden" name="form_type" value="schedule">
               <div class="form-group">
                 <label for="doctor-select">Pilih Dokter</label>
                 <select id="doctor-select" name="doctor-select" required>
@@ -165,83 +168,82 @@
                   required
                 />
               </div>
-              <button type="submit" class="add-sched-button">
+              <button type="submit" class="add-sched-button" name="submit_schedule">
                 Buat Jadwal
               </button>
             </form>
           </section>
         </div>
 
-        <!-- Daftar Dokter dan Jadwal -->
-        <section class="doctor-schedule-list">
-          <h2>Daftar Dokter dan Jadwal</h2>
+        <!-- Tabs for Dokter and Jadwal -->
+        <section class="tabs">
+          <ul>
+            <li id="dokter-tab" class="tab active">Dokter</li>
+            <li id="jadwal-tab" class="tab">Jadwal</li>
+          </ul>
+        </section>
+
+        <!-- Tab Content -->
+        <section id="dokter-content" class="tab-content active">
+          <h2>Daftar Dokter</h2>
+          <!-- Doctor list table -->
+          <table class="doctor-table">
+            <thead>
+              <tr>
+                <th>NPA Dokter</th>
+                <th>Nama Dokter</th>
+                <th>Spesialisasi</th>
+                <th>Tarif (Rp)</th>
+                <th>Kuota Pasien</th>
+                <th>Username</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for dokter in daftar_dokter %}
+              <tr>
+                <td>{{ dokter['npa'] }}</td>
+                <td>{{ dokter['nama'] }}</td>
+                <td>{{ dokter['spesialisasi'] }}</td>
+                <td>Rp. {{ dokter['tarif'] }}</td>
+                <td>{{ dokter['kuota_pasien'] }}</td>
+                <td>{{ dokter['username'] }}</td>
+                <td><button class="edit-button">Edit</button></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </section>
+
+        <section id="jadwal-content" class="tab-content">
+          <h2>Daftar Jadwal Dokter</h2>
+          <!-- Doctor schedule table -->
           <table class="doctor-schedule-table">
             <thead>
               <tr>
                 <th>NPA Dokter</th>
                 <th>Nama Dokter</th>
                 <th>Spesialisasi</th>
-                <th>Kuota Pasien</th>
                 <th>Tarif (Rp)</th>
+                <th>Kuota Pasien</th>
                 <th>Hari</th>
                 <th>Waktu</th>
                 <th>Edit</th>
               </tr>
             </thead>
             <tbody>
-              <!-- Data Dokter dan Jadwal -->
               {% for dokter in jadwal_dokter %}
               <tr>
-                <td>{{ dokter['npa'] }}</td>  <!-- npa -->
-                <td>{{ dokter['nama'] }}</td>  <!-- nama -->
-                <td>{{ dokter[2] }}</td>  <!-- spesialisasi -->
-                <td>{{ dokter[3] }}</td>  <!-- kuota_pasien -->
-                <td>Rp. {{ dokter[4] }}</td>  <!-- tarif -->
-                <td>{{ dokter[5] }}</td>  <!-- hari -->
-                <td>{{ dokter[6] }} - {{ dokter[7] }}</td>  <!-- jam_mulai - jam_selesai -->
-                <td><a href="/Admin/KelolaDokter/EditDokter?id_jadwal={{ dokter['id_jadwal'] }}"><button type="button" class="edit-button">Edit</button></a></td>
+                <td>{{ dokter['npa'] }}</td>
+                <td>{{ dokter['nama'] }}</td>
+                <td>{{ dokter['spesialisasi'] }}</td>
+                <td>Rp. {{ dokter['tarif'] }}</td>
+                <td>{{ dokter['kuota_pasien'] }}</td>
+                <td>{{ dokter['hari'] }}</td>
+                <td>{{ dokter['jam_mulai'] }} - {{ dokter['jam_selesai'] }}</td>
+                <td><a href="/Admin/KelolaDokter/EditDokter?id_jadwal={{ dokter['id_jadwal'] }}"><button class="edit-button">Edit</button></a></td>
               </tr>
               {% endfor %}
-              <!-- <tr>
-                <td rowspan="3">001</td>
-                <td rowspan="3">Dr. Andreas</td>
-                <td rowspan="3">Penyakit Dalam</td>
-                <td rowspan="3">30 Pasien</td>
-                <td rowspan="3">Rp 200,000</td>
-                <td>Senin</td>
-                <td>08:00 - 12:00</td>
-                <td rowspan="3">
-                  <button type="button" class="edit-button">Edit</button>
-                </td>
-              </tr>
-              <tr>
-                <td>Rabu</td>
-                <td>12:00-17:00</td>
-              </tr>
-              <tr>
-                <td>Jumat</td>
-                <td>07:00-13:00</td>
-              </tr> -->
-              <!-- <tr>
-                <td>002</td>
-                <td>Dr. Maria</td>
-                <td>Anak</td>
-                <td>25 Pasien</td>
-                <td>Rp 150,000</td>
-                <td>Selasa</td>
-                <td>09:00 - 11:00</td>
-                <td><button type="button" class="edit-button">Edit</button></td>
-              </tr>
-              <tr>
-                <td>003</td>
-                <td>Dr. Fauziah</td>
-                <td>Gigi</td>
-                <td>20 Pasien</td>
-                <td>Rp 250,000</td>
-                <td>Rabu</td>
-                <td>14:00 - 16:00</td>
-                <td><button type="button" class="edit-button">Edit</button></td>
-              </tr> -->
             </tbody>
           </table>
         </section>
@@ -263,10 +265,25 @@
       alert("Jadwal dokter berhasil ditambahkan!");
     });
 
-    const editButton = document.querySelector(".edit-button");
+    // 
+    const dokterTab = document.getElementById('dokter-tab');
+      const jadwalTab = document.getElementById('jadwal-tab');
+      const dokterContent = document.getElementById('dokter-content');
+      const jadwalContent = document.getElementById('jadwal-content');
 
-    editButton.addEventListener("click", function () {
-      window.location.href = "editDokter.html";
-    });
+      dokterTab.addEventListener('click', () => {
+        dokterTab.classList.add('active');
+        jadwalTab.classList.remove('active');
+        dokterContent.classList.add('active');
+        jadwalContent.classList.remove('active');
+      });
+
+      jadwalTab.addEventListener('click', () => {
+        jadwalTab.classList.add('active');
+        dokterTab.classList.remove('active');
+        jadwalContent.classList.add('active');
+        dokterContent.classList.remove('active');
+      });
+
   </script>
 </html>
