@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -90,34 +89,10 @@
         return;
       }
 
-      // Menampilkan daftar dokter berdasarkan spesialisasi
-      doctorList.style.display = "block";
-      doctorsContainer.innerHTML = ""; // Menghapus daftar dokter sebelumnya
-
-      const doctors = getDoctorsBySpecialization(specialization);
-
-      // Menampilkan dokter yang sesuai dengan spesialisasi
-      doctors.forEach((doctor) => {
-        const doctorCard = document.createElement("div");
-        doctorCard.classList.add("doctor-card");
-
-        doctorCard.innerHTML = `
-        <h3>${doctor.name}</h3>
-        <p>Spesialis: ${specialization.charAt(0).toUpperCase() + specialization.slice(1)}</p>
-        <p class="schedule">Jadwal: ${doctor.schedule}</p>
-        <button onclick="bookAppointment('${doctor.name}')">Booking</button>
-      `;
-
-        doctorsContainer.appendChild(doctorCard);
-      });
-    }
-
-    // Fungsi untuk melakukan booking janji temu
-    function bookAppointment(doctorName) {
-      alert(`Anda berhasil melakukan booking janji temu dengan ${doctorName}.`);
-    }
-
-  </script>
-</body>
-
+      // Fungsi untuk melakukan booking janji temu
+      function bookAppointment(doctorName) {
+        alert(`Anda berhasil melakukan booking janji temu dengan ${doctorName}.`);
+      }
+    </script>
+  </body>
 </html>

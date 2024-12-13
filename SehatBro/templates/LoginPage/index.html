@@ -1,52 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Klinik SehatBro - Login Page</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles/LoginPage/LoginStyle.css') }}"
+    />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Klinik SehatBro - Login Page</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='styles/LoginPage/LoginStyle.css') }}" />
-</head>
+  <body>
+    <div class="container">
+      <!-- Header dengan logo dan tombol Home -->
+      <div class="header">
+        <div class="home-button">
+          <a href="{{ url_for('homepage') }}">Home</a>
+        </div>
+      </div>
 
-<body>
-  <div class="container">
-    <!-- Header dengan logo dan tombol Home -->
-    <div class="header">
-      <div class="home-button">
-        <a href="{{ url_for('homepage') }}">Home</a>
+      <!-- Bagian Kiri dengan Gambar -->
+      <div class="login-pict">
+        <h1 class="logo">Klinik SehatBro.</h1>
+        <img
+          src="{{ url_for('static', filename='images/LoginPage/login-pict.png') }}"
+          alt="Gambar Dokter"
+        />
+      </div>
+
+      <!-- Bagian Kanan dengan Form Login -->
+      <div class="login-text">
+        <div class="login-input">
+          <h2>Selamat datang!</h2>
+          <p>Belum punya akun? <a href="#">Sign up</a></p>
+          <form action="{{ url_for('login') }}" method="POST">
+            <label for="username">Username</label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              placeholder="Enter your username"
+              required
+            />
+
+            <label for="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Enter your password"
+              required
+            />
+
+            <button type="submit">Log in</button>
+          </form>
+        </div>
+
+        <div class="extra-info">
+          <h3>Mengapa memilih kami?</h3>
+          <ul>
+            <li>🌟 Layanan 24/7</li>
+            <li>👨‍⚕️ Dokter profesional</li>
+            <li>🏥 Fasilitas lengkap dan modern</li>
+          </ul>
+        </div>
       </div>
     </div>
 
-    <!-- Bagian Kiri dengan Gambar -->
-    <div class="login-pict">
-      <h1 class="logo">Klinik SehatBro.</h1>
-      <img src="{{ url_for('static', filename='images/LoginPage/login-pict.png') }}" alt="Gambar Dokter" />
-    </div>
-
-    <!-- Bagian Kanan dengan Form Login -->
-    <div class="login-text">
-      <div class="login-input">
-        <h2>Selamat datang!</h2>
-        <p>Belum punya akun? <a href="#">Sign up</a></p>
-        <form action="{{ url_for('login') }}" method="POST">
-          <label for="email">username</label>
-          <input name="username" type="text" id="email" placeholder="contoh@gmail.com" required />
-          <label for="password">Password</label>
-          <input name="password" type="password" id="password" placeholder="********" required />
-          <button type="submit">Log in</button>
-        </form>
-      </div>
-
-      <div class="extra-info">
-        <h3>Mengapa memilih kami?</h3>
-        <ul>
-          <li>🌟 Layanan 24/7</li>
-          <li>👨‍⚕️ Dokter profesional</li>
-          <li>🏥 Fasilitas lengkap dan modern</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</body>
-
+    {% with messages = get_flashed_messages(with_categories=true) %} {% if
+    messages %}
+    <ul>
+      {% for category, message in messages %}
+      <li class="{{ category }}">{{ message }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %} {% endwith %}
+  </body>
 </html>
