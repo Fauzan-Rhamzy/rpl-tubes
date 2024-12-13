@@ -30,14 +30,22 @@ def login():
         if not username or not password:
             flash('Username and password are required.', 'danger')
             return render_template('LoginPage/index.html')
-
         try:
-            cursor.execute(
-                "SELECT * FROM users WHERE username = %s AND passwords = %s",
-                (username, password)
-            )
+            cursor.execute("""
+            SELECT 
+                u.ID_User, u.Username, u.Passwords, u.Roles, u.Nama,
+                p.Nomor_Rekam_Medis, pr.ID_Perawat
+            FROM 
+                Users u
+            LEFT JOIN 
+                Pasien p ON u.ID_User = p.ID_User
+            LEFT JOIN 
+                Perawat pr ON u.ID_User = pr.ID_User
+            WHERE 
+                u.Username = %s AND u.Passwords = %s
+            """, (username, password))
             user = cursor.fetchone()
-
+            print(f"Hasil query login di Flask: {user}")  # Log hasil query
             if user:
                 session['user_id'] = user['id_user']
                 session['username'] = user['username']
@@ -72,7 +80,6 @@ def login():
             flash(f"An error occurred: {str(e)}", 'danger')
 
     return render_template('LoginPage/index.html')
-
 
 @app.route('/logout')
 def logout():
