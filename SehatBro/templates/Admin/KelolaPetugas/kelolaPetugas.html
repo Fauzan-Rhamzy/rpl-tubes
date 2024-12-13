@@ -24,7 +24,9 @@
         <div class="add-admin-img">
           <section class="add-admin">
             <h2>Tambah Petugas Administrasi Baru</h2>
-            <form id="add-admin-form" action="#" method="POST">
+
+            <!-- TAMBAH PETUGAS -->
+            <form id="add-admin-form" action="/Admin/KelolaPetugas" method="POST">
               <div class="form-group">
                 <label for="admin-name">Nama Petugas Administrasi</label>
                 <input
@@ -83,37 +85,18 @@
             </thead>
 
             <tbody>
+              {% for data in petugas %}
               <tr>
-                <td>001</td>
-                <td>Rizki Amelia</td>
-                <td>admin_rizki</td>
-                <td>rizkiadmin</td>
-                <td><button type="button" class="edit-button">Edit</button></td>
+                <td>{{ data['id_petugas_admin'] }}</td>
+                <td>{{ data['nama'] }}</td>
+                <td>{{ data['username'] }}</td>
+                <td>{{ data['passwords'] }}</td>
+                <td>
+                  <a href="/Admin/KelolaPetugas/EditPetugas?id_user={{ data['id_user'] }}">
+                    <button type="button" class="edit-button">Edit</button></td>
+                  </a>
               </tr>
-
-              <tr>
-                <td>002</td>
-                <td>Hendra Wijaya</td>
-                <td>admin_hendra</td>
-                <td>securehendra</td>
-                <td><button type="button" class="edit-button">Edit</button></td>
-              </tr>
-
-              <tr>
-                <td>003</td>
-                <td>Amelia Yuliana</td>
-                <td>admin_amelia</td>
-                <td>amelia456</td>
-                <td><button type="button" class="edit-button">Edit</button></td>
-              </tr>
-
-              <tr>
-                <td>004</td>
-                <td>Rian Setiawan</td>
-                <td>admin_rian</td>
-                <td>rianpass123</td>
-                <td><button type="button" class="edit-button">Edit</button></td>
-              </tr>
+              {% endfor %}
             </tbody>
           </table>
         </section>

@@ -21,8 +21,10 @@
         </header>
 
         <section class="search-patient">
-          <input type="text" id="search-patient" placeholder="Cari Pasien" />
-          <button type="button" onclick="searchPatient()">Cari</button>
+          <form action="/Admin/KelolaPasien" method="POST">
+            <input type="text" id="search-patient" placeholder="Cari Pasien" />
+            <button type="submit">Cari</button>
+          </form>
         </section>
 
         <section class="list-patient">
@@ -43,8 +45,9 @@
             </thead>
             <tbody>
               <!-- Daftar Pasien Terdaftar -->
+               {% for data in pasien %}
               <tr>
-                <td>123445667</td>
+                <td>{{ data[nomor_rekam_medis] }}</td>
                 <td>Ahmad Fauzi</td>
                 <td>dr. Andreas</td>
                 <td>Penyakit Dalam</td>
@@ -58,6 +61,7 @@
                   <button type="button" class="edit-button">Edit</button>
                 </td>
               </tr>
+              {% endfor %}
               <tr>
                 <td>138397987</td>
                 <td>Siti Nurhaliza</td>

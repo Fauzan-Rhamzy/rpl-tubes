@@ -25,7 +25,7 @@
           <section class="add-nurse">
             <h2>Tambah Perawat Baru</h2>
             <!-- tambah perawat -->
-            <form id="add-nurse-form" action="#" method="POST">
+            <form id="add-nurse-form" action="/Admin/KelolaPerawat" method="POST">
               <div class="form-group">
                 <label for="nurse-name">Nama Perawat</label>
                 <input
@@ -66,6 +66,7 @@
             <img src="{{ url_for('static', filename='images/Admin/doctor checkup.png') }}" />
           </div>
         </div>
+        <!-- DAFTAR PERAWAT -->
         <section class="list-nurse">
           <h2>Daftar Perawat</h2>
           <table class="nurse-table">
@@ -78,37 +79,19 @@
             </thead>
 
             <tbody>
+              {% for data in perawat %}
               <tr>
-                <td>001</td>
-                <td>Nina Pratiwi</td>
-                <td>perawat_nina</td>
-                <td>nina123</td>
-                <td><button type="button" class="edit-button">Edit</button></td>
+                <td>{{ data['id_perawat'] }}</td>
+                <td>{{ data['nama'] }}</td>
+                <td>{{ data['username'] }}</td>
+                <td>{{ data['passwords'] }}</td>
+                <td>
+                <a href="/Admin/KelolaPerawat/EditPerawat?id_user={{ data['id_user'] }}">
+                    <button type="button" class="edit-button">Edit</button>
+                  </a>
+                </td>
               </tr>
-
-              <tr>
-                <td>002</td>
-                <td>Budi Santoso</td>
-                <td>perawat_budi</td>
-                <td>budi456</td>
-                <td><button type="button" class="edit-button">Edit</button></td>
-              </tr>
-
-              <tr>
-                <td>003</td>
-                <td>Ika Nuraini</td>
-                <td>perawat_ika</td>
-                <td>ikapass</td>
-                <td><button type="button" class="edit-button">Edit</button></td>
-              </tr>
-
-              <tr>
-                <td>004</td>
-                <td>Yusuf Aditya</td>
-                <td>perawat_yusuf</td>
-                <td>yusuf123</td>
-                <td><button type="button" class="edit-button">Edit</button></td>
-              </tr>
+              {% endfor %}
             </tbody>
           </table>
         </section>
