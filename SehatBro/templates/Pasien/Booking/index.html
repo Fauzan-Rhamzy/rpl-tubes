@@ -109,7 +109,6 @@
 
         doctorCard.innerHTML = `
         <h3>${doctor.name}</h3>
-        <p>Spesialis: ${doctor.specialization}</p>
         <button onclick="selectSchedule('${doctor.name}')">Pilih Jadwal</button>
         `;
 
@@ -150,10 +149,25 @@
       document.getElementById("booking-btn").style.display = "inline-block"; // Menampilkan tombol booking
     }
 
-    function bookAppointment() {
-      alert("Anda berhasil melakukan booking dengan ${selectedDoctor.name} pada jadwal ${selectedSchedule}.");
-      // Data booking dapat dikirim ke server di sini
+    async function bookAppointment(username, selectedSchedule, idJadwal) {
+    try {
+        const response = await fetch('/api/book_appointment', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username: username, idJadwal: idJadwal })
+        });
+
+        const result = await response.json();
+        if (result.success) {
+            alert(`Anda berhasil melakukan booking dengan jadwal ${selectedSchedule}. Nomor antrian Anda adalah ${result.nomor_antrian}.`);
+        } else {
+            alert(result.message);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Terjadi kesalahan saat melakukan booking.');
     }
+}
   </script>
 </body>
 
