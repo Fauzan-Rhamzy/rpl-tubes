@@ -73,6 +73,10 @@
     background-color: #3b9ab8;
   }
   
+  #nav-homepage a {
+    color: white;
+  }
+  
   .link-active {
     color: white;
   }

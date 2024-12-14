@@ -5,6 +5,7 @@ from flask import Flask, render_template, request, redirect, url_for, json, sess
 from psycopg2.extras import DictCursor
 from werkzeug.utils import secure_filename
 from flask import flash
+from flask import send_from_directory
 
 load_dotenv()
 app = Flask(__name__)
@@ -16,6 +17,11 @@ app.secret_key = 'your_secret_key'
 # Konfigurasi folder upload
 app.config['UPLOAD_FOLDER'] = os.path.join(os.getcwd(), 'uploads')  # Lokasi folder upload
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)  # Pastikan folder ada
+
+# Route to serve uploaded files
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 @app.route('/')
 def home():
@@ -30,14 +36,27 @@ def login():
         if not username or not password:
             flash('Username and password are required.', 'danger')
             return render_template('LoginPage/index.html')
-
         try:
-            cursor.execute(
-                "SELECT * FROM users WHERE username = %s AND passwords = %s",
-                (username, password)
-            )
+            cursor.execute("""
+            SELECT 
+                *
+            FROM 
+                Users u
+            LEFT JOIN 
+                Pasien p ON u.ID_User = p.ID_User
+            LEFT JOIN 
+                Perawat pr ON u.ID_User = pr.ID_User
+            LEFT JOIN
+                Dokter d ON u.ID_User = d.ID_User
+            LEFT JOIN
+                Admins a ON u.ID_User = a.ID_User
+            LEFT JOIN
+                petugas_administrasi pa ON u.ID_User = pa.ID_User
+            WHERE 
+                u.Username = %s AND u.Passwords = %s
+            """, (username, password))
             user = cursor.fetchone()
-
+            print(f"Hasil query login di Flask: {user}")  # Log hasil query
             if user:
                 session['user_id'] = user['id_user']
                 session['username'] = user['username']
@@ -45,23 +64,32 @@ def login():
                 session['nama'] = user['nama']
 
                 # Tambahkan id_perawat ke sesi jika role adalah Perawat
-                if user['roles'] == 'Perawat' and user['id_perawat']:
-                    session['id_perawat'] = user['id_perawat']
-                    print(f"ID Perawat dimuat ke sesi: {session['id_perawat']}")
-                else:
-                    session['id_perawat'] = None
+                # if user['roles'] == 'Perawat' and user['id_perawat']:
+                #     session['id_perawat'] = user['id_perawat']
+                #     print(f"ID Perawat dimuat ke sesi: {session['id_perawat']}")
+                # else:
+                #     session['id_perawat'] = None
 
-                    flash(f"Welcome, {user['nama']}!", 'success')
+                #     flash(f"Welcome, {user['nama']}!", 'success')
 
                 # Redirect berdasarkan role
-                if user['roles'] == 'Pasien':
+                if user['roles'] == 'Pasien' and user['nomor_rekam_medis']:
+                    session['nomor_rekam_medis'] = user['nomor_rekam_medis']
                     return redirect(url_for('homepage'))
-                elif user['roles'] == 'Dokter':
+                
+                elif user['roles'] == 'Dokter' and user['npa']:
+                    session['npa'] = user['npa']
+                    session['spesialisasi'] = user['spesialisasi']
                     return redirect(url_for('homepageDokter'))
-                elif user['roles'] == 'Admin':
+                
+                elif user['roles'] == 'Admin' and user['id_admin']:
+                    session['id_admin'] = user['id_admin']
                     return redirect(url_for('homepageAdmin'))
-                elif user['roles'] == 'Perawat':
+                
+                elif user['roles'] == 'Perawat' and user['id_perawat']:
+                    session['id_perawat'] = user['id_perawat']
                     return redirect(url_for('homepagePerawat'))
+
                 else:
                     flash('Role is not supported for this login.', 'danger')
                     return redirect(url_for('login'))
@@ -488,25 +516,186 @@ def detailPasien():
 @app.route('/Dokter')
 def homepageDokter():
     if 'role' in session and session['role'] == 'Dokter':
+        print("Selamat datang dokter")
+        # try:
+        #     # Query total pasien hari ini
+        #     cursor.execute("SELECT COUNT(*) FROM buat_janji WHERE tanggal_janji = CURRENT_DATE")
+        #     total_pasien_hari_ini = cursor.fetchone()[0]
+
+        #     # Query total pasien bulan ini
+        #     cursor.execute("""
+        #         SELECT COUNT(*) FROM buat_janji 
+        #         WHERE 
+        #         AND EXTRACT(YEAR FROM tanggal_janji) = EXTRACT(YEAR FROM CURRENT_DATE)
+        #     """)
+        #     total_pasien_bulan_ini = cursor.fetchone()[0]
+        # except Exception as e:
+        #     flash(f"An error occurred: {str(e)}", 'danger')
+        #     total_pasien_hari_ini = 0
+        #     total_pasien_bulan_ini = 0  # Default jika query gagal
+
+        # return render_template(
+        #     "Perawat/index.html",
+        #     nama=session.get('nama'),
+        #     total_pasien_hari_ini=total_pasien_hari_ini,
+        #     total_pasien_bulan_ini=total_pasien_bulan_ini
+        # )
+        # totalPasien = 
         return render_template("Dokter/Homepage/index.html", nama=session.get('nama'))
+    
     flash("Unauthorized access. Please log in.", "danger")
     return redirect(url_for('login'))
 
 @app.route('/Dokter/JanjiTemu')
 def janjiTemu():
-    return render_template("Dokter/JanjiTemu/janjiTemu.html")
+    if 'role' in session and session['role'] == 'Dokter':
+        cursor.execute("""
+            select * from buat_janji bj join jadwal_dokter j on bj.id_jadwal=j.id_jadwal join dokter d on d.npa=j.npa
+            join pasien p on p.nomor_rekam_medis=bj.nomor_rekam_medis join users u on u.id_user=p.id_user
+            where d.npa=%s
+        """, (session.get('npa'),))
+        list=cursor.fetchall()
+        return render_template("Dokter/JanjiTemu/janjiTemu.html", list=list, npa=session.get('npa'))
+    
+    flash("Unauthorized access. Please log in as a doctor.", 'danger')
+    return redirect(url_for('login'))
 
-@app.route('/Dokter/JanjiTemu/CekPasien')
+@app.route('/Dokter/JanjiTemu/CekPasien', methods=['GET', 'POST'])
 def cekPasien():
-    return render_template("Dokter/CekPasien/cekPasien.html")
+    if 'role' in session and session['role'] == 'Dokter':
+        session['nrm'] = request.args.get('nomor_rekam_medis')
+        nomor_rekam_medis = session['nrm']
+        print(nomor_rekam_medis)
+        if nomor_rekam_medis:
+            cursor.execute("""
+            select 
+                u.nama as nama,
+                bj.id_janji as id_janji,
+                bj.tanggal_janji as tanggal_janji,
+                bj.nomor_antrian as nomor_antrian,
+                j.id_jadwal as id_jadwal,
+                j.hari as hari,
+                d.npa as npa,
+                d.spesialisasi as spesialisasi,
+                p.nomor_rekam_medis as nomor_rekam_medis,
+                c.tekanan_darah as tekanan_darah,
+                c.tinggi_badan as tinggi_badan,
+                c.berat_badan as berat_badan,
+                c.suhu_badan as suhu_badan,
+                c.keluhan as keluhan
+            from 
+                buat_janji bj join jadwal_dokter j on bj.id_jadwal=j.id_jadwal 
+                join dokter d on d.npa=j.npa
+                join pasien p on p.nomor_rekam_medis=bj.nomor_rekam_medis 
+                join users u on u.id_user=p.id_user
+                join catatan_vital c on c.nomor_rekam_medis=bj.nomor_rekam_medis
+                where p.nomor_rekam_medis=%s
+            """, (nomor_rekam_medis,))
+            
+            pasien=cursor.fetchone()
+            return render_template("Dokter/CekPasien/cekPasien.html", pasien=pasien)
+    
+    flash("Unauthorized access. Please log in as a doctor.", 'danger')
+    return redirect(url_for('login'))
 
-@app.route('/Dokter/JanjiTemu/CekPasien/BuatDiagnosa')
+
+@app.route('/Dokter/JanjiTemu/BuatDiagnosa', methods=['GET', 'POST'])
 def buatDiagnosa():
-    return render_template("Dokter/BuatDiagnosa/buatDiagnosa.html")
+    if 'role' in session and session['role'] == 'Dokter':
+        session['nrm'] = request.args.get('nomor_rekam_medis')
+        nomor_rekam_medis = session['nrm']
+        print(nomor_rekam_medis)
 
-@app.route('/Dokter/JanjiTemu/CekPasien/RiwayatMedis')
+        if request.method == 'POST':
+            catatan = request.form['catatan']
+            cursor.execute("""
+                INSERT INTO diagnosa (keterangan, nomor_rekam_medis, npa)
+                VALUES (%s, %s, %s) 
+            """, (catatan, session['nrm'], session['npa'],))
+            connection.commit()
+            print("Catatan sukses")
+            return redirect(url_for('janjiTemu'))
+
+        if nomor_rekam_medis:
+            cursor.execute("""
+            select 
+                u.nama as nama,
+                bj.id_janji as id_janji,
+                bj.tanggal_janji as tanggal_janji,
+                bj.nomor_antrian as nomor_antrian,
+                j.id_jadwal as id_jadwal,
+                j.hari as hari,
+                d.npa as npa,
+                d.spesialisasi as spesialisasi,
+                p.nomor_rekam_medis as nomor_rekam_medis,
+                c.tekanan_darah as tekanan_darah,
+                c.tinggi_badan as tinggi_badan,
+                c.berat_badan as berat_badan,
+                c.suhu_badan as suhu_badan,
+                c.keluhan as keluhan,
+                p.kontak as kontak
+            from 
+                buat_janji bj join jadwal_dokter j on bj.id_jadwal=j.id_jadwal 
+                join dokter d on d.npa=j.npa
+                join pasien p on p.nomor_rekam_medis=bj.nomor_rekam_medis 
+                join users u on u.id_user=p.id_user
+                join catatan_vital c on c.nomor_rekam_medis=bj.nomor_rekam_medis
+                where p.nomor_rekam_medis=%s
+            """, (nomor_rekam_medis,))
+            
+            pasien=cursor.fetchone()
+
+            return render_template("Dokter/BuatDiagnosa/buatDiagnosa.html", pasien=pasien, dokter = session)
+    
+    flash("Unauthorized access. Please log in as a doctor.", 'danger')
+    return redirect(url_for('login'))
+
+@app.route('/Dokter/JanjiTemu/RiwayatMedis')
 def riwayatMedis():
-    return render_template("Dokter/RiwayatMedis/riwayatMedis.html")
+    if 'role' in session and session['role'] == 'Dokter':
+        session['nrm'] = request.args.get('nomor_rekam_medis')
+        nomor_rekam_medis = session['nrm']
+        print(nomor_rekam_medis)
+        if nomor_rekam_medis:
+            cursor.execute("""
+            select 
+                u.nama as nama,
+                bj.id_janji as id_janji,
+                bj.tanggal_janji as tanggal_janji,
+                bj.nomor_antrian as nomor_antrian,
+                j.id_jadwal as id_jadwal,
+                j.hari as hari,
+                d.npa as npa,
+                d.spesialisasi as spesialisasi,
+                p.nomor_rekam_medis as nomor_rekam_medis,
+                c.tekanan_darah as tekanan_darah,
+                c.tinggi_badan as tinggi_badan,
+                c.berat_badan as berat_badan,
+                c.suhu_badan as suhu_badan,
+                c.keluhan as keluhan,
+                f.id_file as id_file,
+                f.file_path
+            from 
+                buat_janji bj join jadwal_dokter j on bj.id_jadwal=j.id_jadwal 
+                left join dokter d on d.npa=j.npa
+                left join pasien p on p.nomor_rekam_medis=bj.nomor_rekam_medis 
+                left join users u on u.id_user=p.id_user
+                left join catatan_vital c on c.nomor_rekam_medis=bj.nomor_rekam_medis
+                left join files_riwayatmedis f on f.nomor_rekam_medis=bj.nomor_rekam_medis
+                where bj.nomor_rekam_medis=%s
+            """, (nomor_rekam_medis,))
+            
+            pasien=cursor.fetchone()
+
+            cursor.execute("""
+                SELECT * FROM Files_RiwayatMedis WHERE nomor_Rekam_medis=%s ORDER BY Upload_Date DESC LIMIT 1
+            """, (session['nrm'],))
+            file = cursor.fetchone()
+            file_path = file['file_path'] if file else None
+            return render_template("Dokter/RiwayatMedis/riwayatMedis.html", pasien=pasien, file_path=file_path)
+    
+    flash("Unauthorized access. Please log in as a doctor.", 'danger')
+    return redirect(url_for('login'))
 
 ####################################################################
 
@@ -617,17 +806,19 @@ def uploadDokumen():
                 return redirect(url_for('uploadDokumen'))
 
             filename = secure_filename(file.filename)
-            filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            filepath = os.path.join('uploads', filename)
 
             try:
                 # Simpan file ke folder uploads
                 file.save(filepath)
 
                 # Simpan metadata ke tabel Files_RiwayatMedis
+                print("Inserting to database:", (filename, filepath, id_perawat, nomor_rekam_medis))
                 cursor.execute("""
                     INSERT INTO Files_RiwayatMedis (File_Name, File_Path, id_perawat, nomor_rekam_medis)
                     VALUES (%s, %s, %s, %s)
                 """, (filename, filepath, id_perawat, nomor_rekam_medis))
+                print("Berhasil upload")
                 connection.commit()
 
                 flash('Dokumen berhasil diunggah.', 'success')

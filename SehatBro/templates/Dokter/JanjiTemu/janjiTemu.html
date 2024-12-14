@@ -22,10 +22,6 @@
               <img src="{{ url_for('static', filename='images/Dokter/calendar-tick.png') }}" />
               <a href="{{ url_for('janjiTemu') }}">Janji Temu</a>
             </li>
-            <li id="nav-profile">
-              <img src="{{ url_for('static', filename='images/Dokter/profile-circle.png') }}" />
-              <a href="#profile">Profile</a>
-            </li>
             <li id="nav-logout">
               <img src="{{ url_for('static', filename='images/Dokter/logout.png') }}" />
               <a href="{{ url_for('logout') }}">Logout</a>
@@ -52,28 +48,21 @@
               <thead>
                 <tr>
                   <th>Nama</th>
-                  <th>Umur</th>
+                  <th>Nomor Rekam Medis</th>
                 </tr>
               </thead>
               <tbody>
+                {% for pasien in list %}
                 <tr>
-                  <td>Pasien 1</td>
-                  <td>20 Tahun</td>
+                  <td>{{ pasien['nama'] }}</td>
+                  <td>{{ pasien['nomor_rekam_medis'] }}</td>
                   <td>
-                    <a href="{{ url_for('cekPasien') }}">                      
+                    <a href="{{ url_for('cekPasien', nomor_rekam_medis=pasien['nomor_rekam_medis']) }}">                      
                       <button class="btn-cek-sekarang">Cek Sekarang</button>
                     </a>
                   </td>
                 </tr>
-                <tr>
-                  <td>Pasein 2</td>
-                  <td>6 Tahun</td>
-                  <td>
-                    <a href="cekPasien.html">
-                      <button class="btn-cek-sekarang">Cek Sekarang</button>
-                    </a>
-                  </td>
-                </tr>
+                {% endfor %}
               </tbody>
             </table>
           </section>  

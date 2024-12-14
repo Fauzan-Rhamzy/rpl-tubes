@@ -18,15 +18,15 @@
           <ul>
             <li id="nav-homepage">
               <img src="{{ url_for('static', filename='images/Dokter/vital-black.png') }}" />
-              <a href="{{ url_for('cekPasien') }}">Catatan Vital</a>
+              <a href="{{ url_for('cekPasien', nomor_rekam_medis=pasien['nomor_rekam_medis']) }}">Catatan Vital</a>
             </li>
             <li id="nav-booking">
               <img src="{{ url_for('static', filename='images/Dokter/document-black.png') }}" />
-              <a href="{{ url_for('riwayatMedis') }}">Riwayat Medis</a>
+              <a href="{{ url_for('riwayatMedis', nomor_rekam_medis=pasien['nomor_rekam_medis']) }}">Riwayat Medis</a>
             </li>
             <li id="nav-profile">
               <img src="{{ url_for('static', filename='images/Dokter/diagnosa-whitepng.png') }}" />
-              <a href="{{ url_for('buatDiagnosa') }}" id="link-homepage">Buat Diagnosa</a>
+              <a href="{{ url_for('buatDiagnosa', nomor_rekam_medis=pasien['nomor_rekam_medis']) }}" id="link-homepage">Buat Diagnosa</a>
             </li>
             <li id="nav-logout">
               <img src="{{ url_for('static', filename='images/Dokter/logout.png') }}" />
@@ -44,25 +44,25 @@
         </header>
 
         <!-- form catatan -->
-        <form action="" >
+        <form action="" method="POST">
             <section id="homepage" class="content-section">
-                    Nomor Pasien: 
-                    <h2>
-                        <span>
-                            #121
-                        </span>
-                    </h2>
-                    <hr>
+              Nomor Janji Temu: 
+              <h2>
+                <span>
+                  {{ pasien['id_janji'] }}
+                </span>
+              </h2>
+              <hr>
                 <div class="feature-cards">
                     <div class="card">
                         <table>
                             <tr>
                                 <td>Nama: </td>
-                                <td>Fauzi. S</td>
+                                <td>{{pasien['nama']}}</td>
                             </tr>
                             <tr>
                                 <td>ID: </td>
-                                <td>12121212121</td>
+                                <td> {{ pasien['nomor_rekam_medis'] }} </td>
                             </tr>
                             <tr>
                                 <td>Tanggal: </td>
@@ -70,15 +70,15 @@
                             </tr>
                             <tr>
                                 <td>Nomor Telepon: </td>
-                                <td>0811111</td>
+                                <td>{{ pasien['kontak']}}</td>
                             </tr>
                             <tr>
                                 <td>Dama dokter: </td>
-                                <td>Nama dokter</td>
+                                <td>{{ dokter['nama']}}</td>
                             </tr>
                             <tr>
-                                <td>Spesialis: </td>
-                                <td>Jantung</td>
+                                <td>Spesialisasi: </td>
+                                <td>{{ pasien['spesialisasi'] }}</td>
                             </tr>
                         </table>
                     </div>
