@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles/Booking/bookingStyle.css') }}"
+    />
+    <title>Booking Dokter</title>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="logo">
+          <h1>Klinik SehatBro.</h1>
+        </div>
+        <nav>
+          <ul>
+            <li id="nav-homepage">
+              <img
+                src="{{ url_for('static', filename='images/Booking/home-gray.png') }}"
+              />
+              <a href="{{ url_for('homepage') }}" id="link-homepage"
+                >Homepage</a
+              >
+            </li>
+            <li id="nav-booking">
+              <img
+                src="{{ url_for('static', filename='images/Booking/calendar-add-white.png') }}"
+              />
+              <a href="#">Booking</a>
+            </li>
+            <li id="nav-jadwal">
+              <img
+                src="{{ url_for('static', filename='images/Booking/calendar-tick-gray.png') }}"
+              />
+              <a href="{{ url_for('jadwaltemu') }}">Jadwal Temu</a>
+            </li>
+            <li id="nav-tagihan">
+              <img
+                src="{{ url_for('static', filename='images/Booking/receipt-text.png') }}"
+              />
+              <a href="{{ url_for('tagihan') }}">Tagihan</a>
+            </li>
+            <li id="nav-profile">
+              <img
+                src="{{ url_for('static', filename='images/Booking/profile-circle.png') }}"
+              />
+              <a href="{{ url_for('profile') }}">Profile</a>
+            </li>
+            <li id="nav-logout">
+              <img
+                src="{{ url_for('static', filename='images/Booking/logout.png') }}"
+              />
+              <a href="{{ url_for('login') }}">Logout</a>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <header>
+          <h1>Booking Dokter</h1>
+        </header>
+
+        <!-- Pilih Spesialisasi -->
+        <section id="specialization-selection">
+          <h2>Pilih Spesialisasi Dokter</h2>
+          <select id="specialization" onchange="showDoctors()">
+            <option value="" disabled selected>Pilih Spesialisasi</option>
+            {% for specialization in specializations %}
+            <option value="{{ specialization }}">{{ specialization }}</option>
+            {% endfor %}
+          </select>
+        </section>
+
+        <section id="doctor-list" style="display: none">
+          <h2>Daftar Dokter</h2>
+          <div id="doctors">
+            {% for specialization, doctors in doctors_data.items() %}
+            <div
+              class="specialization"
+              id="specialization-{{ specialization }}"
+            >
+              {% for doctor_name, data in doctors.items() %}
+              <div class="doctor-card">
+                <h3>{{ doctor_name }}</h3>
+                <p>Spesialisasi: {{ specialization }}</p>
+                <button
+                  onclick="showSchedule('{{ specialization }}', '{{ doctor_name }}')"
+                >
+                  Pilih Jadwal
+                </button>
+              </div>
+              {% endfor %}
+            </div>
+            {% endfor %}
+          </div>
+        </section>
+
+        <section id="schedule-section" style="display: none">
+          <h2>Pilih Jadwal</h2>
+          <table id="schedule-table">
+            <thead>
+              <tr>
+                <th>Hari</th>
+                <th>Jam Mulai</th>
+                <th>Jam Selesai</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="schedule-body">
+              <!-- Jadwal dokter akan diisi melalui JavaScript -->
+            </tbody>
+          </table>
+        </section>
+      </main>
+    </div>
+
+    <footer>
+      <p>&copy; 2024 Klinik SehatBro. | All Rights Reserved</p>
+    </footer>
+
+    <script>
+            const doctorsData = {{ doctors_data|tojson }};
+
+      function showSchedule(specialization, doctorName) {
+        const scheduleSection = document.getElementById("schedule-section");
+        const scheduleBody = document.getElementById("schedule-body");
+
+        // Cari jadwal dokter berdasarkan spesialisasi dan nama dokter
+        const schedules = doctorsData[specialization][doctorName].schedules;
+
+        // Kosongkan tabel sebelumnya
+        scheduleBody.innerHTML = "";
+
+        // Tampilkan jadwal dalam tabel
+        schedules.forEach((schedule) => {
+          const row = document.createElement("tr");
+
+          row.innerHTML = `
+            <td>${schedule.day}</td>
+            <td>${schedule.start_time}</td>
+            <td>${schedule.end_time}</td>
+            <td>
+              <button onclick="confirmBooking(${schedule.id_jadwal})">Booking</button>
+            </td>
+          `;
+
+          scheduleBody.appendChild(row);
+        });
+
+        // Tampilkan tabel jadwal
+        scheduleSection.style.display = "block";
+      }
+
+      async function confirmBooking(idJadwal) {
+        const response = await fetch('/api/confirm_booking', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ idJadwal }),
+        });
+
+        const result = await response.json();
+        if (result.success) {
+          alert(`Booking berhasil! Nomor antrian Anda: ${result.nomor_antrian}`);
+        } else {
+          alert(`Gagal booking: ${result.message}`);
+        }
+      }
+    </script>
+  </body>
+</html>
