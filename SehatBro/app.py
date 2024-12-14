@@ -1,7 +1,7 @@
 import os
 import psycopg2
 from dotenv import load_dotenv
-from flask import Flask, render_template, request, redirect, url_for, json, session, flash, jsonify
+from flask import Flask, render_template, request, redirect, url_for, json, session, flash, jsonify, send_from_directory
 from psycopg2.extras import DictCursor
 from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta
@@ -14,16 +14,21 @@ connection = psycopg2.connect(url)
 # cursor = connection.cursor()
 cursor = connection.cursor(cursor_factory=DictCursor)  # Use DictCursor
 
+
 app.secret_key = 'your_secret_key'
 # Konfigurasi folder upload
 app.config['UPLOAD_FOLDER'] = os.path.join(os.getcwd(), 'uploads')  # Lokasi folder upload
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)  # Pastikan folder ada
 
-# @app.route('/', methods=['GET', 'POST'])
-# def login():
-#     if request.method == 'POST':
-#         return redirect(url_for('homepage'))
-#     return render_template("LoginPage/index.html")
+# Route to serve uploaded files
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
+# homepage umum
+@app.route('/')
+def home():
+    return render_template('LandingPage/index.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -131,7 +136,7 @@ def jadwaltemu():
         history_appointments = cursor.fetchall()
 
         return render_template(
-            'jadwaltemu.html',
+            'Pasien/JadwalTemu/index.html',
             upcoming_appointments=upcoming_appointments,
             history_appointments=history_appointments
         )
@@ -143,112 +148,131 @@ def jadwaltemu():
 
 @app.route('/Booking', methods=['GET', 'POST'])
 def booking():
-    # Query untuk mengambil data dokter dan jadwal dari database
-    cursor.execute("""
-    SELECT 
-    d.Spesialisasi AS specialization,
-    u.Nama AS doctor_name,
-    ARRAY_AGG(CONCAT(j.Hari, ' ', TO_CHAR(j.Jam_Mulai, 'HH24:MI'), '-', TO_CHAR(j.Jam_Selesai, 'HH24:MI'))) AS schedule
-    FROM 
-    Dokter d
-    JOIN 
-    Users u ON d.ID_User = u.ID_User
-    JOIN 
-    Jadwal_Dokter j ON d.NPA = j.NPA
-    GROUP BY 
-    d.Spesialisasi, u.Nama
-    """)
-    result = cursor.fetchall()
-
-    # Format data sesuai dengan struktur yang diinginkan dan ubah spesialisasi menjadi lowercase
-    doctors_data = {}
-    for specialization, doctor_name, schedule in result:
-        specialization = specialization.lower()  # Mengubah spesialisasi menjadi lowercase
-        if specialization not in doctors_data:
-            doctors_data[specialization] = []
-        doctors_data[specialization].append({
-            "name": doctor_name,
-            "schedule": schedule
-        })
-
-    # Kirim data sebagai string JSON yang sudah diformat ke template
-    return render_template("Pasien/Booking/index.html", doctors_data=doctors_data)
-
-@app.route('/api/book_appointment', methods=['POST'])
-def book_appointment():
-    data = request.json
-    username = data.get('username')
-    id_jadwal = data.get('idJadwal')
-
-    # Validasi input
-    if not username or not id_jadwal:
-        return jsonify({"success": False, "message": "Data tidak lengkap."}), 400
-
-    # Dapatkan tanggal hari ini dan minggu depan
-    today = datetime.now()
-    start_next_week = today + timedelta(days=(7 - today.weekday()))
-    end_next_week = start_next_week + timedelta(days=6)
-
-    # Validasi jadwal berada dalam minggu ini atau minggu depan
-    cursor.execute("SELECT Hari, Kuota_Pasien FROM Jadwal_Dokter WHERE ID_Jadwal = %s", (id_jadwal,))
-    jadwal = cursor.fetchone()
-    if not jadwal:
-        return jsonify({"success": False, "message": "Jadwal tidak ditemukan."}), 404
-
-    hari, kuota_pasien = jadwal
-    target_date = get_date_for_day(hari, today, start_next_week)
-    if not target_date or target_date > end_next_week.date():
-        return jsonify({"success": False, "message": "Jadwal di luar periode booking."}), 400
-
-    # Cek kuota pasien
-    if kuota_pasien <= 0:
-        return jsonify({"success": False, "message": "Kuota pasien sudah penuh."}), 400
-
-    # Dapatkan Nomor Rekam Medis pasien berdasarkan username
-    cursor.execute("SELECT Nomor_Rekam_Medis FROM Pasien JOIN Users ON Pasien.ID_User = Users.ID_User WHERE Users.Username = %s", (username,))
-    pasien = cursor.fetchone()
-    if not pasien:
-        return jsonify({"success": False, "message": "Pasien tidak ditemukan."}), 404
-
-    nomor_rekam_medis = pasien[0]
-
-    # Tentukan nomor antrian berdasarkan jumlah janji pada tanggal tersebut
-    cursor.execute("SELECT COUNT(*) FROM Buat_Janji WHERE Tanggal_Janji = %s AND ID_Jadwal = %s", (target_date, id_jadwal))
-    nomor_antrian = cursor.fetchone()[0] + 1
-
-    # Masukkan data ke tabel Buat_Janji
-    cursor.execute("""
-        INSERT INTO Buat_Janji (Tanggal_Janji, Nomor_Rekam_Medis, ID_Jadwal, Nomor_Antrian)
-        VALUES (%s, %s, %s, %s)
-    """, (target_date, nomor_rekam_medis, id_jadwal, nomor_antrian))
-    connection.commit()
-
-    # Kurangi kuota pasien pada Jadwal_Dokter
-    cursor.execute("UPDATE Jadwal_Dokter SET Kuota_Pasien = Kuota_Pasien - 1 WHERE ID_Jadwal = %s", (id_jadwal,))
-    connection.commit()
-
-    return jsonify({"success": True, "nomor_antrian": nomor_antrian})
-
-def get_date_for_day(hari, today, start_next_week):
-    days = {
-        'Senin': 0, 'Selasa': 1, 'Rabu': 2, 'Kamis': 3, 'Jumat': 4, 'Sabtu': 5, 'Minggu': 6
-    }
-    hari_target = days.get(hari.capitalize())
-    if hari_target is None:
-        return None
-
-    # Tentukan tanggal untuk minggu ini atau minggu depan
-    for week_start in [today, start_next_week]:
-        target_date = week_start + timedelta(days=(hari_target - week_start.weekday()) % 7)
-        if target_date >= today:
-            return target_date.date()
-
-    return None
+    return render_template("Pasien/Booking/index.html")
 
 
 @app.route('/Profile')
 def profile():
-    return render_template("Pasien/Profile/index.html")
+    if 'user_id' not in session or session.get('role') != 'Pasien':
+        flash("Unauthorized access. Please log in.", "danger")
+        return redirect(url_for('login'))
+    user_id = session['user_id']
+
+    # Informasi pasien
+    cursor.execute("""
+            SELECT 
+                u.Nama AS nama_pasien, 
+                p.Alamat AS alamat,
+                p.nomor_rekam_medis,
+                p.tanggal_lahir AS tanggal_lahir,
+                p.gender AS jenis_kelamin,
+                p.kontak AS telepon
+            FROM 
+                Users u
+            JOIN 
+                Pasien p ON u.ID_User = p.ID_User
+            WHERE 
+                u.ID_User = %s;
+        """, (user_id,))
+    patient_info = cursor.fetchone()
+
+
+    return render_template("Pasien/Profile/index.html", patient_info=patient_info)
+
+@app.route('/Profile/EditProfile', methods=['GET', 'POST'])
+def edit_profile():
+    if request.method == 'POST':
+        user_id = session['user_id']
+        if not user_id:
+            flash("Anda harus login untuk mengedit profil.", 'danger')
+            return redirect(url_for('login'))
+
+        # Ambil data dari form
+        nama = request.form.get('name')
+        username = request.form.get('username')
+        password = request.form.get('password')
+        alamat = request.form.get('address')
+        gender = request.form.get('gender')
+        tanggal_lahir = request.form.get('birthdate')
+        kontak = request.form.get('phone')
+
+        try:
+            # Update tabel Users
+            if username or password or nama:
+                cursor.execute("""
+                    UPDATE Users
+                    SET
+                        Username = COALESCE(%s, Username),
+                        Passwords = COALESCE(%s, Passwords),
+                        Nama = COALESCE(%s, Nama)
+                    WHERE ID_User = %s
+                """, (username, password, nama, user_id))
+            
+            # Update tabel Pasien
+            if alamat or gender or tanggal_lahir or kontak:
+                cursor.execute("""
+                    UPDATE Pasien
+                    SET
+                        Alamat = COALESCE(%s, Alamat),
+                        Gender = COALESCE(%s, Gender),
+                        Tanggal_Lahir = COALESCE(%s, Tanggal_Lahir),
+                        Kontak = COALESCE(%s, Kontak)
+                    WHERE ID_User = %s
+                """, (alamat, gender, tanggal_lahir, kontak, user_id))
+
+            connection.commit()
+            flash("Profil berhasil diperbarui!", 'success')
+            return redirect(url_for('profile'))
+        except Exception as e:
+            connection.rollback()
+            flash(f"Terjadi kesalahan saat memperbarui profil: {str(e)}", 'danger')
+
+        return redirect(url_for('edit_profile'))
+
+    # GET request: Tampilkan halaman edit profil
+    user_id = session['user_id']
+    if not user_id:
+        flash("Anda harus login untuk mengakses halaman ini.", 'danger')
+        return redirect(url_for('login'))
+
+    try:
+        # Ambil data profil pengguna dari database
+        cursor.execute("""
+            SELECT 
+                u.Nama, u.Username, p.Alamat, p.Gender, 
+                p.Tanggal_Lahir, p.Kontak
+            FROM Users u
+            LEFT JOIN Pasien p ON u.ID_User = p.ID_User
+            WHERE u.ID_User = %s
+        """, (user_id,))
+        user_data = cursor.fetchone()
+    except Exception as e:
+        flash(f"Terjadi kesalahan saat memuat data: {str(e)}", 'danger')
+        user_data = None
+
+    return render_template("Pasien/Profile/editProfile.html", user_data=user_data)
+
+@app.route('/Profile/RiwayatMedis')
+def riwayat_medis():
+    user_id = session['user_id']
+    
+    # File path untuk file riwayat medis
+    cursor.execute("""
+            SELECT p.nomor_rekam_medis
+            FROM Pasien p
+            WHERE p.id_user = %s
+        """, (user_id,))
+    res = cursor.fetchone()
+    nrm = res['nomor_rekam_medis']
+
+    cursor.execute("""
+            SELECT * FROM Files_RiwayatMedis WHERE nomor_Rekam_medis=%s ORDER BY Upload_Date DESC LIMIT 1
+        """, (nrm,))
+    file = cursor.fetchone()
+    file_path = file['file_path'] if file else None
+    
+    return render_template("Pasien/Profile/riwayatMedis.html", file_path=file_path)
+
 
 @app.route('/Tagihan')
 def tagihan():
@@ -319,6 +343,7 @@ def tagihan():
 
 
 ###########################################################
+
 
 # ADMIN ##################################################
 @app.route('/Admin')
@@ -468,9 +493,52 @@ def cekPasien():
 def buatDiagnosa():
     return render_template("Dokter/BuatDiagnosa/buatDiagnosa.html")
 
-@app.route('/Dokter/JanjiTemu/CekPasien/RiwayatMedis')
+@app.route('/Dokter/JanjiTemu/RiwayatMedis')
 def riwayatMedis():
-    return render_template("Dokter/RiwayatMedis/riwayatMedis.html")
+    if 'role' in session and session['role'] == 'Dokter':
+        session['nrm'] = request.args.get('nomor_rekam_medis')
+        nomor_rekam_medis = session['nrm']
+        print(nomor_rekam_medis)
+        if nomor_rekam_medis:
+            cursor.execute("""
+            select 
+                u.nama as nama,
+                bj.id_janji as id_janji,
+                bj.tanggal_janji as tanggal_janji,
+                bj.nomor_antrian as nomor_antrian,
+                j.id_jadwal as id_jadwal,
+                j.hari as hari,
+                d.npa as npa,
+                d.spesialisasi as spesialisasi,
+                p.nomor_rekam_medis as nomor_rekam_medis,
+                c.tekanan_darah as tekanan_darah,
+                c.tinggi_badan as tinggi_badan,
+                c.berat_badan as berat_badan,
+                c.suhu_badan as suhu_badan,
+                c.keluhan as keluhan,
+                f.id_file as id_file,
+                f.file_path
+            from 
+                buat_janji bj join jadwal_dokter j on bj.id_jadwal=j.id_jadwal 
+                left join dokter d on d.npa=j.npa
+                left join pasien p on p.nomor_rekam_medis=bj.nomor_rekam_medis 
+                left join users u on u.id_user=p.id_user
+                left join catatan_vital c on c.nomor_rekam_medis=bj.nomor_rekam_medis
+                left join files_riwayatmedis f on f.nomor_rekam_medis=bj.nomor_rekam_medis
+                where bj.nomor_rekam_medis=%s
+            """, (nomor_rekam_medis,))
+            
+            pasien=cursor.fetchone()
+
+            cursor.execute("""
+                SELECT * FROM Files_RiwayatMedis WHERE nomor_Rekam_medis=%s ORDER BY Upload_Date DESC LIMIT 1
+            """, (session['nrm'],))
+            file = cursor.fetchone()
+            file_path = file['file_path'] if file else None
+            return render_template("Dokter/RiwayatMedis/riwayatMedis.html", pasien=pasien, file_path=file_path)
+    
+    flash("Unauthorized access. Please log in as a doctor.", 'danger')
+    return redirect(url_for('login'))
 
 ####################################################################
 
