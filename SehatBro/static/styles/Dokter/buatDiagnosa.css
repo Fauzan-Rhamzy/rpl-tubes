@@ -69,11 +69,11 @@
     background-color: #3b9bb839;
   }
   
-  #nav-vital {
+  #nav-profile {
     background-color: #3b9ab8;
   }
   
-  .link-active {
+  #link-homepage {
     color: white;
   }
   
@@ -195,3 +195,25 @@
   .btn-rekam:focus {
     outline: 3px solid white; /* Yellow outline on focus */
   }
+
+  /*  */
+.success {
+  background-color: #28a745;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.danger {
+  background-color: #dc3545;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.info {
+  background-color: #17a2b8;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+}

@@ -7,6 +7,8 @@
     <title>Homepage BackAdmin</title>
   </head>
   <body>
+    {% include "flashTemplate.html" %}
+    
     <div class="container">
       <aside class="sidebar">
         <div class="logo">
@@ -78,33 +80,21 @@
                 <tr>
                   <th>ID Pasien</th>
                   <th>Nama Pasien</th>
-                  <th>Dokter</th>
+                  <!-- <th>Dokter</th> -->
                   <th>Tanggal Kunjungan</th>
                   <th>Status Pembayaran</th>
                 </tr>
               </thead>
               <tbody>
+                {% for aktivitas in list %}
                 <tr>
-                  <td>001</td>
-                  <td>Andi</td>
-                  <td>Dr. Agus</td>
-                  <td>05 Des 2024</td>
-                  <td>Lunas</td>
+                  <td>{{ aktivitas['id_pasien'] }}</td>
+                  <td>{{ aktivitas['nama'] }}</td>
+                  <!-- <td>Dr. Agus</td> -->
+                  <td> {{ aktivitas['tanggal_kunjungan'] }} </td>
+                  <td>{{ aktivitas['status_pembayaran'] }}</td>
                 </tr>
-                <tr>
-                  <td>002</td>
-                  <td>Rina</td>
-                  <td>Dr. Bella</td>
-                  <td>04 Des 2024</td>
-                  <td>Belum Lunas</td>
-                </tr>
-                <tr>
-                  <td>003</td>
-                  <td>Joko</td>
-                  <td>Dr. Dodi</td>
-                  <td>03 Des 2024</td>
-                  <td>Lunas</td>
-                </tr>
+                {% endfor %}
               </tbody>
             </table>
           </section>
