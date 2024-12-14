@@ -26,7 +26,7 @@
         <section class="edit-patient">
           <h2>Edit Data Pasien</h2>
 
-          <form id="create-schedule-form" action="#" method="POST">
+          <form id="create-schedule-form" action="{{ url_for('editPasien', id_user=pasien['id_user']) }}" method="POST">
             <div class="left-group">
               <div class="form-group">
                 <label for="patient-name">Nama Pasien</label>
@@ -35,14 +35,16 @@
                   id="patient-name"
                   name="patient-name"
                   placeholder="Ex: Jane Doe"
+                  value="{{pasien['nama']}}"
                 />
               </div>
               <div class="form-group">
                 <label for="patient-gender">Gender</label>
                 <select id="patient-gender" name="patient-gender">
-                  <option value="" disabled selected>-- Pilih Gender --</option>
-                  <option value="man">Laki-laki</option>
-                  <option value="woman">Perempuan</option>
+                  <option value="{{pasien['gender']}}"selected>{{pasien['gender']}}</option>
+                  <option value="" disabled>-- Pilih Gender --</option>
+                  <option value="Laki-laki">Laki-laki</option>
+                  <option value="Perempuan">Perempuan</option>
                 </select>
               </div>
 
@@ -53,6 +55,7 @@
                   id="patient-address"
                   name="patient-address"
                   placeholder="Ex: Jl. Pahlawan No. 3, Jakarta"
+                  value="{{pasien['alamat']}}"
                 />
               </div>
             </div>
@@ -63,6 +66,7 @@
                   type="date"
                   id="patient-birthdate"
                   name="patient-birthdate"
+                  value="{{pasien['tanggal_lahir']}}"
                 />
               </div>
               <div class="form-group">
@@ -72,11 +76,12 @@
                   id="patient-contact"
                   name="patient-contact"
                   placeholder="Ex: 08xxxxxxx"
+                  value="{{pasien['kontak']}}"
                 />
               </div>
             </div>
+            <button type="submit" class="edit-button">Simpan Perubahan</button>
           </form>
-          <button type="submit" class="edit-button">Simpan Perubahan</button>
         </section>
       </main>
     </div>
@@ -85,11 +90,4 @@
       <p>&copy; 2024 Klinik SehatBro. | All Rights Reserved</p>
     </footer>
   </body>
-
-  <script>
-    const editButton = document.querySelector(".edit-button");
-    editButton.addEventListener("click", function () {
-      alert("Perubahan berhasil disimpan!");
-    });
-  </script>
 </html>
