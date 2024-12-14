@@ -23,10 +23,12 @@ os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)  # Pastikan folder ada
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
+# homepage umum
 @app.route('/')
 def home():
     return render_template('LandingPage/index.html')
 
+# login page
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
