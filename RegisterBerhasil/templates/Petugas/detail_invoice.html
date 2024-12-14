@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles/PetugasAdmin/detail_invoice.css') }}"
+    />
+    <title>Invoice</title>
+  </head>
+  <body>
+    <div class="container">
+      <aside class="sidebar">
+        <div class="logo">
+          <h1>Klinik SehatBro.</h1>
+        </div>
+        <nav>
+          <ul>
+            <li id="nav-dashboard">
+              <img
+                src="{{ url_for('static', filename='images/JadwalTemu/home-gray.png') }}"
+              />
+              <a href="{{url_for('dashboardTagihan')}}">Dashboard</a>
+            </li>
+            <li id="nav-daftar">
+              <img
+                src="{{ url_for('static', filename='images/Booking/calendar-add.png') }}"
+              />
+              <a href="{{ url_for('pendaftaranPasien') }}">Daftar Pasien</a>
+            </li>
+            <li id="nav-invoice">
+              <img
+                src="{{ url_for('static', filename='images/Booking/calendar-tick.png') }}"
+              />
+              <a href="{{ url_for('invoice') }}" class="link-active">Invoice</a>
+            </li>
+
+            <li id="nav-logout">
+              <img
+                src="{{ url_for('static', filename='images/Booking/logout.png') }}"
+              />
+              <a href="{{ url_for('login') }}">Logout</a>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+      <main class="main-content">
+        <header>
+          <h1>Invoice Detail</h1>
+        </header>
+
+        <div class="invoice-container">
+          <!-- Informasi Pasien -->
+          <section class="patient-info">
+            <h2>Informasi Pasien</h2>
+
+            <div class="info-container">
+              <div class="left-info">
+                <p><strong>Nomor Rekam Medis:</strong> {{ patient_info[0] }}</p>
+                <p><strong>Nama:</strong> {{ patient_info[1] }}</p>
+              </div>
+
+              <div class="right-info">
+                <p><strong>Tanggal Janji:</strong> {{ patient_info[2] }}</p>
+                <p><strong>Kontak:</strong> {{ patient_info[5] }}</p>
+              </div>
+            </div>
+          </section>
+
+          <!-- Detail Layanan -->
+          <section class="services">
+            <h2>Detail Layanan</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>Dokter</th>
+                  <th>Spesialisasi</th>
+                  <th>Tarif (Rp)</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for service in services %}
+                <tr>
+                  <td>{{ service[0] }}</td>
+                  <!-- Nama Dokter -->
+                  <td>{{ service[1] }}</td>
+                  <!-- Spesialisasi -->
+                  <td>{{ "{:,.2f}".format(service[2]) }}</td>
+                  <!-- Tarif -->
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </section>
+
+          <!-- Total Pembayaran -->
+          <section class="total-payment">
+            <h2>Total Pembayaran</h2>
+            <p>
+              <strong>Total:</strong> Rp {{ "{:,.2f}".format(total_payment) }}
+            </p>
+          </section>
+
+          <form action="{{ url_for('mark_as_paid') }}" method="POST">
+            <input
+              type="hidden"
+              name="id_transaksi"
+              value="{{ transaction_id }}"
+            />
+            <button type="submit" class="btn-mark-paid">Tandai Lunas</button>
+          </form>
+        </div>
+      </main>
+    </div>
+
+    <footer>
+      <p>&copy; 2024 Klinik SehatBro. | All Rights Reserved</p>
+    </footer>
+  </body>
+</html>

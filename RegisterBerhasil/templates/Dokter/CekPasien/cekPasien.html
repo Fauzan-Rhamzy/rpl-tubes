@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/Dokter/cekPasien.css') }}" />
+    <title>Cek Pasien</title>
+  </head>
+  <body>
+    <div class="container">
+      <aside class="sidebar">
+        <div class="logo">
+          <h1>Klinik SehatBro.</h1>
+        </div>
+        <nav>
+          <ul>
+            <li id="nav-homepage">
+              <img src="{{ url_for('static', filename='images/Dokter/vital-white.png') }}" />
+              <a href="{{ url_for('cekPasien') }}" id="link-homepage">Catatan Vital</a>
+              </li>
+            <li id="nav-booking">
+              <img src="{{ url_for('static', filename='images/Dokter/document-black.png') }}" />
+              <a href="{{ url_for('riwayatMedis') }}">Riwayat Medis</a>
+            </li>
+            <li id="nav-profile">
+              <img src="{{ url_for('static', filename='images/Dokter/diagnosa-black.png') }}" />
+              <a href="{{ url_for('buatDiagnosa') }}">Buat Diagnosa</a>
+            </li>
+            <li id="nav-logout">
+              <img src="{{ url_for('static', filename='images/Dokter/logout.png') }}" />
+              <a href="{{ url_for('janjiTemu') }}">Kembali</a>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+      <main class="main-content">
+        <header>
+          <h1>Vital dan Keluhan Pasien</h1>
+        </header>
+
+        <section id="homepage" class="content-section">
+            Nomor Pasien: 
+            <h2>
+                <span>
+                    #121
+                </span>
+            </h2>
+            <hr>
+            <div class="feature-cards">
+                <div class="card">
+                    <table>
+                        <tr>
+                            <td>Nama: </td>
+                            <td>Fauzi. S</td>
+                        </tr>
+                        <tr>
+                            <td>ID: </td>
+                            <td>12121212121</td>
+                        </tr>
+                        <tr>
+                            <td>Suhu Badan: </td>
+                            <td>40 C</td>
+                        </tr>
+                        <tr>
+                            <td>Berat Badan: </td>
+                            <td>70 Kg</td>
+                        </tr>
+                        <tr>
+                            <td>Tekanan Darah: </td>
+                            <td>1380.8 mmHG</td>
+                        </tr>
+                        <tr>
+                            <td>Tinggi Badan: </td>
+                            <td>175 cm</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </section>
+        <section id="keluhan" class="content-section">
+            <h3>Keluhan Pasien</h3>
+            <div>
+                <span>
+                    Keluhan semua di sini
+                </span>
+            </div>
+        </section>
+      </main>
+    </div>
+
+    <footer>
+      <p>&copy; 2024 Klinik SehatBro. | All Rights Reserved</p>
+    </footer>
+  </body>
+</html>

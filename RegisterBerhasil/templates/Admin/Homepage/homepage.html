@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/Admin/homepage.css') }}" />
+    <title>Homepage BackAdmin</title>
+  </head>
+  <body>
+    <div class="container">
+      <aside class="sidebar">
+        <div class="logo">
+          <h1>Klinik SehatBro.</h1>
+        </div>
+        <nav class="sidenav">
+          <ul>
+            <li id="nav-homepage">
+              <img src="{{ url_for('static', filename='images/Admin/home_white.png') }}" />
+              <a href="{{ url_for('homepageAdmin') }}" id="link-homepage">Dashboard</a>
+            </li>
+            <li id="nav-pekerja" class="dropdown">
+              <img src="{{ url_for('static', filename='images/Admin/person_gray.png') }}" />
+              <a href="#" id="link-pekerja">Kelola Pekerja</a>
+              <ul class="dropdown-menu">
+                <li><a href="{{ url_for('kelolaDokter') }}">Dokter</a></li>
+                <li><a href="{{ url_for('kelolaPerawat') }}">Perawat</a></li>
+                <li><a href="{{ url_for('kelolaPetugas') }}">Petugas Administrasi</a></li>
+              </ul>
+            </li>
+            <li id="nav-pasien">
+              <img src="{{ url_for('static', filename='images/Admin/patient_gray.png') }}" />
+              <a href="{{ url_for('kelolaPasien') }}">Kelola Pasien</a>
+            </li>
+            <li id="nav-logout">
+              <img src="{{ url_for('static', filename='images/Admin/logout.png') }}" />
+              <a href="{{ url_for('logout') }}">Logout</a>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+      <main class="main-content">
+        <section id="homepage" class="content-section">
+          <h1>Selamat datang, BackAdmin!</h1>
+          <p>Berikut adalah rekapan aktivitas klinik:</p>
+
+          <div class="dashboard-cards">
+            <div class="left-cards">
+              <div class="card">
+                <h3>Total Pasien</h3>
+                <p>50 orang</p>
+              </div>
+              <div class="card">
+                <h3>Total Pekerja</h3>
+                <p>30 orang</p>
+              </div>
+            </div>
+            <div class="right-cards">
+              <div class="card">
+                <h3>Total Pembayaran</h3>
+                <p>Rp 5,000,000</p>
+              </div>
+              <div class="card">
+                <h3>Total Jadwal Pasien</h3>
+                <p>50 Jadwal</p>
+              </div>
+            </div>
+
+            <div class="img-card">
+              <!-- <img src="../Assets/Deleting information on computer.png" /> -->
+            </div>
+          </div>
+
+          <section class="recent-activity">
+            <h2>Aktivitas Terbaru</h2>
+            <table class="activity-table">
+              <thead>
+                <tr>
+                  <th>ID Pasien</th>
+                  <th>Nama Pasien</th>
+                  <th>Dokter</th>
+                  <th>Tanggal Kunjungan</th>
+                  <th>Status Pembayaran</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>001</td>
+                  <td>Andi</td>
+                  <td>Dr. Agus</td>
+                  <td>05 Des 2024</td>
+                  <td>Lunas</td>
+                </tr>
+                <tr>
+                  <td>002</td>
+                  <td>Rina</td>
+                  <td>Dr. Bella</td>
+                  <td>04 Des 2024</td>
+                  <td>Belum Lunas</td>
+                </tr>
+                <tr>
+                  <td>003</td>
+                  <td>Joko</td>
+                  <td>Dr. Dodi</td>
+                  <td>03 Des 2024</td>
+                  <td>Lunas</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <footer>
+      <p>&copy; 2024 Klinik SehatBro. | All Rights Reserved</p>
+    </footer>
+  </body>
+</html>
