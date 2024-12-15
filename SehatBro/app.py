@@ -80,7 +80,12 @@ def login():
         try:
             cursor.execute("""
             SELECT 
-                *
+                u.ID_User, u.Username, u.Passwords, u.Roles, u.Nama,
+                p.nomor_rekam_medis AS nomor_rekam_medis,
+                pr.ID_Perawat AS ID_Perawat,
+                d.npa AS npa,
+                a.id_admin AS id_admin,
+                pa.id_petugas_admin AS id_petugas_admin
             FROM 
                 Users u
             LEFT JOIN 
@@ -116,11 +121,13 @@ def login():
                 # Redirect berdasarkan role
                 if user['roles'] == 'Pasien' and user['nomor_rekam_medis']:
                     session['nomor_rekam_medis'] = user['nomor_rekam_medis']
+                    print(f"ID Pasien dimuat ke sesi: {session.get('user_id')}")
                     return redirect(url_for('homepage'))
                 
                 elif user['roles'] == 'Dokter' and user['npa']:
                     session['npa'] = user['npa']
                     session['spesialisasi'] = user['spesialisasi']
+                    print(f"ID Dokter dimuat ke sesi: {session.get('user_id')}")
                     return redirect(url_for('homepageDokter'))
                 
                 # Tambahkan id_perawat ke sesi jika role adalah Perawat
