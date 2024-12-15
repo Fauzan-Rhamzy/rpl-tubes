@@ -84,6 +84,7 @@ def login():
                 p.nomor_rekam_medis AS nomor_rekam_medis,
                 pr.ID_Perawat AS ID_Perawat,
                 d.npa AS npa,
+                d.spesialisasi AS spesialisasi,
                 a.id_admin AS id_admin,
                 pa.id_petugas_admin AS id_petugas_admin
             FROM 
