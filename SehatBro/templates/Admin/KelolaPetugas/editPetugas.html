@@ -8,6 +8,8 @@
 
   </head>
   <body>
+    {% include "flashTemplate.html" %}
+
     <div class="container">
       <aside class="sidebar">
         <div class="logo">
@@ -23,7 +25,7 @@
 
         <section class="add-admin">
           <h2>Tambah Petugas Administrasi Baru</h2>
-          <form id="add-admin-form" action="#" method="POST">
+          <form id="add-admin-form" action="/Admin/KelolaPetugas/EditPetugas?id_user={{ petugas['id_user'] }}" method="POST">
             <div class="form-group">
               <label for="admin-name">Nama Petugas Administrasi</label>
               <input
@@ -31,6 +33,7 @@
                 id="admin-name"
                 name="admin-name"
                 placeholder="Ex: Jane Doe"
+                value="{{ petugas['nama'] }}"
               />
             </div>
 
@@ -41,6 +44,7 @@
                 id="admin-username"
                 name="admin-username"
                 placeholder="Ex: jane_doe"
+                value="{{ petugas['username'] }}"
               />
             </div>
 
@@ -51,6 +55,7 @@
                 id="admin-password"
                 name="admin-password"
                 placeholder="Ex: janedoe1234"
+                value="{{ petugas['passwords'] }}"
               />
             </div>
 

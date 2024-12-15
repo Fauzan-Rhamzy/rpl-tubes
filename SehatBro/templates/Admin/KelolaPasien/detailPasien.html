@@ -8,6 +8,8 @@
 
   </head>
   <body>
+    {% include "flashTemplate.html" %}
+
     <div class="container">
       <aside class="sidebar">
         <div class="logo">
@@ -28,33 +30,33 @@
             <div class="left-detail">
               <div class="detail-group">
                 <p><b>Nomor Rekam Medis</b></p>
-                <p>123445667</p>
+                <p>{{ pasien['nomor_rekam_medis'] }}</p>
               </div>
 
               <div class="detail-group">
                 <p><b>Nama Pasien</b></p>
-                <p>Ahmad Fauzi</p>
+                <p>{{ pasien['nama'] }}</p>
               </div>
 
               <div class="detail-group">
                 <p><b>Gender</b></p>
-                <p>Laki-laki</p>
+                <p>{{ pasien['gender']}}</p>
               </div>
             </div>
             <div class="right-detail">
               <div class="detail-group">
                 <p><b>Alamat</b></p>
-                <p>Jl. Merdeka No. 12, Bandung</p>
+                <p>{{ pasien['alamat'] }}</p>
               </div>
 
               <div class="detail-group">
                 <p><b>Tanggal Lahir</b></p>
-                <p>1990-05-12</p>
+                <p>{{ pasien['tanggal_lahir'] }}</p>
               </div>
 
               <div class="detail-group">
                 <p><b>Kontak</b></p>
-                <p>081234567890</p>
+                <p>{{ pasien['kontak']}}</p>
               </div>
             </div>
           </div>

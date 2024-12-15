@@ -11,6 +11,16 @@
   </head>
 
   <body>
+    {% include "flashTemplate.html" %}
+
+    <div class="container">
+      <!-- Header dengan logo dan tombol Home -->
+      <div class="header">
+        <div class="home-button">
+          <a href="{{ url_for('homepage') }}">Home</a>
+        </div>
+      </div>
+  <body>
     <div class="container">
       <!-- Header dengan logo dan tombol Home -->
       <div class="header">

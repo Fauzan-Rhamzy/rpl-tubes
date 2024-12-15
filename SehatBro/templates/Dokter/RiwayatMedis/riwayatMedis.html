@@ -8,6 +8,8 @@
     <title>Homepage Pasien</title>
   </head>
   <body>
+    {% include "flashTemplate.html" %}
+
     <div class="container">
       <aside class="sidebar">
         <div class="logo">
@@ -17,16 +19,15 @@
           <ul>
             <li id="nav-homepage">
               <img src="{{ url_for('static', filename='images/Dokter/vital-black.png') }}" />
-              <a href="{{ url_for('cekPasien') }}">Catatan Vital</a>
-
+              <a href="{{ url_for('cekPasien', nomor_rekam_medis=pasien['nomor_rekam_medis']) }}">Catatan Vital</a>
             </li>
             <li id="nav-booking">
               <img src="{{ url_for('static', filename='images/Dokter/document-white.png') }}" />
-              <a href="{{ url_for('riwayatMedis') }}" id="link-homepage">Riwayat Medis</a>
+              <a href="{{ url_for('riwayatMedis', nomor_rekam_medis=pasien['nomor_rekam_medis']) }}" id="link-homepage">Riwayat Medis</a>
             </li>
             <li id="nav-profile">
               <img src="{{ url_for('static', filename='images/Dokter/diagnosa-black.png') }}" />
-              <a href="{{ url_for('buatDiagnosa') }}">Buat Diagnosa</a>
+              <a href="{{ url_for('buatDiagnosa', nomor_rekam_medis=pasien['nomor_rekam_medis']) }}">Buat Diagnosa</a>
             </li>
             <li id="nav-logout">
               <img src="{{ url_for('static', filename='images/Dokter/logout.png') }}" />
@@ -42,32 +43,37 @@
         </header>
 
         <section id="homepage" class="content-section">
-            Nomor Pasien: 
-            <h2>
+          Nomor Janji Temu: 
+          <h2>
                 <span>
-                    #121
+                  {{ pasien['id_janji'] }}
                 </span>
             </h2>
             <hr>
           <div class="feature-cards">
             <div class="card">
                 <table>
-                    <tr>
-                        <td>Nama: </td>
-                        <td>Fauzi. S</td>
-                    </tr>
-                    <tr>
-                        <td>ID: </td>
-                        <td>12121212121</td>
-                    </tr>
+                  <tr>
+                    <td>Nama: </td>
+                    <td>{{ pasien['nama'] }}</td>
+                  </tr>
+                  <tr>
+                    <td>ID: </td>
+                    <td> {{ pasien['nomor_rekam_medis'] }} </td>
+                  </tr>
                 </table>
             </div>
           </div>
         </section>
         <section id="keluhan" class="content-section">
-            <h3>Keluhan Pasien</h3>
+            <h3>Riwayat Medis</h3>
+            <!-- <p>File URL: {{ url_for('uploaded_file', filename=file_path.replace("\\", "/").split('/')[-1]) }}</p> -->
             <div>
-                <embed src="path_to_uploaded_file.pdf" width="100%" height="600px" type="application/pdf" />
+              {% if file_path %}
+              <embed src="{{ url_for('uploaded_file', filename=file_path.replace("\\", "/").split('/')[-1]) }}" width="100%" height="600px" type="application/pdf" />
+              {% else %}
+                <span>Tidak ada file riwayat medis</span>
+              {% endif %}
             </div>
         </section>
       </main>

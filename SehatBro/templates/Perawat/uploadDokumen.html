@@ -10,6 +10,8 @@
     <title>Upload Dokumen Pasien</title>
   </head>
   <body>
+    {% include "flashTemplate.html" %}
+    
     <div class="container">
       <aside class="sidebar">
         <div class="logo">
@@ -42,12 +44,6 @@
               <a href="{{ url_for('uploadDokumen') }}" class="link-active"
                 >Unggah Dokumen</a
               >
-            </li>
-            <li id="nav-profile">
-              <img
-                src="{{ url_for('static', filename='images/Perawat/profile-circle.png') }}"
-              />
-              <a href="#profile">Profile</a>
             </li>
             <li id="nav-logout">
               <img

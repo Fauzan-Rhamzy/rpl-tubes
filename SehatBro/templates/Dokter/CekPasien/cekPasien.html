@@ -7,6 +7,8 @@
     <title>Cek Pasien</title>
   </head>
   <body>
+    {% include "flashTemplate.html" %}
+
     <div class="container">
       <aside class="sidebar">
         <div class="logo">
@@ -16,15 +18,16 @@
           <ul>
             <li id="nav-homepage">
               <img src="{{ url_for('static', filename='images/Dokter/vital-white.png') }}" />
-              <a href="{{ url_for('cekPasien') }}" id="link-homepage">Catatan Vital</a>
+              <a href="{{ url_for('cekPasien', nomor_rekam_medis=pasien['nomor_rekam_medis']) }}"
+                id="link-homepage">Catatan Vital</a>
               </li>
             <li id="nav-booking">
               <img src="{{ url_for('static', filename='images/Dokter/document-black.png') }}" />
-              <a href="{{ url_for('riwayatMedis') }}">Riwayat Medis</a>
+              <a href="{{ url_for('riwayatMedis', nomor_rekam_medis=pasien['nomor_rekam_medis']) }}">Riwayat Medis</a>
             </li>
             <li id="nav-profile">
               <img src="{{ url_for('static', filename='images/Dokter/diagnosa-black.png') }}" />
-              <a href="{{ url_for('buatDiagnosa') }}">Buat Diagnosa</a>
+              <a href="{{ url_for('buatDiagnosa', nomor_rekam_medis=pasien['nomor_rekam_medis']) }}">Buat Diagnosa</a>
             </li>
             <li id="nav-logout">
               <img src="{{ url_for('static', filename='images/Dokter/logout.png') }}" />
@@ -40,10 +43,10 @@
         </header>
 
         <section id="homepage" class="content-section">
-            Nomor Pasien: 
+            Nomor Janji Temu: 
             <h2>
                 <span>
-                    #121
+                    {{ pasien['id_janji'] }}
                 </span>
             </h2>
             <hr>
@@ -52,27 +55,27 @@
                     <table>
                         <tr>
                             <td>Nama: </td>
-                            <td>Fauzi. S</td>
+                            <td>{{ pasien['nama'] }}</td>
                         </tr>
                         <tr>
                             <td>ID: </td>
-                            <td>12121212121</td>
+                            <td> {{ pasien['nomor_rekam_medis'] }} </td>
                         </tr>
                         <tr>
                             <td>Suhu Badan: </td>
-                            <td>40 C</td>
+                            <td>{{ pasien['suhu_badan'] }} C</td>
                         </tr>
                         <tr>
                             <td>Berat Badan: </td>
-                            <td>70 Kg</td>
+                            <td>{{pasien['berat_badan']}} Kg</td>
                         </tr>
                         <tr>
                             <td>Tekanan Darah: </td>
-                            <td>1380.8 mmHG</td>
+                            <td>{{pasien['tekanan_darah']}} mmHG</td>
                         </tr>
                         <tr>
                             <td>Tinggi Badan: </td>
-                            <td>175 cm</td>
+                            <td>{{pasien['tinggi_badan']}} cm</td>
                         </tr>
                     </table>
                 </div>
@@ -82,7 +85,7 @@
             <h3>Keluhan Pasien</h3>
             <div>
                 <span>
-                    Keluhan semua di sini
+                    {{pasien['keluhan']}}
                 </span>
             </div>
         </section>

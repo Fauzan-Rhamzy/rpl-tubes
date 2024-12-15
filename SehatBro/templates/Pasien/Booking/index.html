@@ -12,6 +12,8 @@
   </head>
 
   <body>
+    {% include "flashTemplate.html" %}
+
     <div class="container">
       <aside class="sidebar">
         <div class="logo">
@@ -135,4 +137,11 @@
       }
     </script>
   </body>
+      // Fungsi untuk melakukan booking janji temu
+      function bookAppointment(doctorName) {
+        alert(`Anda berhasil melakukan booking janji temu dengan ${doctorName}.`);
+      }
+    </script>
+  </body>
 </html>
+
