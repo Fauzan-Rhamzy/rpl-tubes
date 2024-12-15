@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link
       rel="stylesheet"
-      href="{{ url_for('static', filename='styles/JadwalTemu/jadwalStyle.css')}}"
+      href="{{ url_for('static', filename='styles/JadwalTemu/jadwalStyle.css') }}"
     />
-    <title>Jadwal Temu Pasien</title>
+    <title>Jadwal Janji Temu Pasien</title>
   </head>
 
   <body>
@@ -30,7 +30,7 @@
             </li>
             <li id="nav-booking">
               <img
-                src="{{ url_for('static', filename='images/JadwalTemu/calendar-add.png' )}}"
+                src="{{ url_for('static', filename='images/JadwalTemu/calendar-add.png') }}"
               />
               <a href="{{ url_for('booking') }}">Booking</a>
             </li>
@@ -38,7 +38,9 @@
               <img
                 src="{{ url_for('static', filename='images/JadwalTemu/calendar-tick.png') }}"
               />
-              <a href="{{ url_for('jadwaltemu') }}">Jadwal Temu</a>
+              <a href="{{ url_for('jadwaltemu') }}" class="link-active"
+                >Jadwal Temu</a
+              >
             </li>
             <li id="nav-tagihan">
               <img
@@ -64,7 +66,7 @@
 
       <main class="main-content">
         <header>
-          <h1>Jadwal Janji Temu</h1>
+          <h1>Jadwal Janji Temu Anda</h1>
         </header>
 
         <section class="upcoming-appointments">
@@ -75,23 +77,20 @@
                 <th>Dokter</th>
                 <th>Spesialisasi</th>
                 <th>Tanggal</th>
-                <th>Waktu</th>
+                <th>Jam Mulai</th>
+                <th>Jam Selesai</th>
                 <th>Nomor Antrian</th>
               </tr>
             </thead>
             <tbody>
-              {% for appointment in upcoming_appointments %}
+              {% for appointment in jadwal_mendatang %}
               <tr>
                 <td>{{ appointment[0] }}</td>
-                <!-- Dokter -->
                 <td>{{ appointment[1] }}</td>
-                <!-- Spesialisasi -->
                 <td>{{ appointment[2] }}</td>
-                <!-- Tanggal -->
                 <td>{{ appointment[3] }}</td>
-                <!-- Waktu -->
                 <td>{{ appointment[4] }}</td>
-                <!-- Nomor Antrian -->
+                <td>{{ appointment[5] }}</td>
               </tr>
               {% endfor %}
             </tbody>
@@ -106,23 +105,20 @@
                 <th>Dokter</th>
                 <th>Spesialisasi</th>
                 <th>Tanggal</th>
-                <th>Waktu</th>
+                <th>Jam Mulai</th>
+                <th>Jam Selesai</th>
                 <th>Nomor Antrian</th>
               </tr>
             </thead>
             <tbody>
-              {% for appointment in history_appointments %}
+              {% for appointment in jadwal_history %}
               <tr>
                 <td>{{ appointment[0] }}</td>
-                <!-- Dokter -->
                 <td>{{ appointment[1] }}</td>
-                <!-- Spesialisasi -->
                 <td>{{ appointment[2] }}</td>
-                <!-- Tanggal -->
                 <td>{{ appointment[3] }}</td>
-                <!-- Waktu -->
                 <td>{{ appointment[4] }}</td>
-                <!-- Nomor Antrian -->
+                <td>{{ appointment[5] }}</td>
               </tr>
               {% endfor %}
             </tbody>
