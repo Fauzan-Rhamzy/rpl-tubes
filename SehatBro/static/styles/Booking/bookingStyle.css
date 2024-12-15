@@ -118,60 +118,116 @@ select {
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
 }
 
-.doctor-card button {
-  background-color: #3b9ab8;
-  color: white;
-  padding: 10px 20px;
-  font-size: 1.1rem;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-top: 10px;
+/* Title Styling */
+#specialization-selection h1 {
+  text-align: center;
+  font-size: 24px;
+  color: #333; /* Dark text color */
+  margin-bottom: 15px;
+  font-weight: bold;
+  font-family: 'Arial', sans-serif;
 }
 
-.doctor-card button:hover {
-  background-color: #2a7c8b;
+/* List Styling */
+#specialization-selection ul {
+  list-style: none; /* Remove default bullet points */
+  padding: 0; /* Remove default padding */
 }
 
-#doctor-list {
-  background-color: #f9f9f9;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+#specialization-selection li {
+  font-size: 18px; /* Slightly larger font for readability */
+  color: #444; /* Neutral text color */
+  margin: 10px 0; /* Add spacing between items */
+  padding: 10px;
+  display: flex; /* Flex layout for text and button alignment */
+  justify-content: space-between; /* Space between doctor info and button */
+  align-items: center;
+  background-color: #fff; /* White background for list items */
+  border: 1px solid #ddd; /* Subtle border */
+  border-radius: 6px; /* Rounded corners */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Hover Effect for List Items */
+#specialization-selection li:hover {
+  transform: scale(1.02); /* Slight zoom effect */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Slightly larger shadow */
+}
+
+/* Link/Button Styling */
+#specialization-selection a {
+  text-decoration: none; /* Remove underline */
+  background-color: #3b9ab8; /* Blue button background */
+  color: #fff; /* White text color */
+  padding: 8px 12px; /* Button padding */
+  border-radius: 4px; /* Rounded button corners */
+  font-size: 16px; /* Button font size */
+  font-weight: bold;
+  transition: background-color 0.3s ease, box-shadow 0.2s ease;
+}
+
+#specialization-selection a:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2); /* Add shadow on hover */
+}
+
+#spesialisasi{
+  display: flex;
+  justify-content: center;
+  column-gap: 20px;
+}
+
+#spesialisasi li {
+  display: flex;
+  justify-content: center;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
   margin-top: 20px;
 }
 
-.doctor-card {
-  background-color: #ffffff;
-  padding: 20px;
-  margin-bottom: 15px;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease-in-out;
+table th,
+table td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
 }
 
-.doctor-card:hover {
-  transform: translateY(-5px);
+table th {
+  background-color: #368299;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
 }
 
-.doctor-card h3 {
-  font-size: 1.6rem;
-  margin-bottom: 10px;
+td {
+  background-color: #f9f9f9;
+  color: #333;
+  font-size: 14px;
+  text-align: center;
 }
 
-.doctor-card p {
-  font-size: 1.1rem;
-  margin-bottom: 8px;
+table button {
+  height: 30px;
+  width: fit-content;
+  padding: 5px 20px;
+  background-color: #3b9ab8;
+  color: white;
+  border: none;
+  border-radius: 5px;
 }
 
-.doctor-card .schedule {
-  font-size: 0.95rem;
-  color: #666;
+#book-button {
+  text-align: center;
+  width: 20%;
 }
-
 /* Footer */
 footer {
   text-align: center;

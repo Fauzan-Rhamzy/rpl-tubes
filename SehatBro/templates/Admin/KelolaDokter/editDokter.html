@@ -35,10 +35,18 @@
 
                 <!-- NAMA -->
                 <select id="doctor-select" name="doctor-npa" required>
+<<<<<<<< HEAD:SehatBro/templates/Admin/KelolaDokter/editDokter.html
                   <option value="{{ dokter['npa'] }}" selected>{{ dokter['nama'] }}</option>
 
                   <option value="" disabled>-- Pilih Dokter --</option>
 
+========
+                  <option value="{{ dokter['npa'] }}" selected>{{ dokter['npa'] }}</option>
+
+                  <option value="" disabled>-- Pilih Dokter --</option>
+
+                  
+>>>>>>>> 6fa3e5e9573db2c73199f5b5d30a291322334635:BOOKINGBERHASIL/templates/Admin/KelolaDokter/editDokter.html
                   {% for dokter_item in list_dokter %}
                   <option value="{{ dokter_item['npa'] }}" >
                     {{ dokter_item['nama'] }}

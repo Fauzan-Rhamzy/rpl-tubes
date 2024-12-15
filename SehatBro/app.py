@@ -1,13 +1,16 @@
 import os
 import psycopg2
 from dotenv import load_dotenv
-from flask import Flask, render_template, request, redirect, url_for, json, session, flash
+from flask import Flask, jsonify, render_template, request, redirect, url_for, json, session, flash
 from psycopg2.extras import DictCursor
 from werkzeug.utils import secure_filename
 from flask import flash
 from flask import send_from_directory
 import random
 import string
+import calendar
+from datetime import date, timedelta
+
 
 load_dotenv()
 app = Flask(__name__)
@@ -39,6 +42,20 @@ def generate_nomor_rekam_medis():
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
+from datetime import datetime, timedelta
+
+def calculate_next_date(day):
+    today = datetime.today()
+    days = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"]
+    target_day = days.index(day)
+    current_day = today.weekday()
+
+    delta_days = (target_day - current_day) % 7
+    if delta_days == 0:  # Jika hari ini hari yang sama, jadwal minggu depan
+        delta_days = 7
+
+    return (today + timedelta(days=delta_days)).date()
 
 # homepage umum
 @app.route('/')
