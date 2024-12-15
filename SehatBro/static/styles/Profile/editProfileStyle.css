@@ -103,8 +103,9 @@ header h1 {
     width: 100%;
 }
 
-.edit-container {
+.input-container {
     display: flex;
+    width: 100%;
     column-gap: 30px;
 }
 

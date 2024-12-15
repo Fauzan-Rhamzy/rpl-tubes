@@ -500,10 +500,13 @@ def edit_profile():
                     UPDATE Users
                     SET
                         Username = COALESCE(%s, Username),
-                        Passwords = COALESCE(%s, Passwords),
-                        Nama = COALESCE(%s, Nama)
+                        Passwords = CASE
+                    WHEN %s = '' THEN Passwords
+                    ELSE %s
+                    END,
+                    Nama = COALESCE(%s, Nama)
                     WHERE ID_User = %s
-                """, (username, password, nama, user_id))
+                """, (username, password, password, nama, user_id))
             
             # Update tabel Pasien
             if alamat or gender or tanggal_lahir or kontak:
