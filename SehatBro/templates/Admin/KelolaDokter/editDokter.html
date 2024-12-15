@@ -23,105 +23,74 @@
         </header>
 
         <section class="create-schedule">
-          <p>ID Jadwal: {{ dokter['id_jadwal'] }}</p>
+          <p>ID User: {{ dokter['id_user'] }}</p>
 
-          <h2>Edit Data Dokter dan Jadwal</h2>
+          <h2>Edit Data Dokter</h2>
 
           <!-- FORM -->
-          <form id="create-schedule-form" action="/Admin/KelolaDokter/EditDokter?id_jadwal={{ dokter['id_jadwal'] }}" method="POST">
+          <form id="create-schedule-form" action="/Admin/KelolaDokter/EditDokter?id_user={{ dokter['id_user'] }}" method="POST">
             <div class="left-group">
               <div class="form-group">
-                <label for="doctor-select">Pilih Dokter</label>
-
-                <!-- NAMA -->
-                <select id="doctor-select" name="doctor-npa" required>
-<<<<<<<< HEAD:SehatBro/templates/Admin/KelolaDokter/editDokter.html
-                  <option value="{{ dokter['npa'] }}" selected>{{ dokter['nama'] }}</option>
-
-                  <option value="" disabled>-- Pilih Dokter --</option>
-
-========
-                  <option value="{{ dokter['npa'] }}" selected>{{ dokter['npa'] }}</option>
-
-                  <option value="" disabled>-- Pilih Dokter --</option>
-
-                  
->>>>>>>> 6fa3e5e9573db2c73199f5b5d30a291322334635:BOOKINGBERHASIL/templates/Admin/KelolaDokter/editDokter.html
-                  {% for dokter_item in list_dokter %}
-                  <option value="{{ dokter_item['npa'] }}" >
-                    {{ dokter_item['nama'] }}
-                  </option>
-                  {% endfor %}
-                </select>
+                <label for="doctor-npa">NPA Dokter</label>
+                <input id="doctor-npa" name="doctor-npa" required
+                    placeholder="Masukkan Nama Dokter"
+                    value="{{dokter['npa']}}">
               </div>
               <div class="form-group">
-                <label for="schedule-day">Pilih Hari</label>
-
-                <!-- HARI -->
-                <select id="schedule-day" name="doctor-day">
-                  <option value="{{ dokter['hari'] }}" selected>{{ dokter['hari'] }}</option>
-
-                  <option value="" disabled>-- Pilih Hari --</option>
-
-                  <option value="senin">Senin</option>
-                  <option value="selasa">Selasa</option>
-                  <option value="rabu">Rabu</option>
-                  <option value="kamis">Kamis</option>
-                  <option value="jumat">Jumat</option>
-                  <option value="sabtu">Sabtu</option>
-                  <option value="minggu">Minggu</option>
-                </select>
+                <label for="doctor-name">Nama Dokter</label>
+                <input required id="doctor-name" name="doctor-name" type="text" value="{{dokter['nama']}}">
               </div>
 
               <div class="form-group">
 
-                <!-- KUOTA -->
-                <label for="doctor-quota">Kuota Pasien</label>
-                <input
-                  type="number"
-                  id="doctor-quota"
-                  name="doctor-quota"
-                  placeholder="Ex: 10"
-                  min="1"
-                  value="{{ dokter['kuota_pasien'] }}"
-                  required
-                  />
+                <!-- SPESIALISASI -->
+                <label for="doctor-specialization">Spesialisasi Dokter</label>
+                <select name="doctor-specialization" id="doctor-specialization">
+                    <option value="{{ dokter['spesialisasi']}}" selected>{{ dokter['spesialisasi'] }}</option>
+                    <option value="" disabled>-- Pilih Spesialisasi --</option>
+                    {% for s in spesialisasi %}
+                    <option value="{{ s['spesialisasi'] }}">{{ s['spesialisasi'] }}</option>
+                    {% endfor %}
+                </select>
+
               </div>
             </div>
             <div class="right-group">
               <div class="form-group">
-                <label for="schedule-time-start">Waktu Mulai</label>
+                <label for="schedule-time-start">Tarif Dokter</label>
 
-                <!-- TIME START -->
-                <input
-                  type="time"
-                  id="schedule-time-start"
-                  name="schedule-time-start"
-                  value="{{ dokter['jam_mulai']}}"
-                />
-              </div>
-              <div class="form-group">
-                <label for="schedule-time-end">Waktu Selesai</label>
-                <input
-                  type="time"
-                  id="schedule-time-end"
-                  name="schedule-time-end"
-                  value="{{ dokter['jam_selesai']}}"
-                />
-              </div>
-
-              <div class="form-group">
-                <label for="doctor-fee">Tarif Dokter (Rp)</label>
+                <!-- Tarif -->
                 <input
                   type="number"
-                  id="doctor-fee"
+                  id="schedule-time-start"
                   name="doctor-fee"
-                  placeholder="Ex: 100000"
-                  min="0"
-                  step="1000"
                   value="{{ dokter['tarif']}}"
+                  required
                 />
               </div>
+              <div class="form-group">
+                <label for="doctor-username">Username</label>
+                <input
+                  type="text"
+                  id="doctor-username"
+                  name="doctor-username"
+                  placeholder="Ex: doct_John"
+                  required
+                  value="{{dokter['username']}}"
+                />
+          </div>
+
+              <div class="form-group">
+                <label for="doctor-password">Password</label>
+                <input
+                  type="text"
+                  id="doctor-password"
+                  name="doctor-password"
+                  placeholder="Ex: john1234"
+                  required
+                  value="{{dokter['passwords']}}"
+                />
+      </div>
             </div>
             <button type="submit" class="edit-button">Simpan Perubahan</button>
           </form>
@@ -132,10 +101,4 @@
       <p>&copy; 2024 Klinik SehatBro. | All Rights Reserved</p>
     </footer>
   </body>
-  <script>
-    const editButton = document.querySelector(".edit-button");
-    editButton.addEventListener("click", function () {
-      alert("Perubahan berhasil disimpan!");
-    });
-  </script>
 </html>

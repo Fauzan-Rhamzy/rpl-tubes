@@ -209,7 +209,7 @@
                 <td>Rp. {{ dokter['tarif'] }}</td>
                 <td>{{ dokter['username'] }}</td>
                 <td>{{ dokter['passwords'] }}</td>
-                <td><button class="edit-button">Edit</button></td>
+                <td><a href="/Admin/KelolaDokter/EditDokter?id_user={{ dokter['id_user'] }}"><button class="edit-button">Edit</button></a></td>
               </tr>
               {% endfor %}
             </tbody>
@@ -242,7 +242,7 @@
                 <td>{{ jadwal['hari'] }}</td>
                 <td>{{ jadwal['jam_mulai'] }} - {{ jadwal['jam_selesai'] }}</td>
                 <td>{{ jadwal['kuota_pasien'] }}</td>
-                <td><a href="/Admin/KelolaDokter/EditDokter?id_jadwal={{ jadwal['id_jadwal'] }}"><button class="edit-button">Edit</button></a></td>
+                <td><a href="/Admin/KelolaDokter/EditJadwal?id_jadwal={{ jadwal['id_jadwal'] }}"><button class="edit-button">Edit</button></a></td>
               </tr>
               {% endfor %}
             </tbody>
