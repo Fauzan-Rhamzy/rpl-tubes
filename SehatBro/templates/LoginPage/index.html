@@ -34,7 +34,7 @@
       <div class="login-text">
         <div class="login-input">
           <h2>Selamat datang!</h2>
-          <p>Belum punya akun? <a href="#">Sign up</a></p>
+          <p>Belum punya akun? <a href="{{ url_for('register') }}">Sign up</a></p>
           <form action="{{ url_for('login') }}" method="POST">
             <label for="username">Username</label>
             <input
