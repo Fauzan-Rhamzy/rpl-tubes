@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register Page</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles/LoginPage/LoginStyle.css') }}"
+    />
+  </head>
+
+  <body>
+    <div class="container">
+      <!-- Header dengan logo dan tombol Home -->
+      <div class="header">
+        <div class="home-button">
+          <a href="{{ url_for('homepage') }}">Home</a>
+        </div>
+      </div>
+
+      <!-- Bagian Kiri dengan Gambar -->
+      <div class="login-pict">
+        <h1 class="logo">Klinik SehatBro.</h1>
+        <img
+          src="{{ url_for('static', filename='images/LoginPage/login-pict.png') }}"
+          alt="Gambar Dokter"
+        />
+      </div>
+
+      <!-- Bagian Kanan dengan Form Login -->
+      <div class="login-text">
+        <div id="login-input">
+          <h2>Selamat datang!</h2>
+          <p>Sudah punya akun? <a href="{{url_for('login')}}">Sign In</a></p>
+          <form action="{{ url_for('register') }}" method="POST">
+            <div class="input-container">
+              <div class="left-group">
+                <div class="form-group">
+                  <label for="username">Username</label>
+                  <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    placeholder="Ex: jane_doe"
+                    required
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="password">Password</label>
+                  <input
+                    type="text"
+                    id="password"
+                    name="password"
+                    placeholder="Ex: password123"
+                    required
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="nama">Nama Lengkap</label>
+                  <input
+                    type="text"
+                    id="nama"
+                    name="nama"
+                    placeholder="Ex: Jane Doe"
+                    required
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="gender">Jenis Kelamin</label>
+                  <select id="gender" name="gender" required>
+                    <option selected disabled>Pilih Jenis Kelamin</option>
+                    <option value="Laki-laki">Laki-laki</option>
+                    <option value="Perempuan">Perempuan</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="right-group">
+                <div class="form-group">
+                  <label for="tanggal-lahir">Tanggal Lahir</label>
+                  <input
+                    type="date"
+                    id="tanggal-lahir"
+                    name="tanggal-lahir"
+                    required
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="noHP">Nomor HP</label>
+                  <input
+                    type="text"
+                    id="noHP"
+                    name="noHP"
+                    placeholder="Ex: 0812345889"
+                    required
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="alamat">Alamat</label>
+                  <textarea
+                    id="alamat"
+                    name="alamat"
+                    placeholder="Ex: Jl. Raya No. 123, Jakarta"
+                    required
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+
+            <button type="submit">Sign Up</button>
+          </form>
+        </div>
+
+        <div class="extra-info">
+          <h3>Mengapa memilih kami?</h3>
+          <ul>
+            <li>🌟 Layanan 24/7</li>
+            <li>👨‍⚕️ Dokter profesional</li>
+            <li>🏥 Fasilitas lengkap dan modern</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %} {% if
+    messages %}
+    <ul>
+      {% for category, message in messages %}
+      <li class="{{ category }}">{{ message }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %} {% endwith %}
+  </body>
+</html>
