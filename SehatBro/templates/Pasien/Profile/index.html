@@ -9,8 +9,6 @@
 </head>
 
 <body>
-  {% include "flashTemplate.html" %}
-
   <div class="container">
     <aside class="sidebar">
       <div class="logo">
@@ -50,23 +48,19 @@
       <header>
         <h1>Profil Saya</h1>
         <section class="actions">
-          <button class="edit-profile-button">Edit Profil</button>
-          <button class="view-medical-history-button">Riwayat Medis</button>
+          <button class="edit-profile-button" onclick="window.location.href='{{ url_for('edit_profile') }}'">Edit Profil</button>
+          <button class="view-medical-history-button" onclick="window.location.href='{{ url_for('riwayat_medis') }}'">Riwayat Medis</button>
         </section>
       </header>
 
       <section class="profile-details">
-        <div class="profile-photo">
-          <img src="{{ url_for('static', filename='images/Profile/profile-pict.png') }}" alt="Profile Photo" />
-        </div>
         <div class="profile-info">
-          <h1>John Doe</h1>
-          <p><strong>Nomor Rekam Medis:</strong> 200410485</p>
-          <p><strong>Tanggal Lahir:</strong> 1990-05-15</p>
-          <p><strong>Jenis Kelamin:</strong> Laki-laki</p>
-          <p><strong>Email:</strong> johndoe@example.com</p>
-          <p><strong>Alamat:</strong> Jalan Sunda No.14, Bandung</p>
-          <p><strong>Telepon:</strong> 081234567890</p>
+          <h1>{{ patient_info.nama_pasien }}</h1>
+          <p><strong>Nomor Rekam Medis:</strong> {{ patient_info.nomor_rekam_medis }}</p>
+          <p><strong>Tanggal Lahir:</strong> {{ patient_info.tanggal_lahir }}</p>
+          <p><strong>Jenis Kelamin:</strong> {{ patient_info.jenis_kelamin }}</p>
+          <p><strong>Alamat:</strong> {{ patient_info.alamat }}</p>
+          <p><strong>Telepon:</strong> {{ patient_info.telepon }}</p>
         </div>
       </section>
     </main>
@@ -76,5 +70,4 @@
     <p>&copy; 2024 Klinik SehatBro | All Rights Reserved</p>
   </footer>
 </body>
-
 </html>

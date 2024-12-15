@@ -1,0 +1,176 @@
+/* Reset dan styling dasar */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f4f4f4;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+.container {
+    display: flex;
+    flex: 1;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: white;
+    color: #3b9ab8;
+    padding: 20px;
+    height: 100vh;
+    position: fixed;
+}
+
+.sidebar .logo h1 {
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+}
+
+.sidebar nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar nav ul li {
+    margin: 15px 0;
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: flex;
+    column-gap: 10px;
+    align-items: center;
+}
+
+nav ul li:hover {
+    background-color: #3b9bb839;
+}
+
+.sidebar nav ul li a {
+    color: #7e7e7e;
+    text-decoration: none;
+    font-size: 1.2rem;
+}
+
+nav ul li a:hover {
+    text-decoration: underline;
+}
+
+.sidebar nav ul li a img {
+    margin-right: 10px;
+}
+
+#nav-profile {
+    background-color: #3b9ab8;
+}
+
+#nav-profile a {
+    color: white;
+}
+
+.main-content {
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-left: 300px;
+    margin-top: 30px;
+    padding: 20px;
+    width: 70%;
+    height: fit-content;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+header h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #3b9ab8;
+    font-weight: bold;
+}
+
+.edit-profile-form {
+    width: 100%;
+}
+
+.edit-container {
+    display: flex;
+    column-gap: 30px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+form label {
+    font-size: 14px;
+    margin-bottom: 5px;
+    display: block;
+}
+
+form input,
+form select {
+    width: 250px;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+form button {
+    margin-top: 10px;
+    width: 100%;
+    padding: 10px;
+    background-color: #3b9ab8;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+textarea {
+    resize: none;
+    width: 250px;
+    padding: 10px;
+    font-family: Arial, sans-serif;
+    border-radius: 5px;
+}
+
+button {
+    margin-top: 10px;
+    width: 100%;
+    padding: 10px;
+    background-color: #3b9ab8;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: 0.9;
+    cursor: pointer;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    background-color: #3b9ab8;
+    color: white;
+    padding: 10px;
+    margin-top: 20px;
+    position: relative;
+}

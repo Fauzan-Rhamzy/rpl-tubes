@@ -9,8 +9,6 @@
 </head>
 
 <body>
-  {% include "flashTemplate.html" %}
-
   <div class="container">
     <aside class="sidebar">
       <div class="logo">
@@ -61,55 +59,46 @@
 
       <section class="patient-info">
         <h2>Informasi Pasien</h2>
-        <p><strong>Nama Pasien:</strong> John Doe</p>
-        <p><strong>Alamat:</strong> Jalan SehatBro No.10, Bandung</p>
-        <p><strong>Email:</strong> johndoe@example.com</p>
+        <p><strong>Nama Pasien:</strong> {{ patient_info.nama_pasien }}</p>
+        <p><strong>Alamat:</strong> {{ patient_info.alamat }}</p>
       </section>
 
       <section class="services">
-        <h2>Layanan yang Diberikan</h2>
+        <h2>Tagihan Anda</h2>
         <table class="services-table">
           <thead>
             <tr>
-              <th>Deskripsi Layanan</th>
-              <th>Dokter</th>
-              <th>Tanggal</th>
-              <th>Jumlah</th>
+              <th>Nama Dokter</th>
+              <th>Tanggal Janji</th>
+              <th>Tarif</th>
             </tr>
           </thead>
           <tbody>
+            {% for tagihan in tagihan_data %}
             <tr>
-              <td>Konsultasi Dokter</td>
-              <td>Dr. Andi</td>
-              <td>2024-11-20</td>
-              <td>Rp 150.000</td>
+              <td>{{ tagihan.nama_dokter }}</td>
+              <td>{{ tagihan.tanggal_janji }}</td>
+              <td>Rp {{ tagihan.tarif|int }}</td>
             </tr>
-            <tr>
-              <td>Konsultasi Dokter</td>
-              <td>Dr. Budi</td>
-              <td>2024-11-20</td>
-              <td>Rp 120.000</td>
-            </tr>
-            <tr>
-              <td>Konsultasi Dokter</td>
-              <td>Dr. Chika</td>
-              <td>2024-11-19</td>
-              <td>Rp 180.000</td>
-            </tr>
+            {% endfor %}
           </tbody>
         </table>
       </section>
+      
 
       <section class="total">
         <h2>Total Tagihan</h2>
-        <p><strong></strong> Rp 450.000</p>
+        <p><strong>Total:</strong> Rp {{ total_tagihan|int }}</p>
       </section>
 
-      <!-- Status Pembayaran -->
       <section class="payment-status">
         <h2>Status Pembayaran</h2>
         <div class="status">
-          <button class="pay-button">Belum Terbayar</button>
+          {% if status_pembayaran == "Sudah Terbayar" %}
+            <button class="pay-button paid">Sudah Terbayar</button>
+          {% else %}
+            <button class="pay-button unpaid">Belum Terbayar</button>
+          {% endif %}
         </div>
       </section>
     </div>

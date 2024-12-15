@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/Profile/editProfileStyle.css') }}" />
+    <title>Edit Profil Pasien</title>
+</head>
+
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="logo">
+              <h1>Klinik SehatBro.</h1>
+            </div>
+            <nav>
+              <ul>
+                <li id="nav-homepage">
+                  <img src="{{ url_for('static', filename='images/Profile/home-gray.png') }}" />
+                  <a href="{{ url_for('homepage') }}">Homepage</a>
+                </li>
+                <li id="nav-booking">
+                  <img src="{{ url_for('static', filename='images/Profile/calendar-add.png') }}" />
+                  <a href="{{ url_for('booking') }}">Booking</a>
+                </li>
+                <li id="nav-jadwal">
+                  <img src="{{ url_for('static', filename='images/Profile/calendar-tick-gray.png') }}" />
+                  <a href="{{ url_for('jadwaltemu') }}">Jadwal Temu</a>
+                </li>
+                <li id="nav-tagihan">
+                  <img src="{{ url_for('static', filename='images/Profile/receipt-text.png') }}" />
+                  <a href="{{ url_for('tagihan') }}">Tagihan</a>
+                </li>
+                <li id="nav-profile">
+                  <img src="{{ url_for('static', filename='images/Profile/profile-circle-white.png') }}" />
+                  <a href="{{ url_for('profile') }}">Profile</a>
+                </li>
+                <li id="nav-logout">
+                  <img src="{{ url_for('static', filename='images/Profile/logout.png') }}" />
+                  <a href="{{ url_for('login') }}">Logout</a>
+                </li>
+              </ul>
+            </nav>
+          </aside>
+
+        <main class="main-content">
+            <header>
+                <h1>Edit Profil Saya</h1>
+            </header>
+
+            <section class="edit-profile-form">
+                <form action="{{ url_for('edit_profile') }}" method="POST" class="edit-container">
+                    <div class="left-group">
+                        <div class="form-group">
+                            <label for="name">Nama</label>
+                            <input type="text" id="name" name="name" placeholder="John Doe"
+                                value="{{ user_data.nama or '' }}" style="font-style: italic;" />
+                        </div>
+                        <div class="form-group">
+                            <label for="birthdate">Tanggal Lahir</label>
+                            <input type="date" id="birthdate" name="birthdate"
+                                value="{{ user_data.tanggal_lahir or '' }}" style="font-style: italic;" />
+                        </div>
+                        <div class="form-group">
+                            <label for="gender">Jenis Kelamin</label>
+                            <select id="gender" name="gender">
+                                <option value="Laki-laki"
+                                    {% if user_data.gender == "Laki-laki" %}selected{% endif %}>Laki-laki</option>
+                                <option value="Perempuan"
+                                    {% if user_data.gender == "Perempuan" %}selected{% endif %}>Perempuan</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mid-group">
+                        <div class="form-group">
+                            <label for="phone">Telepon</label>
+                            <input type="tel" id="phone" name="phone" placeholder="081234567890"
+                                value="{{ user_data.kontak or '' }}" style="font-style: italic;" />
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Alamat</label>
+                            <textarea id="address" name="address" placeholder="Ex: Jalan Raya No. 141, Bandung"
+                                style="font-style: italic;">{{ user_data.alamat or '' }}</textarea>
+                        </div>
+                    </div>
+
+                    <div class="right-group">
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" id="username" name="username" placeholder="john_doe"
+                                value="{{ user_data.username or '' }}" style="font-style: italic;" />
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="password" placeholder="password baru"
+                                style="font-style: italic;" />
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="save-button">Simpan</button>
+                    </div>
+                </form>
+            </section>
+        </main>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2024 Klinik SehatBro | All Rights Reserved</p>
+    </footer>
+</body>
+
+<script>
+    const saveButton = document.querySelector(".save-button");
+    saveButton.addEventListener("click", function () {
+        alert("Profil berhasil diperbarui!");
+    });
+</script>
+
+</html>

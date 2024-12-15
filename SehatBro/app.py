@@ -443,7 +443,124 @@ def book_schedule():
 
 @app.route('/Profile')
 def profile():
-    return render_template("Pasien/Profile/index.html")
+    if 'user_id' not in session or session.get('role') != 'Pasien':
+        flash("Unauthorized access. Please log in.", "danger")
+        return redirect(url_for('login'))
+    user_id = session['user_id']
+
+    # Informasi pasien
+    cursor.execute("""
+            SELECT 
+                u.Nama AS nama_pasien, 
+                p.Alamat AS alamat,
+                p.nomor_rekam_medis,
+                p.tanggal_lahir AS tanggal_lahir,
+                p.gender AS jenis_kelamin,
+                p.kontak AS telepon
+            FROM 
+                Users u
+            JOIN 
+                Pasien p ON u.ID_User = p.ID_User
+            WHERE 
+                u.ID_User = %s;
+        """, (user_id,))
+    patient_info = cursor.fetchone()
+
+    return render_template("Pasien/Profile/index.html", patient_info=patient_info)
+
+@app.route('/Profile/EditProfile', methods=['GET', 'POST'])
+def edit_profile():
+    if request.method == 'POST':
+        user_id = session['user_id']
+        if not user_id:
+            flash("Anda harus login untuk mengedit profil.", 'danger')
+            return redirect(url_for('login'))
+
+        # Ambil data dari form
+        nama = request.form.get('name')
+        username = request.form.get('username')
+        password = request.form.get('password')
+        alamat = request.form.get('address')
+        gender = request.form.get('gender')
+        tanggal_lahir = request.form.get('birthdate')
+        kontak = request.form.get('phone')
+
+        try:
+            # Update tabel Users
+            if username or password or nama:
+                cursor.execute("""
+                    UPDATE Users
+                    SET
+                        Username = COALESCE(%s, Username),
+                        Passwords = COALESCE(%s, Passwords),
+                        Nama = COALESCE(%s, Nama)
+                    WHERE ID_User = %s
+                """, (username, password, nama, user_id))
+            
+            # Update tabel Pasien
+            if alamat or gender or tanggal_lahir or kontak:
+                cursor.execute("""
+                    UPDATE Pasien
+                    SET
+                        Alamat = COALESCE(%s, Alamat),
+                        Gender = COALESCE(%s, Gender),
+                        Tanggal_Lahir = COALESCE(%s, Tanggal_Lahir),
+                        Kontak = COALESCE(%s, Kontak)
+                    WHERE ID_User = %s
+                """, (alamat, gender, tanggal_lahir, kontak, user_id))
+
+            connection.commit()
+            flash("Profil berhasil diperbarui!", 'success')
+            return redirect(url_for('profile'))
+        except Exception as e:
+            connection.rollback()
+            flash(f"Terjadi kesalahan saat memperbarui profil: {str(e)}", 'danger')
+
+        return redirect(url_for('edit_profile'))
+
+    # GET request: Tampilkan halaman edit profil
+    user_id = session['user_id']
+    if not user_id:
+        flash("Anda harus login untuk mengakses halaman ini.", 'danger')
+        return redirect(url_for('login'))
+
+    try:
+        # Ambil data profil pengguna dari database
+        cursor.execute("""
+            SELECT 
+                u.Nama, u.Username, p.Alamat, p.Gender, 
+                p.Tanggal_Lahir, p.Kontak
+            FROM Users u
+            LEFT JOIN Pasien p ON u.ID_User = p.ID_User
+            WHERE u.ID_User = %s
+        """, (user_id,))
+        user_data = cursor.fetchone()
+    except Exception as e:
+        flash(f"Terjadi kesalahan saat memuat data: {str(e)}", 'danger')
+        user_data = None
+
+    return render_template("Pasien/Profile/editProfile.html", user_data=user_data)
+
+@app.route('/Profile/RiwayatMedis')
+def riwayat_medis():
+    user_id = session['user_id']
+    
+    # File path untuk file riwayat medis
+    cursor.execute("""
+            SELECT p.nomor_rekam_medis
+            FROM Pasien p
+            WHERE p.id_user = %s
+        """, (user_id,))
+    res = cursor.fetchone()
+    nrm = res['nomor_rekam_medis']
+
+    cursor.execute("""
+            SELECT * FROM Files_RiwayatMedis WHERE nomor_Rekam_medis=%s ORDER BY Upload_Date DESC LIMIT 1
+        """, (nrm,))
+    file = cursor.fetchone()
+    file_path = file['file_path'] if file else None
+    
+    return render_template("Pasien/Profile/riwayatMedis.html", file_path=file_path)
 
 @app.route('/Tagihan')
 def tagihan():
