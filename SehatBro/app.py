@@ -1355,6 +1355,7 @@ def uploadDokumen():
             filename = secure_filename(file.filename)
             filepath = os.path.join('uploads', filename)
 
+            # NAMA TIDAK DIPAKAI JADI HARUS REVISI
             try:
                 # Simpan file ke folder uploads
                 file.save(filepath)
