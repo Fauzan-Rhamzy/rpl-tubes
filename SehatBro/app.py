@@ -702,7 +702,7 @@ def homepageAdmin():
             """)
             aktivitas=cursor.fetchall()
         except Exception as e:
-            flash(f"An error occurred while retrieving activities: {str(e)}", 'danger')
+            flash(f"Eror mengambil aktifitas terbaru: {str(e)}", 'danger')
             aktivitas=[]
 
         return render_template("Admin/Homepage/homepage.html", 
@@ -795,6 +795,11 @@ def kelolaDokter():
             """)
             jadwal_dokter = cursor.fetchall()
 
+        except Exception as e:
+            flash(f"Eror dalam mengambil data jadwal: {str(e)}", 'danger')
+            jadwal_dokter = []
+
+        try:
             cursor.execute("""
                 select 
                     d.npa as npa, 
@@ -810,8 +815,7 @@ def kelolaDokter():
             list_dokter=cursor.fetchall()
 
         except Exception as e:
-            flash(f"An error occurred while retrieving data: {str(e)}", 'danger')
-            jadwal_dokter = []
+            flash(f"Eror dalam mengambil list dokter: {str(e)}", 'danger')
             list_dokter = []
 
         return render_template("Admin/KelolaDokter/kelolaDokter.html", jadwal_dokter = jadwal_dokter, list_dokter=list_dokter)
@@ -838,7 +842,7 @@ def editJadwal():
             # tarif = request.form['doctor-fee']
 
             if not npa or not kuota or not hari or not mulai or not akhir:
-                flash('Please complete all fields before submitting.', 'danger')
+                flash('Tolong isi semua data terlebih dahulu.', 'danger')
                 return redirect(url_for('editDokter', id_jadwal=id_jadwal))
 
             try:
@@ -849,7 +853,8 @@ def editJadwal():
                         hari=%s, 
                         jam_mulai=%s, 
                         jam_selesai=%s
-                    WHERE id_jadwal=%s
+                    WHERE 
+                        id_jadwal=%s
                 """, (npa, kuota, hari, mulai, akhir, id_jadwal,))
                 connection.commit()
 
@@ -910,8 +915,12 @@ def editDokter():
             try:
                 cursor.execute("""
                     update  dokter 
-                    SET tarif=%s, spesialisasi=%s, npa=%s
-                    where id_user=%s
+                    SET 
+                        tarif=%s, 
+                        spesialisasi=%s, 
+                        npa=%s
+                    where 
+                        id_user=%s
                 """, (tarif, spesialisasi, npa, id_user,))
                 connection.commit()
                 print("success update dokter")
@@ -919,13 +928,18 @@ def editDokter():
             except Exception as e:
                 connection.rollback()
                 flash(f"An error occurred: {str(e)}", 'danger')
+                return redirect(url_for('kelolaDokter', id_user=id_user))
 
             try:
                 cursor.execute("""
                     update  Users 
-                    SET nama=%s, username=%s, passwords=%s
-                    where id_user=%s
-                """, (nama, spesialisasi, password, id_user,))
+                    SET 
+                        nama=%s, 
+                        username=%s, 
+                        passwords=%s
+                    where 
+                        id_user=%s
+                """, (nama, username, password, id_user,))
                 connection.commit()
                 print("success update user")
                 flash("Berhasil update data dokter", "success")
@@ -934,18 +948,23 @@ def editDokter():
             except Exception as e:
                 connection.rollback()
                 flash(f"An error occurred: {str(e)}", 'danger')
+                return redirect(url_for('kelolaDokter', id_user=id_user))
 
         try:            
             cursor.execute("SELECT * FROM dokter_detail where id_user=%s", (id_user,))
             dokter_data = cursor.fetchone()
 
+        except Exception as e:
+            flash(f"Eror mengambil data dokter: {str(e)}", 'danger')
+            dokter_data = None
+
+        try:
             cursor.execute("SELECT DISTINCT spesialisasi FROM dokter")
             spesialisasi=cursor.fetchall()
 
         except Exception as e:
-            flash(f"Error retrieving data: {str(e)}", 'danger')
-            dokter_data = None
-            list_dokter = []
+            flash(f"Eror mengambil spesialisasi: {str(e)}", 'danger')
+            spesialisasi= []
 
         return render_template("Admin/KelolaDokter/editDokter.html", dokter=dokter_data, spesialisasi=spesialisasi)
 
@@ -970,7 +989,7 @@ def kelolaPerawat():
             existing_user = cursor.fetchone()
 
             if existing_user:
-                flash('Username is already taken. Please choose another one.', 'danger')
+                flash('Username sudah digunakan, coba gunakan yang lain.', 'danger')
                 return redirect(url_for('kelolaPerawat'))
 
             cursor.execute("""
@@ -1192,7 +1211,7 @@ def kelolaPasien():
             return render_template("Admin/KelolaPasien/kelolaPasien.html", pasien=list_pasien)
         
         except Exception as e:
-            flash(f"An error occurred while fetching patient data: {str(e)}", "danger")
+            flash(f"Eror ketika pengambil data pasien: {str(e)}", "danger")
             return render_template("Admin/KelolaPasien/kelolaPasien.html", pasien=[])
 
     flash("Unauthorized access. Tolong login sebagai admin.", "danger")
@@ -1329,7 +1348,7 @@ def janjiTemu():
         cursor.execute("""
             select * from buat_janji bj join jadwal_dokter j on bj.id_jadwal=j.id_jadwal join dokter d on d.npa=j.npa
             join pasien p on p.nomor_rekam_medis=bj.nomor_rekam_medis join users u on u.id_user=p.id_user
-            where d.npa=%s
+            where d.npa=%s and tanggal_janji=CURRENT_DATE
         """, (session.get('npa'),))
         list=cursor.fetchall()
         return render_template("Dokter/JanjiTemu/janjiTemu.html", list=list, npa=session.get('npa'))
