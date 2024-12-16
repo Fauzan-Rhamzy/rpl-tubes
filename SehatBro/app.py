@@ -1218,31 +1218,29 @@ def detailPasien():
 def homepageDokter():
     if 'role' in session and session['role'] == 'Dokter':
         print("Selamat datang dokter")
-        # try:
-        #     # Query total pasien hari ini
-        #     cursor.execute("SELECT COUNT(*) FROM buat_janji WHERE tanggal_janji = CURRENT_DATE")
-        #     total_pasien_hari_ini = cursor.fetchone()[0]
+        try:
+            # Query total pasien hari ini
+            cursor.execute("SELECT COUNT(*) FROM buat_janji WHERE tanggal_janji = CURRENT_DATE")
+            total_pasien_hari_ini = cursor.fetchone()[0]
 
-        #     # Query total pasien bulan ini
-        #     cursor.execute("""
-        #         SELECT COUNT(*) FROM buat_janji 
-        #         WHERE 
-        #         AND EXTRACT(YEAR FROM tanggal_janji) = EXTRACT(YEAR FROM CURRENT_DATE)
-        #     """)
-        #     total_pasien_bulan_ini = cursor.fetchone()[0]
-        # except Exception as e:
-        #     flash(f"An error occurred: {str(e)}", 'danger')
-        #     total_pasien_hari_ini = 0
-        #     total_pasien_bulan_ini = 0  # Default jika query gagal
+            # Query total pasien bulan ini
+            cursor.execute("""
+                SELECT COUNT(*) FROM buat_janji 
+                WHERE EXTRACT(MONTH FROM tanggal_janji) = EXTRACT(MONTH FROM CURRENT_DATE)
+                AND EXTRACT(YEAR FROM tanggal_janji) = EXTRACT(YEAR FROM CURRENT_DATE)
+            """)
+            total_pasien_bulan_ini = cursor.fetchone()[0]
+        except Exception as e:
+            flash(f"An error occurred: {str(e)}", 'danger')
+            total_pasien_hari_ini = 0
+            total_pasien_bulan_ini = 0  # Default jika query gagal
 
-        # return render_template(
-        #     "Perawat/index.html",
-        #     nama=session.get('nama'),
-        #     total_pasien_hari_ini=total_pasien_hari_ini,
-        #     total_pasien_bulan_ini=total_pasien_bulan_ini
-        # )
-        # totalPasien = 
-        return render_template("Dokter/Homepage/index.html", nama=session.get('nama'))
+        return render_template(
+            "Dokter/Homepage/index.html",
+            nama=session.get('nama'),
+            total_pasien_hari_ini=total_pasien_hari_ini,
+            total_pasien_bulan_ini=total_pasien_bulan_ini
+        )
     
     flash("Unauthorized access. Please log in.", "danger")
     return redirect(url_for('login'))
