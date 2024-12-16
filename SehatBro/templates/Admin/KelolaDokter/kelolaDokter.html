@@ -209,7 +209,7 @@
                 <td>Rp. {{ dokter['tarif'] }}</td>
                 <td>{{ dokter['username'] }}</td>
                 <td>{{ dokter['passwords'] }}</td>
-                <td><a href="/Admin/KelolaDokter/EditDokter?id_user={{ dokter['id_user'] }}"><button class="edit-button">Edit</button></a></td>
+                <td><a href="{{ url_for('editDokter', id_user=dokter['id_user'])}}"><button class="edit-button">Edit</button></a></td>
               </tr>
               {% endfor %}
             </tbody>
