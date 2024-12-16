@@ -1,11 +1,16 @@
 import os
 import psycopg2
 from dotenv import load_dotenv
-from flask import Flask, render_template, request, redirect, url_for, json, session, flash
+from flask import Flask, jsonify, render_template, request, redirect, url_for, json, session, flash
 from psycopg2.extras import DictCursor
 from werkzeug.utils import secure_filename
 from flask import flash
 from flask import send_from_directory
+import random
+import string
+import calendar
+from datetime import date, timedelta
+
 
 load_dotenv()
 app = Flask(__name__)
@@ -18,10 +23,39 @@ app.secret_key = 'your_secret_key'
 app.config['UPLOAD_FOLDER'] = os.path.join(os.getcwd(), 'uploads')  # Lokasi folder upload
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)  # Pastikan folder ada
 
+def generate_nomor_rekam_medis():
+    while True:
+        # Generate nomor rekam medis
+        angka = f"{random.randint(0, 999):04}"  # Generate angka 3 digit
+        huruf = ''.join(random.choices(string.ascii_uppercase, k=2))  # Generate huruf 2 digit
+        nomor_rekam_medis = f"P{angka}{huruf}"
+
+        # Cek di database apakah sudah ada
+        cursor.execute("SELECT COUNT(*) FROM Pasien WHERE Nomor_Rekam_Medis = %s", (nomor_rekam_medis,))
+        count = cursor.fetchone()['count']
+
+        if count == 0:
+            # Jika tidak ada di database, nomor ini valid
+            return nomor_rekam_medis
+
 # Route to serve uploaded files
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
+from datetime import datetime, timedelta
+
+def calculate_next_date(day):
+    today = datetime.today()
+    days = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"]
+    target_day = days.index(day)
+    current_day = today.weekday()
+
+    delta_days = (target_day - current_day) % 7
+    if delta_days == 0:  # Jika hari ini hari yang sama, jadwal minggu depan
+        delta_days = 7
+
+    return (today + timedelta(days=delta_days)).date()
 
 # homepage umum
 @app.route('/')
@@ -46,7 +80,13 @@ def login():
         try:
             cursor.execute("""
             SELECT 
-                *
+                u.ID_User, u.Username, u.Passwords, u.Roles, u.Nama,
+                p.nomor_rekam_medis AS nomor_rekam_medis,
+                pr.ID_Perawat AS ID_Perawat,
+                d.npa AS npa,
+                d.spesialisasi AS spesialisasi,
+                a.id_admin AS id_admin,
+                pa.id_petugas_admin AS id_petugas_admin
             FROM 
                 Users u
             LEFT JOIN 
@@ -64,6 +104,7 @@ def login():
             """, (username, password))
             user = cursor.fetchone()
             print(f"Hasil query login di Flask: {user}")  # Log hasil query
+
             if user:
                 session['user_id'] = user['id_user']
                 session['username'] = user['username']
@@ -76,26 +117,33 @@ def login():
                 #     print(f"ID Perawat dimuat ke sesi: {session['id_perawat']}")
                 # else:
                 #     session['id_perawat'] = None
-
                 #     flash(f"Welcome, {user['nama']}!", 'success')
 
                 # Redirect berdasarkan role
                 if user['roles'] == 'Pasien' and user['nomor_rekam_medis']:
                     session['nomor_rekam_medis'] = user['nomor_rekam_medis']
+                    print(f"ID Pasien dimuat ke sesi: {session.get('user_id')}")
                     return redirect(url_for('homepage'))
                 
                 elif user['roles'] == 'Dokter' and user['npa']:
                     session['npa'] = user['npa']
                     session['spesialisasi'] = user['spesialisasi']
+                    print(f"ID Dokter dimuat ke sesi: {session.get('user_id')}")
                     return redirect(url_for('homepageDokter'))
+                
+                # Tambahkan id_perawat ke sesi jika role adalah Perawat
+                elif user['roles'] == 'Perawat' and user['id_perawat']:
+                    session['id_perawat'] = user['id_perawat']
+                    return redirect(url_for('homepagePerawat'))
                 
                 elif user['roles'] == 'Admin' and user['id_admin']:
                     session['id_admin'] = user['id_admin']
                     return redirect(url_for('homepageAdmin'))
                 
-                elif user['roles'] == 'Perawat' and user['id_perawat']:
-                    session['id_perawat'] = user['id_perawat']
-                    return redirect(url_for('homepagePerawat'))
+                elif user['roles'] == 'Petugas Admin' and user['id_petugas_admin']:
+                    session['id_petugas_admin'] = user['id_petugas_admin']
+                    print(f"ID Petugas Admin: {session['id_petugas_admin']}")  # Debug log
+                    return redirect(url_for('dashboardTagihan'))
 
                 else:
                     flash('Role is not supported for this login.', 'danger')
@@ -104,11 +152,80 @@ def login():
             # jika user tidak terdaftar di database mengembalikan pesan eror
             else:
                 flash('Invalid username or password.', 'danger')
+
         except Exception as e:
             connection.rollback()
             flash(f"An error occurred: {str(e)}", 'danger')
 
     return render_template('LoginPage/index.html')
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        try:
+            # Debug input form
+            print(request.form)  # Lihat semua data yang dikirim dari form
+
+            # Ambil data dari form
+            username = request.form.get('username', '').strip()
+            password = request.form.get('password', '').strip()
+            nama = request.form.get('nama', '').strip()
+            gender = request.form.get('gender', '').strip()
+            tanggal_lahir = request.form.get('tanggal-lahir', '').strip()
+            no_hp = request.form.get('noHP', '').strip()
+            alamat = request.form.get('alamat', '').strip()
+
+            # Debug untuk memastikan input tidak None
+            print(f"Data yang diterima: {username}, {password}, {nama}, {gender}, {tanggal_lahir}, {no_hp}, {alamat}")
+
+            # Validasi input
+            if not (username and password and nama and gender and tanggal_lahir and no_hp and alamat):
+                flash("Semua field wajib diisi!", "danger")
+                return render_template('LoginPage/register.html')
+
+            # Periksa apakah username sudah ada di database
+            cursor.execute("SELECT * FROM Users WHERE Username = %s", (username,))
+            if cursor.fetchone():
+                flash("Username sudah digunakan. Silakan pilih username lain.", "danger")
+                return render_template('LoginPage/register.html')
+
+            # Tambahkan data ke tabel Users
+            cursor.execute("""
+                INSERT INTO Users (Username, Passwords, Roles, Nama) 
+                VALUES (%s, %s, %s, %s) RETURNING ID_User
+            """, (username, password, 'Pasien', nama))
+            id_user = cursor.fetchone()[0]  # Ambil ID_User yang baru saja dimasukkan
+
+            # Debug untuk memastikan ID_User berhasil di-generate
+            print(f"ID_User Baru: {id_user}")
+
+            # Generate Nomor Rekam Medis secara unik
+            while True:
+                nomor_rekam_medis = generate_nomor_rekam_medis()
+                cursor.execute("SELECT * FROM Pasien WHERE Nomor_Rekam_Medis = %s", (nomor_rekam_medis,))
+                if not cursor.fetchone():
+                    break  # Jika nomor tidak ada di database, gunakan nomor ini
+
+            # Debug untuk memastikan Nomor Rekam Medis benar
+            print(f"Nomor Rekam Medis Baru: {nomor_rekam_medis}")
+
+            # Tambahkan data ke tabel Pasien
+            cursor.execute("""
+                INSERT INTO Pasien (Nomor_Rekam_Medis, ID_User, Alamat, Gender, Tanggal_Lahir, Kontak) 
+                VALUES (%s, %s, %s, %s, %s, %s)
+            """, (nomor_rekam_medis, id_user, alamat, gender, tanggal_lahir, no_hp))
+
+            # Commit perubahan ke database
+            connection.commit()
+
+            flash("Pendaftaran berhasil! Silakan login.", "success")
+            return redirect(url_for('login'))
+        except Exception as e:
+            print(f"Error: {str(e)}")  # Debug error
+            flash(f"Terjadi kesalahan saat mendaftarkan pengguna: {str(e)}", "danger")
+            return render_template('LoginPage/register.html')
+    else:
+        return render_template('LoginPage/register.html')
 
 # routing logout
 @app.route('/logout')
@@ -117,7 +234,7 @@ def logout():
     flash("You have been logged out.", "info")
     return redirect(url_for('login'))
 
-  
+
 # PASIEN #################################################################
 @app.route('/HomePage')
 def homepage():
@@ -126,38 +243,45 @@ def homepage():
     flash("Unauthorized access. Please log in.", "danger")
     return redirect(url_for('login'))
 
-
-
-
 @app.route('/jadwaltemu')
 def jadwaltemu():
+    if 'user_id' not in session or session.get('role') != 'Pasien':
+        flash('Anda harus login sebagai pasien untuk melihat jadwal temu.', 'danger')
+        return redirect(url_for('login'))
+
+    nomor_rekam_medis = session.get('nomor_rekam_medis')  # Ambil nomor rekam medis dari sesi
+
     try:
         # Query untuk janji temu mendatang
         upcoming_query = """
-        SELECT d.npa AS Dokter, d.Spesialisasi, bj.Tanggal_Janji, jd.Jam_Mulai, bj.Nomor_Antrian
+        SELECT u.nama AS Dokter, d.Spesialisasi, bj.Tanggal_Janji, jd.Jam_Mulai, jd.Jam_Selesai, bj.Nomor_Antrian
         FROM Buat_Janji bj
         JOIN Jadwal_Dokter jd ON bj.ID_Jadwal = jd.ID_Jadwal
         JOIN Dokter d ON jd.NPA = d.NPA
+		JOIN Users u on d.id_user = u.id_user
         WHERE bj.Tanggal_Janji >= CURRENT_DATE
+        AND bj.Nomor_Rekam_Medis = %s
         ORDER BY bj.Tanggal_Janji, jd.Jam_Mulai;
         """
-        cursor.execute(upcoming_query)
+        cursor.execute(upcoming_query, (nomor_rekam_medis,))
         upcoming_appointments = cursor.fetchall()
 
         # Query untuk history janji temu
         history_query = """
-        SELECT d.npa AS Dokter, d.Spesialisasi, bj.Tanggal_Janji, jd.Jam_Mulai, bj.Nomor_Antrian
+        SELECT u.nama AS Dokter, d.Spesialisasi, bj.Tanggal_Janji, jd.Jam_Mulai, jd.Jam_Selesai, bj.Nomor_Antrian
         FROM Buat_Janji bj
         JOIN Jadwal_Dokter jd ON bj.ID_Jadwal = jd.ID_Jadwal
         JOIN Dokter d ON jd.NPA = d.NPA
+        JOIN Users u on d.id_user = u.id_user
         WHERE bj.Tanggal_Janji < CURRENT_DATE
+        AND bj.Nomor_Rekam_Medis = %s
         ORDER BY bj.Tanggal_Janji DESC, jd.Jam_Mulai;
         """
-        cursor.execute(history_query)
+        cursor.execute(history_query, (nomor_rekam_medis,))
         history_appointments = cursor.fetchall()
 
         return render_template(
-            'jadwaltemu.html',
+            'Pasien/JadwalTemu/index.html',
             upcoming_appointments=upcoming_appointments,
             history_appointments=history_appointments
         )
@@ -166,95 +290,364 @@ def jadwaltemu():
         return "Internal Server Error", 500
 
 
-
-@app.route('/Booking')
+@app.route('/booking')
 def booking():
-    query = """
-        SELECT d.Spesialisasi, d.Nama, 
-       STRING_AGG(j.Hari || ' ' || j.Jam_Mulai::TEXT || '-' || j.Jam_Selesai::TEXT, ', ') AS Jadwal
-FROM Dokter d
-JOIN Jadwal_Dokter j ON d.NPA = j.NPA
-GROUP BY d.Spesialisasi, d.Nama
-ORDER BY d.Spesialisasi, d.Nama
-    """
-    cursor.execute(query)
-    result = cursor.fetchall()
+    if 'user_id' not in session or session.get('role') != 'Pasien':
+        flash('Silakan login sebagai pasien untuk melakukan booking.', 'danger')
+        return redirect(url_for('login'))
 
-    doctors_data = {}
-    for row in result:
-        specialization = row[0].lower()
-        if specialization not in doctors_data:
-            doctors_data[specialization] = []
-        doctors_data[specialization].append({
-            "name": row[1],
-            "schedule": row[2]
-        })
+    try:
+        cursor.execute("SELECT DISTINCT spesialisasi FROM dokter")
+        specializations = cursor.fetchall()
+    except Exception as e:
+        flash(f"Terjadi kesalahan: {str(e)}", 'danger')
+        return redirect(url_for('homepage'))
 
-    return render_template("Booking/index.html", doctors_data=doctors_data)
-    # return render_template("Booking/index.html")
+    return render_template('Pasien/booking.html', specializations=[s[0] for s in specializations])
 
-@app.route('/Booking/Doctor', methods=['GET', 'POST'])
-def book_for_doctor():
-    id_jadwal = request.args.get('id_jadwal')  # Doctor's schedule ID
-    nomor_rekam_medis = session.get('nomor_rekam_medis')  # Assume the user is logged in and their record number is stored in the session
+@app.route('/booking/<specialization>')
+def list_doctors(specialization):
+    if 'user_id' not in session:  # Jika tidak login, redirect ke login
+        flash('Anda belum login. Silakan login terlebih dahulu.', 'danger')
+        print("Redirect ke login: Tidak ada sesi.")
+        return redirect(url_for('login'))
 
-    if not id_jadwal or not nomor_rekam_medis:
-        return "Invalid request", 400
+    if session.get('role') != 'Pasien':  # Jika role bukan Pasien, redirect ke homepage
+        flash('Anda tidak memiliki akses untuk fitur ini.', 'danger')
+        print(f"Redirect ke homepage: Role tidak valid ({session.get('role')}).")
+        return redirect(url_for('homepage'))
 
-    if request.method == 'POST':
-        # Get data from the form
-        tanggal_janji = request.form.get('tanggal_janji')
+    print(f"Sesi valid untuk user_id: {session['user_id']}, role: {session['role']}")
 
-        try:
-            # Fetch the current queue count
-            cursor.execute("""
-                SELECT Counts 
-                FROM Jadwal_Dokter 
-                WHERE ID_Jadwal = %s
-            """, (id_jadwal,))
-            current_count = cursor.fetchone()[0] or 0
+    try:
+        cursor.execute("""
+            SELECT d.npa, u.nama, d.spesialisasi 
+            FROM dokter d
+            JOIN users u ON d.id_user = u.id_user
+            WHERE d.spesialisasi = %s
+        """, (specialization,))
+        doctors = cursor.fetchall()
+        print(f"Dokter ditemukan untuk spesialisasi {specialization}: {doctors}")
+        if not doctors:
+            flash('Tidak ada dokter yang ditemukan untuk spesialisasi ini.', 'danger')
+            return redirect(url_for('booking'))
+    except Exception as e:
+        print(f"Kesalahan saat mengambil daftar dokter: {str(e)}")
+        flash(f"Terjadi kesalahan: {str(e)}", 'danger')
+        return redirect(url_for('booking'))
 
-            # Increment the count for the new booking
-            new_count = current_count + 1
+    return render_template('Pasien/list_doctors.html', doctors=doctors, specialization=specialization)
 
-            # Insert into Buat_Janji
-            cursor.execute("""
-                INSERT INTO Buat_Janji (Tanggal_Janji, Nomor_Rekam_Medis, ID_Jadwal, Nomor_Antrian, Counts)
-                VALUES (%s, %s, %s, %s, %s)
-            """, (tanggal_janji, nomor_rekam_medis, id_jadwal, new_count, new_count))
+@app.route('/booking/schedule/<npa>')
+def doctor_schedule(npa):
+    # Validasi login
+    if 'user_id' not in session:
+        flash('Silakan login untuk melihat jadwal.', 'danger')
+        return redirect(url_for('login'))
 
-            # Update the count in Jadwal_Dokter
-            cursor.execute("""
-                UPDATE Jadwal_Dokter 
-                SET Counts = %s 
-                WHERE ID_Jadwal = %s
-            """, (new_count, id_jadwal))
-            connection.commit()
+    # Validasi role sebagai pasien
+    if session.get('role') != 'Pasien':
+        flash('Anda tidak memiliki akses untuk fitur ini.', 'danger')
+        return redirect(url_for('homepage'))
 
-            return redirect(url_for('jadwaltemu'))  # Redirect to the user's schedule page
-        except Exception as e:
-            print(f"Error: {e}")
-            return "An error occurred while booking.", 500
+    try:
+        # Query untuk mengambil jadwal dokter berdasarkan NPA
+        cursor.execute("""
+            SELECT jd.id_jadwal, jd.hari, jd.jam_mulai, jd.jam_selesai, jd.kuota_pasien
+            FROM jadwal_dokter jd
+            WHERE jd.npa = %s
+        """, (npa,))
+        schedules = cursor.fetchall()
 
-    # Fetch schedule details
-    cursor.execute("""
-        SELECT Hari, Jam_Mulai, Jam_Selesai
-        FROM Jadwal_Dokter
-        WHERE ID_Jadwal = %s
-    """, (id_jadwal,))
-    schedule = cursor.fetchone()
+        # Konversi tipe data kuota_pasien menjadi integer
+        schedules = [
+            [row[0], row[1], row[2], row[3], int(row[4])]
+            for row in schedules
+        ]
+        print(f"Jadwal Dokter (setelah konversi): {schedules}")
 
-    return render_template("Pasien/Booking/doctor_schedule.html", schedule=schedule, id_jadwal=id_jadwal)
+        # Query untuk mengambil informasi dokter
+        cursor.execute("""
+            SELECT u.nama, d.spesialisasi
+            FROM dokter d
+            JOIN users u ON d.id_user = u.id_user
+            WHERE d.npa = %s
+        """, (npa,))
+        doctor = cursor.fetchone()
+        print(f"Informasi Dokter: {doctor}")
+
+        if not doctor:
+            flash('Dokter tidak ditemukan.', 'danger')
+            return redirect(url_for('booking'))
+
+        # Render template dengan data jadwal dan informasi dokter
+        return render_template('Pasien/doctor_schedule.html', doctor=doctor, schedules=schedules)
+
+    except Exception as e:
+        flash(f"Terjadi kesalahan: {str(e)}", 'danger')
+        print(f"Kesalahan saat mengambil data dokter: {e}")
+        return redirect(url_for('booking'))
+
+@app.route('/booking/book', methods=['POST'])
+def book_schedule():
+    if 'user_id' not in session or session.get('role') != 'Pasien':
+        flash('Silakan login sebagai pasien untuk melakukan booking.', 'danger')
+        return redirect(url_for('login'))
+
+    id_jadwal = request.form.get('id_jadwal')
+    tanggal_janji_input = request.form.get('tanggal-janji')  # Ambil tanggal dari input form
+    nomor_rekam_medis = session.get('nomor_rekam_medis')  # Ambil dari sesi
+
+    try:
+        # Validasi input tanggal
+        if not tanggal_janji_input:
+            flash('Harap pilih tanggal janji.', 'danger')
+            return redirect(url_for('doctor_schedule', npa=request.form.get('npa')))
+
+        tanggal_janji = date.fromisoformat(tanggal_janji_input)
+        if tanggal_janji < date.today():
+            flash('Tanggal janji tidak boleh di masa lalu.', 'danger')
+            return redirect(url_for('doctor_schedule', npa=request.form.get('npa')))
+
+        # Ambil informasi jadwal dokter
+        cursor.execute("""
+            SELECT jd.hari, jd.npa, jd.kuota_pasien
+            FROM jadwal_dokter jd
+            WHERE jd.id_jadwal = %s
+        """, (id_jadwal,))
+        jadwal = cursor.fetchone()
+        if not jadwal:
+            flash('Jadwal tidak ditemukan.', 'danger')
+            return redirect(url_for('doctor_schedule', npa=request.form.get('npa')))
+
+        hari_jadwal, npa, kuota_pasien = jadwal['hari'], jadwal['npa'], jadwal['kuota_pasien']
+
+        # Validasi apakah tanggal janji sesuai dengan hari yang tersedia
+        days_of_week = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu']
+        if days_of_week[tanggal_janji.weekday()] != hari_jadwal:
+            flash(f'Tanggal yang dipilih tidak sesuai dengan jadwal hari {hari_jadwal}.', 'danger')
+            return redirect(url_for('doctor_schedule', npa=npa))
+
+        # Periksa total pasien yang sudah mendaftar pada tanggal tersebut
+        cursor.execute("""
+            SELECT COUNT(*) AS jumlah_pasien
+            FROM buat_janji bj
+            JOIN jadwal_dokter jd ON bj.id_jadwal = jd.id_jadwal
+            WHERE jd.npa = %s AND bj.tanggal_janji = %s
+        """, (npa, tanggal_janji))
+        jumlah_pasien = cursor.fetchone()['jumlah_pasien']
+
+        if jumlah_pasien >= kuota_pasien:
+            flash(f'Kuota penuh pada tanggal {tanggal_janji}. Silakan pilih tanggal lain.', 'danger')
+            return redirect(url_for('doctor_schedule', npa=npa))
+
+        # Tambah janji ke tabel buat_janji
+        cursor.execute("""
+            INSERT INTO buat_janji (tanggal_janji, nomor_rekam_medis, id_jadwal, nomor_antrian)
+            VALUES (%s, %s, %s, %s)
+        """, (tanggal_janji, nomor_rekam_medis, id_jadwal, jumlah_pasien + 1))
+        connection.commit()
+
+        flash(f'Janji berhasil dibuat untuk tanggal {tanggal_janji}.', 'success')
+    except Exception as e:
+        connection.rollback()
+        flash(f"Terjadi kesalahan: {str(e)}", 'danger')
+        return redirect(url_for('doctor_schedule', npa=request.form.get('npa')))
+
+    return redirect(url_for('booking'))
 
 
 
 @app.route('/Profile')
 def profile():
-    return render_template("Pasien/Profile/index.html")
+    if 'user_id' not in session or session.get('role') != 'Pasien':
+        flash("Unauthorized access. Please log in.", "danger")
+        return redirect(url_for('login'))
+    user_id = session['user_id']
+
+    # Informasi pasien
+    cursor.execute("""
+            SELECT 
+                u.Nama AS nama_pasien, 
+                p.Alamat AS alamat,
+                p.nomor_rekam_medis,
+                p.tanggal_lahir AS tanggal_lahir,
+                p.gender AS jenis_kelamin,
+                p.kontak AS telepon
+            FROM 
+                Users u
+            JOIN 
+                Pasien p ON u.ID_User = p.ID_User
+            WHERE 
+                u.ID_User = %s;
+        """, (user_id,))
+    patient_info = cursor.fetchone()
+
+    return render_template("Pasien/Profile/index.html", patient_info=patient_info)
+
+@app.route('/Profile/EditProfile', methods=['GET', 'POST'])
+def edit_profile():
+    if request.method == 'POST':
+        user_id = session['user_id']
+        if not user_id:
+            flash("Anda harus login untuk mengedit profil.", 'danger')
+            return redirect(url_for('login'))
+
+        # Ambil data dari form
+        nama = request.form.get('name')
+        username = request.form.get('username')
+        password = request.form.get('password')
+        alamat = request.form.get('address')
+        gender = request.form.get('gender')
+        tanggal_lahir = request.form.get('birthdate')
+        kontak = request.form.get('phone')
+
+        try:
+            # Update tabel Users
+            if username or password or nama:
+                cursor.execute("""
+                    UPDATE Users
+                    SET
+                        Username = COALESCE(%s, Username),
+                        Passwords = CASE
+                    WHEN %s = '' THEN Passwords
+                    ELSE %s
+                    END,
+                    Nama = COALESCE(%s, Nama)
+                    WHERE ID_User = %s
+                """, (username, password, password, nama, user_id))
+            
+            # Update tabel Pasien
+            if alamat or gender or tanggal_lahir or kontak:
+                cursor.execute("""
+                    UPDATE Pasien
+                    SET
+                        Alamat = COALESCE(%s, Alamat),
+                        Gender = COALESCE(%s, Gender),
+                        Tanggal_Lahir = COALESCE(%s, Tanggal_Lahir),
+                        Kontak = COALESCE(%s, Kontak)
+                    WHERE ID_User = %s
+                """, (alamat, gender, tanggal_lahir, kontak, user_id))
+
+            connection.commit()
+            flash("Profil berhasil diperbarui!", 'success')
+            return redirect(url_for('profile'))
+        except Exception as e:
+            connection.rollback()
+            flash(f"Terjadi kesalahan saat memperbarui profil: {str(e)}", 'danger')
+
+        return redirect(url_for('edit_profile'))
+
+    # GET request: Tampilkan halaman edit profil
+    user_id = session['user_id']
+    if not user_id:
+        flash("Anda harus login untuk mengakses halaman ini.", 'danger')
+        return redirect(url_for('login'))
+
+    try:
+        # Ambil data profil pengguna dari database
+        cursor.execute("""
+            SELECT 
+                u.Nama, u.Username, p.Alamat, p.Gender, 
+                p.Tanggal_Lahir, p.Kontak
+            FROM Users u
+            LEFT JOIN Pasien p ON u.ID_User = p.ID_User
+            WHERE u.ID_User = %s
+        """, (user_id,))
+        user_data = cursor.fetchone()
+    except Exception as e:
+        flash(f"Terjadi kesalahan saat memuat data: {str(e)}", 'danger')
+        user_data = None
+
+    return render_template("Pasien/Profile/editProfile.html", user_data=user_data)
+
+@app.route('/Profile/RiwayatMedis')
+def riwayat_medis():
+    user_id = session['user_id']
+    
+    # File path untuk file riwayat medis
+    cursor.execute("""
+            SELECT p.nomor_rekam_medis
+            FROM Pasien p
+            WHERE p.id_user = %s
+        """, (user_id,))
+    res = cursor.fetchone()
+    nrm = res['nomor_rekam_medis']
+
+    cursor.execute("""
+            SELECT * FROM Files_RiwayatMedis WHERE nomor_Rekam_medis=%s ORDER BY Upload_Date DESC LIMIT 1
+        """, (nrm,))
+    file = cursor.fetchone()
+    file_path = file['file_path'] if file else None
+    
+    return render_template("Pasien/Profile/riwayatMedis.html", file_path=file_path)
 
 @app.route('/Tagihan')
 def tagihan():
-    return render_template("Pasien/Tagihan/index.html")
+    if 'user_id' not in session or session.get('role') != 'Pasien':
+        flash("Unauthorized access. Please log in.", "danger")
+        return redirect(url_for('login'))
+
+    try:
+        user_id = session['user_id']
+        
+        # Informasi pasien
+        cursor.execute("""
+            SELECT 
+                u.Nama AS nama_pasien, 
+                p.Alamat AS alamat
+            FROM 
+                Users u
+            JOIN 
+                Pasien p ON u.ID_User = p.ID_User
+            WHERE 
+                u.ID_User = %s;
+        """, (user_id,))
+        patient_info = cursor.fetchone()
+
+        # Total tagihan
+        cursor.execute("""
+            SELECT 
+                SUM(d.Tarif) AS total_tagihan
+            FROM 
+                Buat_Janji bj
+            JOIN 
+                Dokter d ON bj.ID_Jadwal IN (SELECT ID_Jadwal FROM Jadwal_Dokter WHERE NPA = d.NPA)
+            JOIN 
+                Pasien p ON bj.Nomor_Rekam_Medis = p.Nomor_Rekam_Medis
+            WHERE 
+                p.ID_User = %s;
+        """, (user_id,))
+        total_tagihan = cursor.fetchone()['total_tagihan'] or 0
+
+        # Tagihan data
+        cursor.execute("""
+            SELECT 
+                u_dokter.Nama AS nama_dokter,
+                bj.Tanggal_Janji AS tanggal_janji,
+                d.Tarif AS tarif
+            FROM 
+                Buat_Janji bj
+            JOIN 
+                Pasien p ON bj.Nomor_Rekam_Medis = p.Nomor_Rekam_Medis
+            JOIN 
+                Dokter d ON bj.ID_Jadwal IN (SELECT ID_Jadwal FROM Jadwal_Dokter WHERE NPA = d.NPA)
+            JOIN 
+                Users u_dokter ON d.ID_User = u_dokter.ID_User
+            WHERE 
+                p.ID_User = %s;
+        """, (user_id,))
+        tagihan_data = cursor.fetchall()
+
+        return render_template(
+            "Pasien/Tagihan/index.html",
+            patient_info=patient_info,
+            total_tagihan=total_tagihan,
+            tagihan_data=tagihan_data
+        )
+    except Exception as e:
+        print(f"Error fetching tagihan: {e}")
+        return "Internal Server Error", 500
 
 ###########################################################
 
@@ -1116,6 +1509,7 @@ def uploadDokumen():
             filename = secure_filename(file.filename)
             filepath = os.path.join('uploads', filename)
 
+            # NAMA TIDAK DIPAKAI JADI HARUS REVISI
             try:
                 # Simpan file ke folder uploads
                 file.save(filepath)
@@ -1188,3 +1582,305 @@ def daftarPasien():
 
     
 ###################################################################
+@app.route('/PetugasAdmin')
+def dashboardTagihan():
+    if 'role' in session and session['role'] == 'Petugas Admin':
+        nama = session.get('nama')  # Ambil nama dari sesi
+        return render_template('Petugas/dashboardTagihan.html', nama=nama)
+    flash('Unauthorized access. Please log in as a Petugas Admin.', 'danger')
+    return redirect(url_for('login'))
+
+
+@app.route('/PetugasAdmin/pendaftaranPasien', methods=['GET', 'POST'])
+def pendaftaranPasien():
+    if request.method == 'POST':
+        try:
+            # Ambil data dari form
+            nama = request.form['nama'].strip()
+            jenis_kelamin = request.form['jenis_kelamin']
+            tanggal_lahir = request.form['tanggal_lahir']
+            kontak = request.form['kontak'].strip()
+            username = request.form['username'].strip()
+            password = request.form['password'].strip()
+            alamat = request.form['alamat'].strip()
+            
+            # Generate Nomor Rekam Medis yang unik
+            nomor_rekam_medis = generate_nomor_rekam_medis()
+            print(nomor_rekam_medis)
+            
+            # Insert ke tabel Users
+            cursor.execute("""
+                INSERT INTO Users (Username, Passwords, Roles, Nama)
+                VALUES (%s, %s, 'Pasien', %s) RETURNING ID_User
+            """, (username, password, nama))
+            id_user = cursor.fetchone()['id_user']
+            
+            # Insert ke tabel Pasien
+            cursor.execute("""
+                INSERT INTO Pasien (Nomor_Rekam_Medis, ID_User, Alamat, Gender, Tanggal_Lahir, Kontak)
+                VALUES (%s, %s, %s, %s, %s, %s)
+            """, (nomor_rekam_medis, id_user, alamat, jenis_kelamin, tanggal_lahir, kontak))
+            
+            # Commit perubahan
+            connection.commit()
+            flash(f"Pasien {nama} berhasil didaftarkan dengan Nomor Rekam Medis: {nomor_rekam_medis}", 'success')
+            return redirect(url_for('pendaftaran_pasien'))
+        except Exception as e:
+            # Rollback jika terjadi error
+            connection.rollback()
+            flash(f"Terjadi kesalahan: {str(e)}", 'danger')
+    
+    return render_template("Petugas/pendaftaranPasien.html")
+
+
+# @app.route('/PetugasAdmin/pendaftaranPasien')
+# def pendaftaranPasien():
+#     return render_template("Petugas/pendaftaranPasien.html")
+
+@app.route('/PetugasAdmin/Invoice', methods=['GET'])
+def invoice():
+    if 'role' in session and session['role'] == 'Petugas Admin':
+        search_query = request.args.get('search', '').strip()
+        try:
+            if search_query:
+                # Query untuk mencari tagihan berdasarkan nama pasien
+                cursor.execute("""
+                    SELECT 
+                        t.nomor_rekam_medis, 
+                        u.nama, 
+                        t.jumlah_pembayaran,
+                        t.status_pembayaran
+                    FROM 
+                        transaksi t
+                    INNER JOIN 
+                        pasien p ON t.nomor_rekam_medis = p.nomor_rekam_medis
+                    INNER JOIN 
+                        users u ON p.id_user = u.id_user
+                    WHERE 
+                        u.nama ILIKE %s
+                        AND t.tanggal_transaksi = CURRENT_DATE
+                """, (f"%{search_query}%",))
+            else:
+                # Query default untuk daftar tagihan hari ini
+                cursor.execute("""
+                    SELECT 
+                        t.nomor_rekam_medis, 
+                        u.nama, 
+                        t.jumlah_pembayaran,
+                        t.status_pembayaran
+                    FROM 
+                        transaksi t
+                    INNER JOIN 
+                        pasien p ON t.nomor_rekam_medis = p.nomor_rekam_medis
+                    INNER JOIN 
+                        users u ON p.id_user = u.id_user
+                    WHERE 
+                        t.tanggal_transaksi = CURRENT_DATE
+                """)
+            invoices = cursor.fetchall()
+
+            return render_template(
+                'Petugas/Invoice.html', 
+                invoices=invoices, 
+                search_query=search_query
+            )
+        except Exception as e:
+            flash(f"Terjadi kesalahan saat mengambil data tagihan: {str(e)}", 'danger')
+            return redirect(url_for('dashboardTagihan'))
+    else:
+        flash("Unauthorized access.", "danger")
+        return redirect(url_for('login'))
+
+
+@app.route('/PetugasAdmin/Invoice/MarkAsPaid', methods=['POST'])
+def mark_as_paid():
+    if 'role' in session and session['role'] == 'Petugas Admin':
+        try:
+            # Ambil id_transaksi dari form
+            id_transaksi = request.form.get('id_transaksi')
+            
+            if not id_transaksi:
+                flash("ID Transaksi tidak ditemukan.", "danger")
+                return redirect(url_for('invoice'))
+
+            # Update status pembayaran menjadi "Lunas"
+            cursor.execute("""
+                UPDATE transaksi
+                SET status_pembayaran = 'Lunas'
+                WHERE id_transaksi = %s
+            """, (id_transaksi,))
+            connection.commit()
+
+            flash("Status pembayaran berhasil diperbarui menjadi Lunas.", "success")
+            return redirect(url_for('invoice'))
+        except Exception as e:
+            connection.rollback()
+            flash(f"Terjadi kesalahan saat memperbarui status pembayaran: {str(e)}", "danger")
+            return redirect(url_for('invoice'))
+    else:
+        flash("Unauthorized access.", "danger")
+        return redirect(url_for('login'))
+
+
+@app.route('/PetugasAdmin/Invoice/Detail', methods=['POST'])
+def detail_invoice():
+    if 'role' in session and session['role'] == 'Petugas Admin':
+        try:
+            nomor_rekam_medis = request.form.get('nomor_rekam_medis')
+            if not nomor_rekam_medis:
+                flash("Nomor Rekam Medis tidak ditemukan.", "danger")
+                return redirect(url_for('invoice'))
+
+            # Query detail invoice
+            cursor.execute("""
+                SELECT 
+                    t.id_transaksi, 
+                    p.nomor_rekam_medis, 
+                    u_pasien.nama AS nama_pasien, 
+                    t.tanggal_transaksi, 
+                    t.jumlah_pembayaran, 
+                    t.status_pembayaran,
+                    p.kontak
+                FROM 
+                    transaksi t
+                INNER JOIN 
+                    pasien p ON t.nomor_rekam_medis = p.nomor_rekam_medis
+                INNER JOIN 
+                    users u_pasien ON u_pasien.id_user = p.id_user
+                WHERE 
+                    t.nomor_rekam_medis = %s and t.tanggal_transaksi = CURRENT_DATE
+                ORDER BY 
+                    t.tanggal_transaksi DESC
+                LIMIT 1
+            """, (nomor_rekam_medis,))
+            invoice_detail = cursor.fetchone()
+
+            if not invoice_detail:
+                flash("Detail tagihan tidak ditemukan.", "danger")
+                return redirect(url_for('invoice'))
+
+            # Query untuk mendapatkan layanan terkait
+            cursor.execute("""
+                SELECT 
+                    u_dokter.nama AS nama_dokter, 
+                    d.spesialisasi, 
+                    d.tarif
+                FROM 
+                    buat_janji bj
+                INNER JOIN 
+                    jadwal_dokter jd ON bj.id_jadwal = jd.id_jadwal
+                INNER JOIN 
+                    dokter d ON jd.npa = d.npa
+                INNER JOIN 
+                    users u_dokter ON d.id_user = u_dokter.id_user
+                WHERE 
+                    bj.nomor_rekam_medis = %s and bj.tanggal_janji = CURRENT_DATE
+                ORDER BY 
+                    bj.tanggal_janji DESC
+            """, (nomor_rekam_medis,))
+            services = cursor.fetchall()
+
+            total_payment = sum(service[2] for service in services)
+
+            return render_template(
+                'Petugas/detail_invoice.html',
+                patient_info=invoice_detail[1:7],
+                services=services,
+                total_payment=total_payment,
+                transaction_id=invoice_detail[0]
+
+                
+            )
+        except Exception as e:
+            flash(f"Terjadi kesalahan saat mengambil detail invoice: {str(e)}", "danger")
+            return redirect(url_for('invoice'))
+    else:
+        flash("Unauthorized access.", "danger")
+        return redirect(url_for('login'))
+
+
+
+
+@app.route('/PetugasAdmin/Invoice/BuatInvoice', methods=['GET'])
+def buat_invoice():
+    if 'role' in session and session['role'] == 'Petugas Admin':
+        try:
+            # Query untuk mendapatkan daftar dokter
+            cursor.execute("""
+                SELECT u_dokter.nama, d.tarif 
+                FROM dokter d
+                INNER JOIN users u_dokter ON u_dokter.id_user = d.id_user
+            """)
+            doctors = cursor.fetchall()  # [(NamaDokter1, Tarif1), (NamaDokter2, Tarif2), ...]
+
+            return render_template("Petugas/buat_invoice.html", doctors=doctors)
+        except Exception as e:
+            flash(f"Terjadi kesalahan saat memuat data dokter: {str(e)}", 'danger')
+            return redirect(url_for('invoice'))
+    else:
+        flash("Unauthorized access.", "danger")
+        return redirect(url_for('login'))
+
+@app.route('/PetugasAdmin/Invoice/BuatInvoice', methods=['POST'])
+def buat_invoice_submit():
+    if 'role' in session and session['role'] == 'Petugas Admin':
+        try:
+            # Ambil data dari form
+            nama_pasien = request.form.get('nama_pasien').strip()
+            tanggal_transaksi = request.form.get('tanggal_transaksi').strip()
+            selected_doctors = request.form.getlist('selected_doctors')  # Daftar tarif dokter yang dipilih
+            id_petugas_admin = session.get('id_petugas_admin')
+
+            # Hitung total tarif
+            total_tarif = sum([float(tarif) for tarif in selected_doctors])
+
+            print(f"Selected Doctors: {selected_doctors}")  # Daftar tarif dokter
+            print(f"Total Tarif: {total_tarif}")  # Total tarif yang dihitung
+
+
+            # Validasi data
+            if not (nama_pasien and tanggal_transaksi and selected_doctors):
+                flash("Semua field wajib diisi!", "danger")
+                return redirect(url_for('buat_invoice'))
+
+            # Dapatkan nomor rekam medis berdasarkan nama pasien
+            cursor.execute("""
+                SELECT nomor_rekam_medis 
+                FROM pasien p
+                INNER JOIN users u ON p.id_user = u.id_user
+                WHERE u.nama = %s
+            """, (nama_pasien,))
+            result = cursor.fetchone()
+            print(result)
+
+            if not result:
+                flash("Nama pasien tidak valid.", "danger")
+                return redirect(url_for('buat_invoice'))
+
+            nomor_rekam_medis = result[0]
+            print(nomor_rekam_medis)
+
+            print(f"Nama Pasien: {nama_pasien}")
+            print(f"Nomor Rekam Medis: {nomor_rekam_medis}")
+            print(f"Tanggal Transaksi: {tanggal_transaksi}")
+            print(f"Total Tarif: {total_tarif}")
+            print(f"ID Petugas Admin: {id_petugas_admin}")
+
+
+            # Insert data ke tabel transaksi
+            cursor.execute("""
+                INSERT INTO transaksi (status_pembayaran, tanggal_transaksi, jumlah_pembayaran, nomor_rekam_medis, id_petugas_admin)
+                VALUES (%s, %s, %s, %s, %s)
+            """, ("Belum Lunas", tanggal_transaksi, total_tarif, nomor_rekam_medis, id_petugas_admin))
+            connection.commit()
+
+            flash("Invoice berhasil dibuat!", "success")
+            return redirect(url_for('invoice'))
+        except Exception as e:
+            print(f"Error saat INSERT INTO transaksi: {str(e)}")  # Debug log kesalahan
+            connection.rollback()
+            flash(f"Terjadi kesalahan saat membuat invoice: {str(e)}", "danger")
+            return redirect(url_for('buat_invoice'))
+    else:
+        flash("Unauthorized access.", "danger")
+        return redirect(url_for('login'))

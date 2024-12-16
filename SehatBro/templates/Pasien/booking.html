@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles/Booking/bookingStyle.css') }}"
+    />
+    <title>Booking Dokter</title>
+  </head>
+  <body>
+    {% include "flashTemplate.html" %}
+
+    <div class="container">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="logo">
+          <h1>Klinik SehatBro.</h1>
+        </div>
+        <nav>
+          <ul>
+            <li id="nav-homepage">
+              <img
+                src="{{ url_for('static', filename='images/Booking/home-gray.png') }}"
+              />
+              <a href="{{ url_for('homepage') }}" id="link-homepage"
+                >Homepage</a
+              >
+            </li>
+            <li id="nav-booking">
+              <img
+                src="{{ url_for('static', filename='images/Booking/calendar-add-white.png') }}"
+              />
+              <a href="#">Booking</a>
+            </li>
+            <li id="nav-jadwal">
+              <img
+                src="{{ url_for('static', filename='images/Booking/calendar-tick-gray.png') }}"
+              />
+              <a href="{{ url_for('jadwaltemu') }}">Jadwal Temu</a>
+            </li>
+            <li id="nav-tagihan">
+              <img
+                src="{{ url_for('static', filename='images/Booking/receipt-text.png') }}"
+              />
+              <a href="{{ url_for('tagihan') }}">Tagihan</a>
+            </li>
+            <li id="nav-profile">
+              <img
+                src="{{ url_for('static', filename='images/Booking/profile-circle.png') }}"
+              />
+              <a href="{{ url_for('profile') }}">Profile</a>
+            </li>
+            <li id="nav-logout">
+              <img
+                src="{{ url_for('static', filename='images/Booking/logout.png') }}"
+              />
+              <a href="{{ url_for('logout') }}">Logout</a>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <header>
+          <h1>Booking Dokter</h1>
+        </header>
+
+        <!-- Pilih Spesialisasi -->
+        <section id="specialization-selection">
+          <h1>Pilih Spesialisasi</h1>
+          <ul id="spesialisasi">
+            {% for specialization in specializations %}
+            <li>
+              <a
+                href="{{ url_for('list_doctors', specialization=specialization) }}"
+                >{{ specialization }}</a
+              >
+            </li>
+            {% endfor %}
+          </ul>
+        </section>
+      </main>
+    </div>
+
+    <footer>
+      <p>&copy; 2024 Klinik SehatBro. | All Rights Reserved</p>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static',
+    filename='styles/PetugasAdmin/dashboardTagihan.css') }}"
+    />
+    <title>Dashboard Tagihan</title>
+  </head>
+  <body>
+    {% include "flashTemplate.html" %}
+
+    <div class="container">
+      <aside class="sidebar">
+        <div class="logo">
+          <h1>Klinik SehatBro.</h1>
+        </div>
+        <nav>
+          <ul>
+            <li id="nav-dashboard">
+              <img
+                src="{{ url_for('static', filename='images/Perawat/hom‪e-white.png') }}"
+              />
+              <a href="{{url_for('dashboardTagihan')}}" class="link-active"
+                >Dashboard</a
+              >
+            </li>
+            <li id="nav-daftar">
+              <img
+                src="{{ url_for('static', filename='images/Booking/calendar-add.png') }}"
+              />
+              <a href="{{ url_for('pendaftaranPasien') }}">Daftar Pasien</a>
+            </li>
+            <li id="nav-invoice">
+              <img
+                src="{{ url_for('static', filename='images/Booking/calendar-tick-gray.png') }}"
+              />
+              <a href="{{ url_for('invoice') }}">Invoice</a>
+            </li>
+
+            <li id="nav-logout">
+              <img
+                src="{{ url_for('static', filename='images/Booking/logout.png') }}"
+              />
+              <a href="{{ url_for('login') }}">Logout</a>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+      <main class="main-content">
+        <header class="page-header">
+          <div class="header-content">
+            <h2>
+              Selamat Datang <br />
+              <!-- menyambut siapa dokternya yang login -->
+              <span> {{nama}} </span>!
+            </h2>
+            <p>Siap memberikan pelayanan terbaik untuk pasien dan keluarga.</p>
+          </div>
+        </header>
+      </main>
+    </div>
+
+    <footer>
+      <p>&copy; 2024 Klinik SehatBro. | All Rights Reserved</p>
+    </footer>
+  </body>
+</html>

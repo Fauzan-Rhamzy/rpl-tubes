@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static',
+    filename='styles/PetugasAdmin/invoice.css') }}"
+    />
+    <title>Invoice</title>
+  </head>
+  <body>
+    {% include "flashTemplate.html" %}
+
+    <div class="container">
+      <aside class="sidebar">
+        <div class="logo">
+          <h1>Klinik SehatBro.</h1>
+        </div>
+        <nav>
+          <ul>
+            <li id="nav-dashboard">
+              <img
+                src="{{ url_for('static', filename='images/JadwalTemu/home-gray.png') }}"
+              />
+              <a href="{{url_for('dashboardTagihan')}}">Dashboard</a>
+            </li>
+            <li id="nav-daftar">
+              <img
+                src="{{ url_for('static', filename='images/Booking/calendar-add.png') }}"
+              />
+              <a href="{{ url_for('pendaftaranPasien') }}">Daftar Pasien</a>
+            </li>
+            <li id="nav-invoice">
+              <img
+                src="{{ url_for('static', filename='images/Booking/calendar-tick.png') }}"
+              />
+              <a href="{{ url_for('invoice') }}" class="link-active">Invoice</a>
+            </li>
+
+            <li id="nav-logout">
+              <img
+                src="{{ url_for('static', filename='images/Booking/logout.png') }}"
+              />
+              <a href="{{ url_for('login') }}">Logout</a>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+      <main class="main-content">
+        <header>
+          <h1>Invoice</h1>
+        </header>
+
+        <section id="search-make">
+          <form method="GET" action="{{ url_for('invoice') }}">
+            <input
+              type="text"
+              name="search"
+              placeholder="Cari berdasarkan nama pasien"
+              value="{{ request.args.get('search', '') }}"
+            />
+            <button type="submit">Cari</button>
+          </form>
+
+          <form action="{{ url_for('buat_invoice') }}" method="POST">
+            <button type="submit" id="make-invoice-button">Buat Invoice</button>
+          </form>
+        </section>
+
+        <section class="content-section">
+          <table>
+            <thead>
+              <tr>
+                <th>Nomor Rekam Medis</th>
+                <th>Nama Pasien</th>
+                <th>Jumlah Pembayaran (Rp)</th>
+                <th>Detail</th>
+                <th>Status Pembayaran</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% if invoices %} {% for invoice in invoices %}
+              <tr>
+                <td>{{ invoice[0] }}</td>
+                <td>{{ invoice[1] }}</td>
+                <td>{{ "{:,.2f}".format(invoice[2]) }}</td>
+                <td>{{ invoice[3]}}</td>
+                <td>
+                  <form action="{{ url_for('detail_invoice') }}" method="POST">
+                    <input
+                      type="hidden"
+                      name="nomor_rekam_medis"
+                      value="{{ invoice[0] }}"
+                    />
+                    <button type="submit" class="btn-detail">
+                      Lihat Detail
+                    </button>
+                  </form>
+                </td>
+              </tr>
+              {% endfor %} {% else %}
+              <tr>
+                <td colspan="3">Tidak ada tagihan hari ini.</td>
+              </tr>
+              {% endif %}
+            </tbody>
+          </table>
+        </section>
+      </main>
+    </div>
+
+    <footer>
+      <p>&copy; 2024 Klinik SehatBro. | All Rights Reserved</p>
+    </footer>
+  </body>
+</html>
