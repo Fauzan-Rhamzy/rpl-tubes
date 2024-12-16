@@ -1819,66 +1819,67 @@ def buat_invoice():
         flash("Unauthorized access.", "danger")
         return redirect(url_for('login'))
 
-@app.route('/PetugasAdmin/Invoice/BuatInvoice', methods=['POST'])
+@app.route('/PetugasAdmin/Invoice/BuatInvoice', methods=['GET', 'POST'])
 def buat_invoice_submit():
     if 'role' in session and session['role'] == 'Petugas Admin':
-        try:
-            # Ambil data dari form
-            nama_pasien = request.form.get('nama_pasien').strip()
-            tanggal_transaksi = request.form.get('tanggal_transaksi').strip()
-            selected_doctors = request.form.getlist('selected_doctors')  # Daftar tarif dokter yang dipilih
-            id_petugas_admin = session.get('id_petugas_admin')
+        if request.method == 'POST':
+            try:
+                # Ambil data dari form
+                nama_pasien = request.form.get('nama_pasien')
+                tanggal_transaksi = request.form.get('tanggal_transaksi')
+                selected_doctors = request.form.getlist('selected_doctors')  # Daftar tarif dokter yang dipilih
+                id_petugas_admin = session.get('id_petugas_admin')
 
-            # Hitung total tarif
-            total_tarif = sum([float(tarif) for tarif in selected_doctors])
+                # Hitung total tarif
+                total_tarif = sum([float(tarif) for tarif in selected_doctors])
 
-            print(f"Selected Doctors: {selected_doctors}")  # Daftar tarif dokter
-            print(f"Total Tarif: {total_tarif}")  # Total tarif yang dihitung
+                print(f"Selected Doctors: {selected_doctors}")  # Daftar tarif dokter
+                print(f"Total Tarif: {total_tarif}")  # Total tarif yang dihitung
 
 
-            # Validasi data
-            if not (nama_pasien and tanggal_transaksi and selected_doctors):
-                flash("Semua field wajib diisi!", "danger")
+                # Validasi data
+                if not (nama_pasien and tanggal_transaksi and selected_doctors):
+                    flash("Semua field wajib diisi!", "danger")
+                    return redirect(url_for('buat_invoice'))
+
+                # Dapatkan nomor rekam medis berdasarkan nama pasien
+                cursor.execute("""
+                    SELECT nomor_rekam_medis 
+                    FROM pasien p
+                    INNER JOIN users u ON p.id_user = u.id_user
+                    WHERE u.nama = %s
+                """, (nama_pasien,))
+                result = cursor.fetchone()
+                print(result)
+
+                if not result:
+                    flash("Nama pasien tidak valid.", "danger")
+                    return redirect(url_for('buat_invoice'))
+
+                nomor_rekam_medis = result[0]
+                print(nomor_rekam_medis)
+
+                print(f"Nama Pasien: {nama_pasien}")
+                print(f"Nomor Rekam Medis: {nomor_rekam_medis}")
+                print(f"Tanggal Transaksi: {tanggal_transaksi}")
+                print(f"Total Tarif: {total_tarif}")
+                print(f"ID Petugas Admin: {id_petugas_admin}")
+
+
+                # Insert data ke tabel transaksi
+                cursor.execute("""
+                    INSERT INTO transaksi (status_pembayaran, tanggal_transaksi, jumlah_pembayaran, nomor_rekam_medis, id_petugas_admin)
+                    VALUES (%s, %s, %s, %s, %s)
+                """, ("Belum Lunas", tanggal_transaksi, total_tarif, nomor_rekam_medis, id_petugas_admin))
+                connection.commit()
+
+                flash("Invoice berhasil dibuat!", "success")
+                return redirect(url_for('invoice'))
+            except Exception as e:
+                print(f"Error saat INSERT INTO transaksi: {str(e)}")  # Debug log kesalahan
+                connection.rollback()
+                flash(f"Terjadi kesalahan saat membuat invoice: {str(e)}", "danger")
                 return redirect(url_for('buat_invoice'))
-
-            # Dapatkan nomor rekam medis berdasarkan nama pasien
-            cursor.execute("""
-                SELECT nomor_rekam_medis 
-                FROM pasien p
-                INNER JOIN users u ON p.id_user = u.id_user
-                WHERE u.nama = %s
-            """, (nama_pasien,))
-            result = cursor.fetchone()
-            print(result)
-
-            if not result:
-                flash("Nama pasien tidak valid.", "danger")
-                return redirect(url_for('buat_invoice'))
-
-            nomor_rekam_medis = result[0]
-            print(nomor_rekam_medis)
-
-            print(f"Nama Pasien: {nama_pasien}")
-            print(f"Nomor Rekam Medis: {nomor_rekam_medis}")
-            print(f"Tanggal Transaksi: {tanggal_transaksi}")
-            print(f"Total Tarif: {total_tarif}")
-            print(f"ID Petugas Admin: {id_petugas_admin}")
-
-
-            # Insert data ke tabel transaksi
-            cursor.execute("""
-                INSERT INTO transaksi (status_pembayaran, tanggal_transaksi, jumlah_pembayaran, nomor_rekam_medis, id_petugas_admin)
-                VALUES (%s, %s, %s, %s, %s)
-            """, ("Belum Lunas", tanggal_transaksi, total_tarif, nomor_rekam_medis, id_petugas_admin))
-            connection.commit()
-
-            flash("Invoice berhasil dibuat!", "success")
-            return redirect(url_for('invoice'))
-        except Exception as e:
-            print(f"Error saat INSERT INTO transaksi: {str(e)}")  # Debug log kesalahan
-            connection.rollback()
-            flash(f"Terjadi kesalahan saat membuat invoice: {str(e)}", "danger")
-            return redirect(url_for('buat_invoice'))
     else:
         flash("Unauthorized access.", "danger")
         return redirect(url_for('login'))
