@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles/Perawat/uploadDokumen.css') }}"
+    />
+    <title>Upload Dokumen Pasien</title>
+  </head>
+  <body>
+    {% include "flashTemplate.html" %}
+    
+    <div class="container">
+      <aside class="sidebar">
+        <div class="logo">
+          <h1>Klinik SehatBro.</h1>
+        </div>
+        <nav>
+          <ul>
+            <li id="nav-homepage">
+              <img
+                src="{{ url_for('static', filename='images/Perawat/home-gray.png') }}"
+              />
+              <a href="{{ url_for('homepagePerawat') }}">Homepage</a>
+            </li>
+            <li id="nav-daftar">
+              <img
+                src="{{ url_for('static', filename='images/Perawat/list-gray.png') }}"
+              />
+              <a href="{{ url_for('daftarPasien') }}">Daftar Pasien</a>
+            </li>
+            <li id="nav-vital">
+              <img
+                src="{{ url_for('static', filename='images/Perawat/vital-black.png') }}"
+              />
+              <a href="{{ url_for('catatVital') }}">Catat Vital</a>
+            </li>
+            <li id="nav-dokumen">
+              <img
+                src="{{ url_for('static', filename='images/Perawat/document-white.png') }}"
+              />
+              <a href="{{ url_for('uploadDokumen') }}" class="link-active"
+                >Unggah Dokumen</a
+              >
+            </li>
+            <li id="nav-logout">
+              <img
+                src="{{ url_for('static', filename='images/Perawat/logout.png') }}"
+              />
+              <a href="{{ url_for('logout') }}">Logout</a>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+      <main class="main-content">
+        <header>
+          <h1>Unggah Dokumen</h1>
+        </header>
+
+        <form
+          action="{{ url_for('uploadDokumen') }}"
+          method="POST"
+          enctype="multipart/form-data"
+        >
+          <section id="homepage" class="content-section">
+            <h2>Data Pasien</h2>
+
+            <div class="data-pasien">
+              <label for="nama-pasien">Nama Pasien</label>
+              <input
+                type="text"
+                id="nama-pasien"
+                name="nama-pasien"
+                placeholder="Masukkan Nama Pasien"
+                required
+              />
+            </div>
+
+            <div class="data-pasien">
+              <label for="nrm-pasien">Nomor Rekam Medis</label>
+              <input
+                type="text"
+                id="nrm-pasien"
+                name="nrm-pasien"
+                placeholder="Masukkan Nomor Rekam Medis Pasien"
+                required
+              />
+            </div>
+          </section>
+          <section id="keluhan" class="content-section">
+            <h3>Lampiran Dokumen</h3>
+            <div>
+              <input type="file" name="file" required />
+            </div>
+          </section>
+          <button class="btn-unggah" type="submit">Unggah</button>
+        </form>
+      </main>
+    </div>
+
+    <footer>
+      <p>&copy; 2024 Klinik SehatBro. | All Rights Reserved</p>
+    </footer>
+  </body>
+</html>

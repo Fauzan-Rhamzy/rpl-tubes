@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kelola Dokter</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/Admin/kelolaDokter.css') }}" />
+  </head>
+  <body>
+    {% include "flashTemplate.html" %}
+
+    <div class="container">
+      <aside class="sidebar">
+        <div class="logo">
+          <h1>Klinik SehatBro.</h1>
+        </div>
+        {% include "Admin/nav-admin-kelola-pekerja.html" %}
+      </aside>
+
+      <main class="main-content">
+        <header>
+          <h1>Kelola Dokter</h1>
+        </header>
+
+        <div class="add-schedule-doctor">
+          <section class="add-doctor">
+            <h2>Tambah Dokter Baru</h2>
+            <!-- TAMBAH DOKTER -->
+            <form id="add-doctor-form" action="/Admin/KelolaDokter" method="POST">
+              <input type="hidden" name="form_type" value="doctor">
+              <div class="add-doctor-container">
+                <div class="left-group">
+                  <div class="form-group">
+                    <label for="doctor-npa">NPA Dokter</label>
+                    <input
+                      type="text"
+                      id="doctor-npa"
+                      name="doctor-npa"
+                      placeholder="Ex: 0214.010902"
+                      required
+                    />
+                  </div>
+
+                  <div class="form-group">
+                    <label for="doctor-name">Nama Dokter</label>
+                    <input
+                      type="text"
+                      id="doctor-name"
+                      name="doctor-name"
+                      placeholder="Ex: dr. John Doe"
+                      required
+                    />
+                  </div>
+
+                  <div class="form-group">
+                    <label for="doctor-specialty">Spesialisasi</label>
+                    <select
+                      id="doctor-specialty"
+                      name="doctor-specialty"
+                      required
+                    >
+                      <option value="" disabled selected>
+                        -- Pilih Spesialisasi --
+                      </option>
+                      <option value="penyakit-dalam">Penyakit Dalam</option>
+                      <option value="gigi">Gigi</option>
+                      <option value="mata">Mata</option>
+                      <option value="anak">Anak</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="right-group">
+                  <div class="form-group">
+                    <label for="doctor-fee">Tarif Dokter (Rp)</label>
+                    <input
+                      type="number"
+                      id="doctor-fee"
+                      name="doctor-fee"
+                      placeholder="Ex: 100000"
+                      required
+                      min="0"
+                      step="1000"
+                    />
+                  </div>
+
+                  <div class="form-group">
+                    <label for="doctor-username">Username</label>
+                    <input
+                      type="text"
+                      id="doctor-username"
+                      name="doctor-username"
+                      placeholder="Ex: doct_John"
+                      required
+                    />
+                  </div>
+
+                  <div class="form-group">
+                    <label for="doctor-password">Password</label>
+                    <input
+                      type="text"
+                      id="doctor-password"
+                      name="doctor-password"
+                      placeholder="Ex: john1234"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+              <button type="submit" class="add-doct-button" name="submit_doctor">
+                Tambah Dokter
+              </button>
+            </form>
+          </section>
+
+          <section class="create-schedule">
+            <h2>Buat Jadwal Dokter</h2>
+            <!-- BUAT JADWAL -->
+            <form id="create-schedule-form" action="/Admin/KelolaDokter" method="POST">
+              <input type="hidden" name="form_type" value="schedule">
+              <div class="form-group">
+                <label for="doctor-select">Pilih Dokter</label>
+                <select id="doctor-select" name="doctor-select" required>
+                  <option value="" disabled selected>-- Pilih Dokter --</option>
+                  {% for dokter in list_dokter %}
+                  <option value="{{dokter['npa']}}">{{dokter['nama']}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="schedule-day">Pilih Hari</label>
+                <select id="schedule-day" name="schedule-day" required>
+                  <option value="" disabled selected>-- Pilih Hari --</option>
+                  <option value="Senin">Senin</option>
+                  <option value="Selasa">Selasa</option>
+                  <option value="Rabu">Rabu</option>
+                  <option value="Kamis">Kamis</option>
+                  <option value="Jumat">Jumat</option>
+                  <option value="Sabtu">Sabtu</option>
+                  <option value="Minggu">Minggu</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="schedule-time-start">Waktu Mulai</label>
+                <input
+                  type="time"
+                  id="schedule-time-start"
+                  name="schedule-time-start"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="schedule-time-end">Waktu Selesai</label>
+                <input
+                  type="time"
+                  id="schedule-time-end"
+                  name="schedule-time-end"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="doctor-quota">Kuota Pasien</label>
+                <input
+                  type="number"
+                  id="doctor-quota"
+                  name="doctor-quota"
+                  placeholder="Ex: 10"
+                  required
+                  min="1"
+                />
+              </div>
+              <button type="submit" class="add-sched-button" name="submit_schedule">
+                Buat Jadwal
+              </button>
+            </form>
+          </section>
+        </div>
+
+        <!-- Tabs for Dokter and Jadwal -->
+        <section class="tabs">
+          <ul>
+            <li id="dokter-tab" class="tab active">Dokter</li>
+            <li id="jadwal-tab" class="tab">Jadwal</li>
+          </ul>
+        </section>
+
+        <!-- Tab Content -->
+        <section id="dokter-content" class="tab-content active">
+          <h2>Daftar Dokter</h2>
+          <!-- Doctor list table -->
+          <table class="doctor-table">
+            <thead>
+              <tr>
+                <th>NPA Dokter</th>
+                <th>Nama Dokter</th>
+                <th>Spesialisasi</th>
+                <th>Tarif (Rp)</th>
+                <th>Username</th>
+                <th>Password</th>
+                <th>Edit</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for dokter in list_dokter %}
+              <tr>
+                <td>{{ dokter['npa'] }}</td>
+                <td>{{ dokter['nama'] }}</td>
+                <td>{{ dokter['spesialisasi'] }}</td>
+                <td>Rp. {{ dokter['tarif'] }}</td>
+                <td>{{ dokter['username'] }}</td>
+                <td>{{ dokter['passwords'] }}</td>
+                <td><button class="edit-button">Edit</button></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </section>
+
+        <section id="jadwal-content" class="tab-content">
+          <h2>Daftar Jadwal Dokter</h2>
+          <!-- Doctor schedule table -->
+          <table class="doctor-schedule-table">
+            <thead>
+              <tr>
+                <th>NPA Dokter</th>
+                <th>Nama Dokter</th>
+                <th>Spesialisasi</th>
+                <th>Tarif (Rp)</th>
+                <th>Waktu</th>
+                <th>Hari</th>
+                <th>Kuota Pasien</th>
+                <th>Edit</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for jadwal in jadwal_dokter %}
+              <tr>
+                <td>{{ jadwal['npa'] }}</td>
+                <td>{{ jadwal['nama'] }}</td>
+                <td>{{ jadwal['spesialisasi'] }}</td>
+                <td>Rp. {{ jadwal['tarif'] }}</td>
+                <td>{{ jadwal['hari'] }}</td>
+                <td>{{ jadwal['jam_mulai'] }} - {{ jadwal['jam_selesai'] }}</td>
+                <td>{{ jadwal['kuota_pasien'] }}</td>
+                <td><a href="/Admin/KelolaDokter/EditDokter?id_jadwal={{ jadwal['id_jadwal'] }}"><button class="edit-button">Edit</button></a></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </section>
+      </main>
+    </div>
+    <footer>
+      <p>&copy; 2024 Klinik SehatBro. | All Rights Reserved</p>
+    </footer>
+  </body>
+
+  <script>
+    // 
+    const dokterTab = document.getElementById('dokter-tab');
+      const jadwalTab = document.getElementById('jadwal-tab');
+      const dokterContent = document.getElementById('dokter-content');
+      const jadwalContent = document.getElementById('jadwal-content');
+
+      dokterTab.addEventListener('click', () => {
+        dokterTab.classList.add('active');
+        jadwalTab.classList.remove('active');
+        dokterContent.classList.add('active');
+        jadwalContent.classList.remove('active');
+      });
+
+      jadwalTab.addEventListener('click', () => {
+        jadwalTab.classList.add('active');
+        dokterTab.classList.remove('active');
+        jadwalContent.classList.add('active');
+        dokterContent.classList.remove('active');
+      });
+
+  </script>
+</html>

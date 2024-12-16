@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detail Data Pasien</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/Admin/detailPasien.css') }}" />
+
+  </head>
+  <body>
+    {% include "flashTemplate.html" %}
+
+    <div class="container">
+      <aside class="sidebar">
+        <div class="logo">
+          <h1>Klinik SehatBro.</h1>
+        </div>
+        {% include 'Admin/nav-admin-kelola-pasien.html' %}
+      </aside>
+
+      <main class="main-content">
+        <header>
+          <h1>Detail Data Pasien</h1>
+        </header>
+
+        <section class="detail-patient">
+          <h2>Detail Pasien</h2>
+
+          <div class="detail-container">
+            <div class="left-detail">
+              <div class="detail-group">
+                <p><b>Nomor Rekam Medis</b></p>
+                <p>{{ pasien['nomor_rekam_medis'] }}</p>
+              </div>
+
+              <div class="detail-group">
+                <p><b>Nama Pasien</b></p>
+                <p>{{ pasien['nama'] }}</p>
+              </div>
+
+              <div class="detail-group">
+                <p><b>Gender</b></p>
+                <p>{{ pasien['gender']}}</p>
+              </div>
+            </div>
+            <div class="right-detail">
+              <div class="detail-group">
+                <p><b>Alamat</b></p>
+                <p>{{ pasien['alamat'] }}</p>
+              </div>
+
+              <div class="detail-group">
+                <p><b>Tanggal Lahir</b></p>
+                <p>{{ pasien['tanggal_lahir'] }}</p>
+              </div>
+
+              <div class="detail-group">
+                <p><b>Kontak</b></p>
+                <p>{{ pasien['kontak']}}</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <footer>
+      <p>&copy; 2024 Klinik SehatBro. | All Rights Reserved</p>
+    </footer>
+  </body>
+</html>

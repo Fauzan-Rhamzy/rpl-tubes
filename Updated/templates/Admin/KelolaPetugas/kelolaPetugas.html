@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kelola Petugas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/Admin/kelolaPetugas.css') }}" />
+
+  </head>
+  <body>
+    {% include "flashTemplate.html" %}
+
+    <div class="container">
+      <aside class="sidebar">
+        <div class="logo">
+          <h1>Klinik SehatBro.</h1>
+        </div>
+        {% include "Admin/nav-admin-kelola-pekerja.html" %}
+      </aside>
+
+      <main class="main-content">
+        <header>
+          <h1>Kelola Petugas Administrasi</h1>
+        </header>
+
+        <div class="add-admin-img">
+          <section class="add-admin">
+            <h2>Tambah Petugas Administrasi Baru</h2>
+
+            <!-- TAMBAH PETUGAS -->
+            <form id="add-admin-form" action="/Admin/KelolaPetugas" method="POST">
+              <div class="form-group">
+                <label for="admin-name">Nama Petugas Administrasi</label>
+                <input
+                  type="text"
+                  id="admin-name"
+                  name="admin-name"
+                  placeholder="Ex: Jane Doe"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="admin-username"
+                  >Username Petugas Administrasi</label
+                >
+                <input
+                  type="text"
+                  id="admin-username"
+                  name="admin-username"
+                  placeholder="Ex: jane_doe"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="admin-password"
+                  >Password Petugas Administrasi</label
+                >
+                <input
+                  type="text"
+                  id="admin-password"
+                  name="admin-password"
+                  placeholder="Ex: janedoe1234"
+                  required
+                />
+              </div>
+
+              <button type="submit" class="add-button">
+                Tambah Petugas Administrasi
+              </button>
+            </form>
+          </section>
+          <div class="nurse-img">
+            <img src="{{ url_for('static', filename='images/Admin/Clip path group.png') }}" />
+          </div>
+        </div>
+        <section class="list-admin">
+          <h2>Daftar Petugas Administrasi</h2>
+          <table class="admin-table">
+            <thead>
+              <th>ID Petugas</th>
+              <th>Nama Petugas</th>
+              <th>Username</th>
+              <th>Password</th>
+              <th>Edit</th>
+            </thead>
+
+            <tbody>
+              {% for data in petugas %}
+              <tr>
+                <td>{{ data['id_petugas_admin'] }}</td>
+                <td>{{ data['nama'] }}</td>
+                <td>{{ data['username'] }}</td>
+                <td>{{ data['passwords'] }}</td>
+                <td>
+                  <a href="/Admin/KelolaPetugas/EditPetugas?id_user={{ data['id_user'] }}">
+                    <button type="button" class="edit-button">Edit</button></td>
+                  </a>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </section>
+      </main>
+    </div>
+    <footer>
+      <p>&copy; 2024 Klinik SehatBro. | All Rights Reserved</p>
+    </footer>
+  </body>
+
+  <script>
+    const addButton = document.querySelector(".add-button");
+    addButton.addEventListener("click", function () {
+      alert("Petugas Administrasi berhasil ditambahkan!");
+    });
+
+    const editButton = document.querySelector(".edit-button");
+    editButton.addEventListener("click", function () {
+      window.location.href = "editPetugas.html";
+    });
+  </script>
+</html>

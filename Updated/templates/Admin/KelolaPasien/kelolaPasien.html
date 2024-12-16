@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kelola Pasien</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/Admin/kelolaPasien.css') }}" />
+  </head>
+  <body>
+    {% include "flashTemplate.html" %}
+
+    <div class="container">
+      <aside class="sidebar">
+        <div class="logo">
+          <h1>Klinik SehatBro.</h1>
+        </div>
+        {% include "Admin/nav-admin-kelola-pasien.html" %}
+      </aside>
+
+      <main class="main-content">
+        <header>
+          <h1>Kelola Pasien</h1>
+        </header>
+
+        <!-- <section class="search-patient">
+          <form action="/Admin/KelolaPasien" method="POST">
+            <input type="text" id="search-patient" placeholder="Cari Pasien" />
+            <button type="submit">Cari</button>
+          </form>
+        </section> -->
+
+        <section class="list-patient">
+          <h2>Daftar Pasien</h2>
+          <table class="patient-table">
+            <thead>
+              <tr>
+                <th>Nomor Rekam Medis</th>
+                <th>Nama Pasien</th>
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Daftar Pasien Terdaftar -->
+               {% for data in pasien %}
+              <tr>
+                <td>{{ data['nomor_rekam_medis'] }}</td>
+                <td>{{ data['nama'] }}</td>
+                <td>
+                  <a href="{{ url_for('detailPasien', id_user=data['id_user'])}}">
+                    <button type="button" class="detail-button">Detail</button>
+                  </a>
+                </td>
+                <td>
+                  <a href="{{ url_for('editPasien', id_user=data['id_user'])}}">
+                    <button type="button" class="edit-button">Edit</button>
+                  </a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </section>
+      </main>
+    </div>
+
+    <footer>
+      <p>&copy; 2024 Klinik SehatBro. | All Rights Reserved</p>
+    </footer>
+  </body>
+
+  <script>
+    const editButton = document.querySelector(".edit-button");
+    editButton.addEventListener("click", function () {
+      window.location.href = "editPasien.html";
+    });
+
+    const detailButton = document.querySelector(".detail-button");
+    detailButton.addEventListener("click", function () {
+      window.location.href = "detailPasien.html";
+    });
+  </script>
+</html>

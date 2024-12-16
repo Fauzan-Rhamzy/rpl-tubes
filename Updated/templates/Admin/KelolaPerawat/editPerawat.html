@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Perawat</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/Admin/editPerawat.css') }}" />
+  </head>
+  <body>
+    {% include "flashTemplate.html" %}
+
+    <div class="container">
+      <aside class="sidebar">
+        <div class="logo">
+          <h1>Klinik SehatBro.</h1>
+        </div>
+        {% include "Admin/nav-admin-kelola-pekerja.html" %}
+      </aside>
+
+      <main class="main-content">
+        <header>
+          <h1>Edit Data Perawat</h1>
+        </header>
+
+        <section class="add-nurse">
+          <h2>Edit Data Perawat</h2>
+          <form id="add-nurse-form" action="/Admin/KelolaPerawat/EditPerawat?id_user={{ perawat['id_user'] }}" method="POST">
+            <div class="form-group">
+              <label for="nurse-name">Nama Perawat</label>
+              <input
+                type="text"
+                id="nurse-name"
+                name="nurse-name"
+                placeholder="Ex: Jane Doe"
+                value="{{ perawat['nama'] }}"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="nurse-username">Username Perawat</label>
+              <input
+                type="text"
+                id="nurse-username"
+                name="nurse-username"
+                placeholder="Ex: jane_doe"
+                value="{{ perawat['username'] }}"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="nurse-password">Password Perawat</label>
+              <input
+                type="text"
+                id="nurse-password"
+                name="nurse-password"
+                placeholder="Ex: janedoe1234"
+                value="{{ perawat['passwords'] }}"
+              />
+            </div>
+
+            <button type="submit" class="add-button">Simpan perubahan</button>
+          </form>
+        </section>
+      </main>
+    </div>
+
+    <footer>
+      <p>&copy; 2024 Klinik SehatBro. | All Rights Reserved</p>
+    </footer>
+  </body>
+
+  <script>
+    const editButton = document.querySelector(".edit-button");
+    editButton.addEventListener("click", function () {
+      alert("Perubahan berhasil disimpan!");
+    });
+  </script>
+</html>
