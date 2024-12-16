@@ -40,12 +40,12 @@
                   <option value="" disabled>-- Pilih Dokter --</option>
 
                   {% for dokter_item in list_dokter %}
-
                   <option value="{{ dokter_item['npa'] }}" >
                     {{ dokter_item['nama'] }}
                   </option>
                   {% endfor %}
                 </select>
+                
               </div>
               <div class="form-group">
                 <label for="schedule-day">Pilih Hari</label>
@@ -103,7 +103,7 @@
                 />
               </div>
 
-              <div class="form-group">
+              <!-- <div class="form-group">
                 <label for="doctor-fee">Tarif Dokter (Rp)</label>
                 <input
                   type="number"
@@ -114,7 +114,7 @@
                   step="1000"
                   value="{{ dokter['tarif']}}"
                 />
-              </div>
+              </div> -->
             </div>
             <button type="submit" class="edit-button">Simpan Perubahan</button>
           </form>

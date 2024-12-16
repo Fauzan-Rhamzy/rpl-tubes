@@ -65,9 +65,9 @@
             <button type="submit">Cari</button>
           </form>
 
-          <form action="{{ url_for('buat_invoice') }}" method="POST">
-            <button type="submit" id="make-invoice-button">Buat Invoice</button>
-          </form>
+          <a  href="{{ url_for('buat_invoice') }}">
+            <button id="make-invoice-button">Buat Invoice</button>
+          </a>
         </section>
 
         <section class="content-section">
