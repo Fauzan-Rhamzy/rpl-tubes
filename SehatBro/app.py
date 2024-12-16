@@ -500,10 +500,13 @@ def edit_profile():
                     UPDATE Users
                     SET
                         Username = COALESCE(%s, Username),
-                        Passwords = COALESCE(%s, Passwords),
-                        Nama = COALESCE(%s, Nama)
+                        Passwords = CASE
+                    WHEN %s = '' THEN Passwords
+                    ELSE %s
+                    END,
+                    Nama = COALESCE(%s, Nama)
                     WHERE ID_User = %s
-                """, (username, password, nama, user_id))
+                """, (username, password, password, nama, user_id))
             
             # Update tabel Pasien
             if alamat or gender or tanggal_lahir or kontak:
@@ -781,7 +784,7 @@ def kelolaDokter():
             jadwal_dokter = cursor.fetchall()
 
             cursor.execute("""
-                select d.npa as npa, u.nama as nama, d.spesialisasi as spesialisasi, d.tarif, u.username, u.passwords as passwords
+                select u.id_user as id_user, d.npa as npa, u.nama as nama, d.spesialisasi as spesialisasi, d.tarif, u.username, u.passwords as passwords
                 from dokter d left join users u on d.id_user=u.id_user
                 order by spesialisasi
             """)
@@ -797,9 +800,9 @@ def kelolaDokter():
     flash("Unauthorized access. Tolong login sebagai admin.", 'danger')
     return redirect(url_for('login'))
 
-#edit dokter
-@app.route('/Admin/KelolaDokter/EditDokter', methods=['GET', 'POST'])
-def editDokter():
+#edit jadwal
+@app.route('/Admin/KelolaDokter/EditJadwal', methods=['GET', 'POST'])
+def editJadwal():
     if 'role' in session and session['role'] == 'Admin':
         id_jadwal = request.args.get('id_jadwal')
 
@@ -817,7 +820,7 @@ def editDokter():
 
             if not npa or not kuota or not hari or not mulai or not akhir or not tarif:
                 flash('Please complete all fields before submitting.', 'danger')
-                return redirect(url_for('editDokter', id_jadwal=id_jadwal))
+                return redirect(url_for('editJadwal', id_jadwal=id_jadwal))
 
             try:
                 cursor.execute("""
@@ -838,6 +841,7 @@ def editDokter():
                 """, (tarif, npa))
             
                 connection.commit()
+                flash("Jadwal berhasil diubah", "success")
                 print("success")
                 return redirect(url_for('kelolaDokter'))
 
@@ -857,7 +861,104 @@ def editDokter():
             dokter_data = None
             list_dokter = []
 
-        return render_template("Admin/KelolaDokter/editDokter.html", dokter=dokter_data, list_dokter=list_dokter)
+        return render_template("Admin/KelolaDokter/editJadwal.html", dokter=dokter_data, list_dokter=list_dokter)
+
+    flash("Unauthorized access. Tolong login sebagai admin.", "danger")
+    return redirect(url_for('login'))
+
+#edit dokter
+@app.route('/Admin/KelolaDokter/EditDokter', methods=['GET', 'POST'])
+def editDokter():
+    if 'role' in session and session['role'] == 'Admin':
+        id_user = request.args.get('id_user')
+
+        if not id_user:
+            flash("No ID Dokter provided", 'danger')
+            return redirect(url_for('kelolaDokter'))
+
+        if request.method == 'POST':
+            npa = request.form['doctor-npa']
+            nama = request.form['doctor-name']
+            # nama = request.form['doctor-name']
+            username = request.form['doctor-username']
+            password = request.form['doctor-password']
+            tarif = request.form['doctor-fee']
+            spesialisasi = request.form['doctor-specialization']
+
+            if not npa or not nama or not username or not password or not spesialisasi or not tarif:
+                flash('Please complete all fields before submitting.', 'danger')
+                return redirect(url_for('editDokter', id_user=id_user))
+
+            try:
+                cursor.execute("select npa , id_user from dokter where npa=%s", (npa,))
+            except Exception as e:
+                flash(f"Error retrieving data: {str(e)}", 'danger')
+            
+            check_data=cursor.fetchone()
+            if check_data['npa']==npa and check_data['id_user']==id_user:
+                flash("NPA sudah digunakan, coba yang lain", "danger")
+
+            try:
+                cursor.execute("""
+                    update dokter
+                    SET npa=%s, 
+                        spesialisasi=%s,
+                        tarif=%s
+                    WHERE 
+                        id_user=%s
+                """, (npa, spesialisasi, tarif, id_user,))
+                connection.commit()
+
+                cursor.execute("""
+                    update users
+                    set nama=%s,
+                        username=%s,
+                        passwords=%s
+                    WHERE 
+                        id_user=%s
+                """, (nama, username, password, id_user,))            
+                connection.commit()
+
+                flash("Data dokter berhasil diubah", "success")
+                print("success")
+                return redirect(url_for('kelolaDokter'))
+
+            except Exception as e:
+                connection.rollback()
+                flash(f"An error occurred: {str(e)}", 'danger')
+
+        try:
+            cursor.execute("""
+                SELECT 
+                    u.id_user AS id_user,
+                    d.npa as npa, 
+                    u.nama as nama, 
+                    d.spesialisasi as spesialisasi, 
+                    d.tarif, u.username, 
+                    u.passwords as passwords
+                from 
+                    dokter d 
+                join 
+                    users u 
+                on 
+                    d.id_user=u.id_user
+                WHERE 
+                    u.id_user=%s
+            """, (id_user,))
+            dokter_data = cursor.fetchone()
+            
+        except Exception as e:
+            flash(f"Error retrieving data: {str(e)}", 'danger')
+            dokter_data = None
+
+        try:
+            cursor.execute("SELECT DISTINCT spesialisasi FROM dokter")
+            specializations = cursor.fetchall()
+        except Exception as e:
+            flash(f"Terjadi kesalahan: {str(e)}", 'danger')
+            specializations = []
+
+        return render_template("Admin/KelolaDokter/editDokter.html", dokter=dokter_data, spesialisasi=specializations)
 
     flash("Unauthorized access. Tolong login sebagai admin.", "danger")
     return redirect(url_for('login'))
@@ -1206,31 +1307,49 @@ def detailPasien():
 def homepageDokter():
     if 'role' in session and session['role'] == 'Dokter':
         print("Selamat datang dokter")
-        # try:
-        #     # Query total pasien hari ini
-        #     cursor.execute("SELECT COUNT(*) FROM buat_janji WHERE tanggal_janji = CURRENT_DATE")
-        #     total_pasien_hari_ini = cursor.fetchone()[0]
+        try:
+            # Query total pasien hari ini               
+            cursor.execute("""
+                SELECT 
+                    COUNT(*) 
+                FROM 
+                    buat_janji bj 
+                JOIN 
+                    jadwal_dokter jd 
+                ON 
+                    bj.id_jadwal=jd.id_jadwal 
+                WHERE 
+                    bj.tanggal_janji = CURRENT_DATE AND jd.npa=%s
+            """,(session['npa'],))
+            total_pasien_hari_ini = cursor.fetchone()[0]
 
-        #     # Query total pasien bulan ini
-        #     cursor.execute("""
-        #         SELECT COUNT(*) FROM buat_janji 
-        #         WHERE 
-        #         AND EXTRACT(YEAR FROM tanggal_janji) = EXTRACT(YEAR FROM CURRENT_DATE)
-        #     """)
-        #     total_pasien_bulan_ini = cursor.fetchone()[0]
-        # except Exception as e:
-        #     flash(f"An error occurred: {str(e)}", 'danger')
-        #     total_pasien_hari_ini = 0
-        #     total_pasien_bulan_ini = 0  # Default jika query gagal
+            # Query total pasien bulan ini
+            cursor.execute("""
+                SELECT 
+                    COUNT(*) 
+                FROM 
+                    buat_janji bj 
+                JOIN 
+                    jadwal_dokter jd 
+                ON 
+                    bj.id_jadwal=jd.id_jadwal 
+                WHERE 
+                    EXTRACT(YEAR FROM bj.tanggal_janji) = EXTRACT(YEAR FROM CURRENT_DATE) 
+                    AND EXTRACT(MONTH FROM bj.tanggal_janji) = EXTRACT(MONTH FROM CURRENT_DATE) 
+                    AND jd.npa = %s
+            """, (session['npa'],))
+            total_pasien_bulan_ini = cursor.fetchone()[0]
+            
+        except Exception as e:
+            flash(f"An error occurred: {str(e)}", 'danger')
+            total_pasien_hari_ini = 0
+            total_pasien_bulan_ini = 0  # Default jika query gagal
 
-        # return render_template(
-        #     "Perawat/index.html",
-        #     nama=session.get('nama'),
-        #     total_pasien_hari_ini=total_pasien_hari_ini,
-        #     total_pasien_bulan_ini=total_pasien_bulan_ini
-        # )
-        # totalPasien = 
-        return render_template("Dokter/Homepage/index.html", nama=session.get('nama'))
+        return render_template(
+            "Dokter/Homepage/index.html", 
+            nama=session.get('nama'), 
+            pasien_hari_ini=total_pasien_hari_ini,
+            pasien_bulan_ini = total_pasien_bulan_ini)
     
     flash("Unauthorized access. Please log in.", "danger")
     return redirect(url_for('login'))
@@ -1238,13 +1357,44 @@ def homepageDokter():
 @app.route('/Dokter/JanjiTemu')
 def janjiTemu():
     if 'role' in session and session['role'] == 'Dokter':
-        cursor.execute("""
-            select * from buat_janji bj join jadwal_dokter j on bj.id_jadwal=j.id_jadwal join dokter d on d.npa=j.npa
-            join pasien p on p.nomor_rekam_medis=bj.nomor_rekam_medis join users u on u.id_user=p.id_user
-            where d.npa=%s
-        """, (session.get('npa'),))
-        list=cursor.fetchall()
-        return render_template("Dokter/JanjiTemu/janjiTemu.html", list=list, npa=session.get('npa'))
+        # search_query = request.args.get('query', '').strip()  # Ambil parameter pencarian
+        try:
+            cursor.execute("""
+                SELECT 
+                    * 
+                FROM 
+                    buat_janji bj 
+                JOIN 
+                    jadwal_dokter j ON bj.id_jadwal=j.id_jadwal 
+                JOIN 
+                    dokter d ON d.npa=j.npa
+                JOIN 
+                    pasien p ON p.nomor_rekam_medis=bj.nomor_rekam_medis 
+                JOIN 
+                    users u ON u.id_user=p.id_user
+                WHERE 
+                    j.npa=%s 
+                    AND bj.tanggal_janji = CURRENT_DATE
+                ORDER BY
+                    bj.id_jadwal
+            """, (session.get('npa'),))
+
+            # if search_query:
+            #     sql += " AND u_pasien.Nama ILIKE %s"
+            #     cursor.execute(sql, (f"%{search_query}%",))
+
+            # else:
+            # cursor.execute(sql)
+            list=cursor.fetchall()
+
+        except Exception as e:
+            flash(f"An error occurred: {str(e)}", 'danger')
+            list=[]
+        return render_template("Dokter/JanjiTemu/janjiTemu.html", 
+                    list=list, 
+                    npa=session.get('npa')
+                    # search_query=search_query
+                    )
     
     flash("Unauthorized access. Please log in as a doctor.", 'danger')
     return redirect(url_for('login'))

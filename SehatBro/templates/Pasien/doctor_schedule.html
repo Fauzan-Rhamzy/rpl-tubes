@@ -10,6 +10,8 @@
     <title>Jadwal Dokter</title>
   </head>
   <body>
+    {% include "flashTemplate.html" %}
+
     <div class="container">
       <!-- Sidebar -->
       <aside class="sidebar">
@@ -52,7 +54,7 @@
               <img
                 src="{{ url_for('static', filename='images/Booking/logout.png') }}"
               />
-              <a href="{{ url_for('login') }}">Logout</a>
+              <a href="{{ url_for('logout') }}">Logout</a>
             </li>
           </ul>
         </nav>

@@ -9,6 +9,8 @@
 </head>
 
 <body>
+  {% include "flashTemplate.html" %}
+
   <div class="container">
     <aside class="sidebar">
       <div class="logo">
@@ -38,7 +40,7 @@
           </li>
           <li id="nav-logout">
             <img src="{{ url_for('static', filename='images/Profile/logout.png') }}" />
-            <a href="{{ url_for('login') }}">Logout</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
           </li>
         </ul>
       </nav>
